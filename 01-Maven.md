@@ -14,12 +14,12 @@ Maven 的作用主要有：
 
 创建一个 Maven 项目（工程）：
 
-1. 在其中不需要手动导入 Jar 包，只需要在 pom.xml 配置文件中，描述要使用的 Jav 包信息；
+1. 在其中不需要手动导入 jar 包，只需要在 pom.xml 配置文件中，描述要使用的 jav 包信息；
 2. Maven 会自动联网下载。
 
 ### 2.Maven 统一项目结构
 
-在 eclipse、MyEclipse、IIDEA 这些 Java IDE 中，创建的 Java 项目（工程），结构都是不一样的。
+在 eclipse、MyEclipse、IIDEA 这些 Java IDE 中，创建的普通 Java 项目（工程），结构都是不一样的。
 
 使用 Maven 创建的项目（工程），可以实现项目结构的统一。
 
@@ -28,14 +28,14 @@ Maven 创建的项目（工程），目录结构如下：
 ```shell
 ${maven-project}
 |-- src
-| |-- main # 实际项目资源
-| | -- java # Java 源代码目录
-| | -- resources # 配置文件目录
-| |-- test # 测试项目资源
-| | -- java # 测试源代码目录
-| | -- resources # 测试配置文件目录
-|-- pom.xml # 项目配置文件
-|-- target # 项目编译、打包后，会将字节码文件或 jar 包放在该目录下
+| |-- main # ----------- 实际项目资源
+| | -- java # ---------- Java 源代码目录
+| | -- resources # ----- 配置文件目录
+| |-- test # ----------- 测试项目资源
+| | -- java # ---------- 测试源代码目录
+| | -- resources # ----- 测试配置文件目录
+|-- pom.xml # ---------- 项目配置文件
+|-- target # ----------- 项目编译、打包后，会将字节码文件或 jar 包放在该目录下
 |-- LICENSE.txt
 |-- NOTICE.txt
 |-- README.txt
@@ -70,7 +70,7 @@ Maven 仓库，用于存储资源，管理各种 jar 包。
 
 - 本地仓库：计算机本地的一个目录；
 - [中央仓库](http://repo1.maven.org/maven2)：由 Maven 团队维护的全球唯一的远程仓库。
-- 远程仓库：一般由公司团队搭建的私有仓库。
+- 远程仓库（私服）：一般由公司团队搭建的私有仓库。
 
 Maven 会先在本地仓库查找需要的 Jar 包进行关联，
 
@@ -85,11 +85,11 @@ Maven 安装和配置，主要有 4 步：
 
 Ⅰ、解压 maven 安装包（比如：apache-maven-3.6.2-bin-zip）到 maven 的安装目录，目录结构分析：
 
-- bin 目录 ： 存放的是可执行命令。（`mvn` 命令相关）
-- conf 目录 ：存放 Maven 的配置文件。（比如：settings.xml）
-- lib 目录 ：存放 Maven 依赖的 jar 包。（Maven 也是使用 java 开发的，所以它也依赖其他的 jar 包）
+- bin 目录 ： 存放的是可执行命令（`mvn` 命令相关）。
+- conf 目录 ：存放 Maven 的配置文件（比如：`settings.xml`）。
+- lib 目录 ：存放 Maven 依赖的 jar 包（Maven 基于 java 开发，所以它也依赖其他的 jar 包）。
 
-Ⅱ、配置本地仓库，修改 maven 安装目录下的 conf/settings.xml 中的 `<localRepository`> 为一个指定的目录；
+Ⅱ、配置本地仓库，修改 maven 安装目录下的 `conf/settings.xml` 中的 `<localRepository>` 标签，为一个指定的本地目录；
 
 ```xml
 <settings
@@ -103,7 +103,7 @@ Maven 安装和配置，主要有 4 步：
 </settings>
 ```
 
-Ⅲ、配置阿里云远程仓库（私服），修改 maven 安装目录下 conf/settings.xml 中的 `<mirro>` 标签，为其添加如下子标签。
+Ⅲ、配置阿里云远程仓库（私服），修改 maven 安装目录下 `conf/settings.xml` 中的 `<mirro>` 标签，为其添加如下子标签。
 
 ```xml
 <settings
@@ -126,7 +126,7 @@ Maven 安装和配置，主要有 4 步：
 
 Ⅳ、配置本机的环境变量 `MAVEN_HOME` 为 maven 的安装目录路径。并将其下的 bin 目录，配置到 `PATH` 环境变量中。
 
-在任意目录下，执行命令，验证 maven 环境变量是否配置成功：
+在任意目录下，执行 mvn 命令，验证 maven 环境变量是否配置成功：
 
 ```shell
 mvn -v
@@ -140,10 +140,10 @@ Maven 是基于 java 开发的项目，Maven 的运行，也要基于本地的 J
 
 IDEA 配置集成 Maven 有两种方案：
 
-- 方案一：在当前项目（工程）project 中，集成 Maven。
+- 方案一：在当前项目（工程）中，集成 Maven。
 - 方案二：创建一个 Maven 项目。
 
-这里演示方案一的步骤，方案二的步骤与方案一类似，只是要将创建模块（module）改为创建项目（project）。
+这里演示方案一的；方案二的步骤与方案一类似，只是要将创建模块（module）改为创建项目（project）。
 
 ### 1.空项目集成 Maven
 
@@ -151,7 +151,7 @@ IDEA 配置集成 Maven 有两种方案：
 
 1. 进入 File  =>  Settings  =>  Build,Execution,Deployment  =>  Build Tools  =>  Maven。
 2. 在右侧配置 `Maven home path` 为本地的 maven 安装路径.。
-3. 手动指定 `user settings file`，将它设为 maven 安装目录下的 conf/settings.xml 配置文件的路径。
+3. 手动指定 `user settings file`，将它设为 maven 安装目录下的 `conf/settings.xml` 配置文件的路径。
 4. IDEA 会加载该配置文件，并读取其中的本地仓库路径。
 
 第二步，检查项目 maven 关联的 JRE 是否是要使用的版本：
@@ -166,24 +166,25 @@ IDEA 配置集成 Maven 有两种方案：
 
 ### 2.空项目中创建 maven 模块（module）
 
-第一步，创建模块，选择 Maven ，点击 Next
+第一步，创建 Maven 模块。
 
 1. 进入 Project Structure => Moudule => + 号 => New Module => java
 2. 在右侧 Build system 选择 Maven。
 
-第二步，填写模块名称，坐标信息：
+第二步，填写 Maven 模块名称，坐标信息：
 
-1. 接第一步，在右侧打开 Advanced Setting，配置 GroupId，ArtifactId，version；分别表示：组织名，模块名，版本号；maven 项目中这也信息被称为**坐标**。比如：
+1. 接第一步，在右侧打开 Advanced Setting；
 
+2. 配置 GroupId，ArtifactId，version；它们分别表示：组织名，模块名，版本号；maven 项目中这也信息被称为**坐标**。比如：
    - GroupId，设为 `com.kkcf`；
 
    - ArtifactId，设为 `maven-01`；
 
    - version 会被 IDEA 自动生成，创建时无需指定。
 
-2. 点击 Create 创建项目。maven 会自动加载项目所依赖的插件，放入本地仓库中。
+3. 点击 Create 创建项目。maven 会自动加载项目所依赖的插件，放入本地仓库中。
 
-3. maven 项目创建完成后，会发现 `test` 目录下，没有 `resource` 目录，这是因为它们不常用，需要的话要手动创建。
+4. maven 项目创建完成后，会发现 `test` 目录下，没有 `resource` 目录，这是因为它不常用，需要的话要手动创建。
 
 第三步，编写测试类，并运行。
 
@@ -240,7 +241,7 @@ demo-project/normal_project_with_maven/maven-01/pom.xml
 其中，包含 maven 项目的描述信息，即**坐标**：
 
 - `<groupId>` 标签，表示组织名。
-- `<artifactId>` 标签，表示 maven 项目（或模块）名。
+- `<artifactId>` 标签，表示项目（或模块）名。
 - `<version>` 标签，表示版本号。
 
 `<properties>` 标签下：
@@ -318,9 +319,9 @@ Maven 项目管理的依赖，可以分为：
 
 ![Maven依赖的传递性](NoteAssets/Maven依赖的传递性.png)
 
-- 上图蓝色区域 projectA 的是直接依赖，黄色区域 projectA 的是间接依赖。
+- 上图蓝色区域是 projectA 的直接依赖，黄色区域是 projectA 的间接依赖。
 
-> 在 IDEA 中，在 pom.xml 查看依赖结构步骤：
+> 在 IDEA 中，在 pom.xml 查看依赖结构：
 >
 > 1. 进入 pom.xml 配置文件；
 > 2. 右键 -> Diagrams -> Show Diagram
@@ -415,15 +416,15 @@ Maven 的生命周期，描述了一次项目构建，经历哪些阶段。
 
 ### 1.Maven 生命周期有三套
 
-Maven 对项目构建，有三套独立的生命周期，分别是：
+Maven 对项目构建，有**三套**独立的生命周期，分别是：
 
-- clean：清理工作。
+- 第一套：clean：清理工作。
   - 比如：清理上一次编译的 .class 字节码文件；打包之后的 jar 包文件。
 
-- default：核心工作。
+- 第二套：default：核心工作。
   - 比如：编译、测试、打包、安装、部署等。
 
-- site：生成报告、发布站点等（很少用）。
+- 第三套：site：生成报告、发布站点等（很少用）。
 
 这三套生命周期，每一套又分为若干个阶段，如下图所示：
 
@@ -444,7 +445,7 @@ Maven 对项目构建，有三套独立的生命周期，分别是：
 执行生命周期的两种方式：
 
 - 方式一：在 IDEA 工具右侧的 maven 工具栏中，选择对应的生命周期，双击执行。
-  - 在 IDEA 中，执行某一生命周期阶段时，如果要跳过它前面的阶段，那么要选跳过的阶段，然后点击上方的”Skip Tests“图标。
+  - 在 IDEA 中，执行某一生命周期阶段时，如果要跳过它前面的阶段，那么要选中跳过的阶段，然后点击上方的”Skip Tests“图标。
 - 方式二：在命令行中，通过 maven 命令执行。
   1. 在命令行中，进入 maven 项目目录。
   2. 执行 mvn 命令；比如：`mvn clean`、`mvn compile`
