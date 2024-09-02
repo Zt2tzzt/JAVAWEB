@@ -344,7 +344,7 @@ pom.xml
 
     <!--排除依赖, 主动断开依赖的资源-->
     <exclusions>
-      <exclusion>
+        <exclusion>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </exclusion>
@@ -368,7 +368,7 @@ Maven 项目中，依赖的 jar 包，默认情况下，可以在任何地方使
 
 下方的配置，将 `logback-classic` 依赖，通过 `<scope>` 标签指定了 `test` 的作用范围。
 
-- 那么这个依赖，就只能作用在`test` 文件夹内。
+- 那么这个依赖，就只能作用在 `test` 文件夹内。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
