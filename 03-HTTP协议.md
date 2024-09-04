@@ -228,3 +228,7 @@ Connection: keep-alive
 响应体，和响应头之间，有一个空行隔开，如下图所示：
 
 ![Http响应体](NoteAssets/Http响应体.png)
+
+## 三、Http 协议解析
+
+浏览器往往内置了解析
