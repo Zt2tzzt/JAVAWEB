@@ -3,15 +3,15 @@ package com.kkcf.utils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 public class XmlParserUtils {
 
-    public static <T> List<T> parse(String file , Class<T> targetClass)  {
+    public static <T> List<T> parse(String file, Class<T> targetClass) {
         ArrayList<T> list = new ArrayList<T>(); //封装解析出来的数据
         try {
             //1.获取一个解析器对象

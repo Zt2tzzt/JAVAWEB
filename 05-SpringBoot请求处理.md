@@ -1,4 +1,4 @@
-# SpringBoot 请求处理
+# Spring Boot 请求处理
 
 在之前开发的 SpringBoot 入门程序中，使用 Controller 控制器进行了 Http GET 请求的处理
 
@@ -142,7 +142,7 @@ public class RequestController {
 
 在客户端，发送请求 `localhost:8080/simpleParam?name=zzt&age=18` 测试。
 
-#### 1.@RequestParam 注解
+#### 3.@RequestParam 注解
 
 如果要将不同的参数名和形参变量名映射起来，要使用 `@RequestParam` 注解
 
@@ -282,7 +282,7 @@ public class RequestController {
 
 #### 1.实体类的封装
 
-User 实体类中，还有一个 Address 类型的属性。
+`User` 实体类中，还有一个 `Address` 类型的属性。
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/pojo/User.java
 
@@ -302,7 +302,7 @@ public class User {
 }
 ```
 
-Address 类
+`Address` 类
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/pojo/Address.java
 
@@ -353,7 +353,7 @@ public class RequestController {
 - `localhost:8080/arrayParam?hobby=唱&hobby=跳&hobby=rap&hobby=篮球`
 - `localhost:8080/arrayParam?hobby=唱,跳,rap,篮球`
 
-#### 1.使用数组接收
+#### 1.数组接收
 
 直接使用数组类型的形参，来接收请求的参数。
 
@@ -382,11 +382,11 @@ public class RequestController {
 }
 ```
 
-#### 2.使用集合接收
+#### 2.集合接收
 
 要求请求参数名，与形参集合对象名相同；且请求参数为多个，
 
-要使用 `@RequestParam` 注解绑定请求参数与集合类型的形参之间的关系。
+要使用 `@RequestParam` 注解，绑定请求参数与集合类型的形参之间的关系。
 
 Controller 控制器：
 
@@ -424,10 +424,10 @@ public class RequestController {
 
 #### 1.@DateTimeFormat 注解
 
-那么对于日期类型的参数，在进行封装的时候，需要通过 `@DateTimeFormat` 注解，以及其 `pattern` 属性来设置日期的格式。
+对于日期类型的参数，需要使用 `@DateTimeFormat` 注解，以及其 `pattern` 属性，来设置形参的日期的格式。
 
 - 客户端请求传递的日期参数，必须按照指定的格式传递。
-- 服务器端 Controller 控制器的方法中，要使用 Date 或 LocalDateTime 类型，来接收传递的参数。
+- 服务器端 Controller 控制器的方法中，要使用 `Date` 或 `LocalDateTime` 类型，来接收传递的参数。
 - 请求参数的名称，与 Controller 控制器的方法中形参名称相同。
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/controller/RequestController.java
@@ -458,11 +458,11 @@ public class RequestController {
 
 ### 5.JSON 参数处理
 
-客户端请求传递 JSON 格式的参数，通常使用 POST 请求，比如：
+客户端请求传递 JSON 格式的参数，通常会使用 POST 请求方式，比如：
 
 - `localhost:8080/jsonParam`
 
-并在请求体中携带如下 json 参数：
+并在请求体中，携带如下 json 参数：
 
 ```json
 {
@@ -479,7 +479,7 @@ public class RequestController {
 
 服务器端 Controller 控制器中的方法，处理 JSON 类型的参数：
 
-- 一般使用实体类，接收 JSON 格式的参数。SON数据键名与形参对象属性名相同，定义POJO类型形参即可接收参数。
+- 一般使用实体（pojo）类，接收 JSON 格式的参数。JSON 数据键名，与形参对象属性名相同；
 - 要使用 `@RequestBody` 标识形参。
 
 Controller 控制器

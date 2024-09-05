@@ -1,28 +1,28 @@
-# SpringBoot 响应处理
+# Spring Boot 响应处理
 
-Controller 控制器中的方法，除了接收请求外，还可以进行响应。
+Controller 控制器中的方法，除了接收请求外，还可以返回响应。
 
-在前面所编写的 Controller 控制器的方法中，都已经设置了响应数据。即 return 语句返回的结果，
+在前面所编写的 Controller 控制器的方法中，都设置了响应数据。即 `return` 语句返回的结果，
 
-这体现了 @ResponseBody 注解的作用。
+这体现了 `@ResponseBody` 注解的作用。
 
 ## 一、@ResponseBody 注解
 
-@ResponseBody 注解是方法注解、类注解；
+`@ResponseBody` 注解，可以是方法注解、类注解；
 
-@ResponseBody 注解可以写在 Controller 控制器类上，也可以写在其中的方法上。
+`@ResponseBody` 注解，可以写在 Controller 控制器类上，也可以写在其中的方法上。
 
-@ResponseBody 注解作用：将方法返回值直接响应给客户端；
+`@ResponseBody` 注解，作用是将方法返回值，直接响应给客户端；
 
 - 如果返回值类型，是实体（pojo）对象、集合；将会转换为 JSON 格式后，再响应给浏览器。
 
-事实上，在前面编写的 Controller 控制器中，并没有写 @ResponseBody 注解
+事实上，在前面编写的 Controller 控制器中，并没有写 `@ResponseBody` 注解。
 
 因为在 Controller 控制器类上，添加的 `@RestController` 注解，是一个组合注解。
 
 - `@RestController` = `@Controller` + `@ResponseBody`
 
-SpringBoot @RestController 注解源码如下
+Spring Boot 的 `@RestController` 注解源码如下
 
 RestController.class
 
@@ -55,7 +55,7 @@ public @interface RestController {
 }
 ```
 
-定义一个 Controller 控制器类 ResponseController。
+定义一个 Controller 控制器类 `ResponseController`。
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/controller/ResponseController.java
 
@@ -92,7 +92,7 @@ public class ResponseController {
 }
 ```
 
-启动 SpringBoot 项目；
+启动 Spring Boot 项目；
 
 在客户端分别发送如下 GET 请求，进行测试：分别返回了如下响应数据：
 
@@ -132,15 +132,15 @@ hi!
 
 ## 二、统一响应结果
 
-在 Controller 控制器中，使用 @RequestMapping 注解的方法，都是一个功能接口。注解中的参数就是接口路径。
+在 Controller 控制器中，使用 `@RequestMapping` 注解的方法，都是一个功能接口。注解中的参数，就是接口路径。
 
 真实的项目开发中，会针对所有的功能接口，定义一个统一的返回结果。
 
 统一的返回结果使用类来描述，在这个结果中包含：
 
-- 响应状态码：当前请求是成功，还是失败
+- 响应状态码：当前请求是成功，还是失败。
 
-- 状态码信息：给页面的提示信息
+- 状态码信息：给页面的提示信息。
 
 - 返回的数据：给前端响应的数据（字符串、对象、集合）
 
@@ -253,13 +253,13 @@ public class ResponseController {
 
 加载并解析 XML 文件中的员工数据，完成数据处理，并返回给页面展示。
 
-步骤一；在 pom.xml 文件中，引入 dom4j 依赖，用于解析 XML 文件
+步骤一；在 pom.xml 配置文件中，引入 `dom4j` 依赖，用于解析 XML 文件
 
 demo-project/springboot-web-quickstart/pom.xml
 
 ```xml
 <dependencies>
-    <!-- . -->
+    <!-- …… -->
 
     <dependency>
         <groupId>org.dom4j</groupId>
@@ -269,21 +269,21 @@ demo-project/springboot-web-quickstart/pom.xml
 </dependencies>
 ```
 
-- 在 IDEA 中，点击 pom.xml 文件中的刷新按钮，生效修改。
+- 在 IDEA 中，点击 pom.xml 配置文件中的刷新按钮，生效修改。
 
-步骤二：引入提供的解析 XML 的工具类 XMLParserUtils；实体类 Emp；XML 文件 emp.xml
+步骤二：引入提供的解析 XML 的工具类 `XMLParserUtils`；实体类 `Emp`；XML 文件 `emp.xml`
 
-- XMLParserUtils 工具类，用于解析 XML 文件中的数据。demo-project/springboot-web-quickstart/src/main/java/com/kkcf/utils/XmlParserUtils.java
-- Emp 实体类，用于封装员工（Employee）的信息。demo-project/springboot-web-quickstart/src/main/java/com/kkcf/pojo/Emp.java
-- emp.xml 文件，用于存储员工信息。demo-project/springboot-web-quickstart/src/main/resources/emp.xml
+- `XMLParserUtils` 工具类，用于解析 XML 文件中的数据。demo-project/springboot-web-quickstart/src/main/java/com/kkcf/utils/XmlParserUtils.java
+- `Emp` 实体类，用于封装员工（Employee）的信息。demo-project/springboot-web-quickstart/src/main/java/com/kkcf/pojo/Emp.java
+- `emp.xml` 文件，用于存储员工信息。demo-project/springboot-web-quickstart/src/main/resources/emp.xml
 
-> Maven SpringBoot 项目，静态资源文件，一般放在 `src/main/resources` 目录下。
+> 基于 Maven 的 Spring Boot 项目，静态资源文件，一般放在 `src/main/resources` 目录下。
 
-步骤三：引入提供的静态页面文件，放在 resources下的 static 目录下
+步骤三：引入提供的静态页面文件，放在 `src/main/resources/static`
 
-- emp.html 静态页面。demo-project/springboot-web-quickstart/src/main/resources/static/emp.html
+- `emp.html` 静态页面。demo-project/springboot-web-quickstart/src/main/resources/static/emp.html
 
-这里使用老旧的 Vue2 和 ElementUi 做简单的演示：
+这里使用老旧的 Vue2 和 ElementUI 做简单的演示：
 
 ```vue
 <script>
@@ -308,19 +308,19 @@ demo-project/springboot-web-quickstart/pom.xml
 
 - 可见，发送了一个 GET 请求 `/listEmp'`
 
-> 在SpringBoot项目中，静态资源默认可以存放的目录：
+> 在 Spring Boot 项目中，静态资源默认可以存放的目录：
 >
 > - classpath:/static/
 > - classpath:/public/
 > - classpath:/resources/
 > - classpath:/META-INF/resources/
 >
-> classpath：
+> classpath：代表的是类路径，在 maven 项目中，指的就是 `src/main/resources` 或者 `src/main/java`
 >
-> - 代表的是类路径，在 maven 的项目中，其实指的就是 `src/main/resources` 或者 `src/main/java`
-> - 但是 java 目录是存放 java 代码的，所以相关的配置文件及静态资源文档，就放在 `src/main/resources`下。
+> - `src/main/java` 目录是存放 java 代码的。
+> - 所以配置文件、静态资源文档，还得放在 `src/main/resources`下。
 
-步骤四：创建 EmpController 控制器类，编写 Controller 程序，处理请求，响应数据。
+步骤四：创建 `EmpController` 控制器类，编写 Controller 程序，处理请求，响应数据。
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/controller/EmpController.java
 
@@ -373,6 +373,6 @@ public class EmpController {
 }
 ```
 
-在浏览器中地址栏中，输入 `http://localhost:8080/emp.html` 请求静态资源；
+在浏览器地址栏中，输入 `http://localhost:8080/emp.html` 请求静态资源；
 
-其中 JS 会发送请求 `/listEmp` 获取数据，并展示在页面上。
+其中加载的 JS 代码，会发送请求 `/listEmp` 获取数据，并展示在页面上。
