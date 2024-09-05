@@ -14,7 +14,7 @@ Maven 的作用主要有：
 
 创建一个 Maven 项目（工程）：
 
-1. 在其中不需要手动导入 jar 包，只需要在 pom.xml 配置文件中，描述要使用的 jav 包信息；
+1. 在其中不需要手动导入 jar 包，只需要在 pom.xml 配置文件中，描述要使用的 jav 包信息（坐标）；
 2. Maven 会自动联网下载。
 
 ### 2.Maven 统一项目结构
@@ -30,10 +30,10 @@ ${maven-project}
 |-- src
 | |-- main # ----------- 实际项目资源
 | | -- java # ---------- Java 源代码目录
-| | -- resources # ----- 配置文件目录
+| | -- resources # ----- 配置文件、静态资源目录
 | |-- test # ----------- 测试项目资源
 | | -- java # ---------- 测试源代码目录
-| | -- resources # ----- 测试配置文件目录
+| | -- resources # ----- 测试配置文件、静态资源目录
 |-- pom.xml # ---------- 项目配置文件
 |-- target # ----------- 项目编译、打包后，会将字节码文件或 jar 包放在该目录下
 |-- LICENSE.txt
@@ -59,8 +59,10 @@ Maven 是一个项目管理和构建工具，它基于项目对象模型（Proje
 Maven 构建项目，生命周期的各个阶段，如下图所示：
 
 - 其中通过 Maven 的各个插件，完成不同的功能。
-- 各个插件的构建操作，会产生不同的文件：
-  - 比如：编译阶段会有字节码文件产生；打包阶段会有 jar 包产生。
+- 各个插件的构建操作，会产生不同的文件：比如：
+  - 编译阶段会有 .class 字节码文件产生；
+  - 打包阶段会有 jar 包产生。
+
 
 ![maven生命周期](NoteAssets/Maven生命周期.png)
 
@@ -89,7 +91,9 @@ Maven 安装和配置，主要有 4 步：
 - conf 目录 ：存放 Maven 的配置文件（比如：`settings.xml`）。
 - lib 目录 ：存放 Maven 依赖的 jar 包（Maven 基于 java 开发，所以它也依赖其他的 jar 包）。
 
-Ⅱ、配置本地仓库，修改 maven 安装目录下的 `conf/settings.xml` 中的 `<localRepository>` 标签，为一个指定的本地目录；
+Ⅱ、配置本地仓库，
+
+- 修改 maven 安装目录下的 `conf/settings.xml` 中的 `<localRepository>` 标签，为一个指定的本地目录；
 
 ```xml
 <settings
@@ -126,7 +130,7 @@ Maven 安装和配置，主要有 4 步：
 
 Ⅳ、配置本机的环境变量 `MAVEN_HOME` 为 maven 的安装目录路径。并将其下的 bin 目录，配置到 `PATH` 环境变量中。
 
-在任意目录下，执行 mvn 命令，验证 maven 环境变量是否配置成功：
+在任意目录下，执行 mvn 命令，验证 maven 环境变量，是否配置成功：
 
 ```shell
 mvn -v
@@ -140,10 +144,10 @@ Maven 是基于 java 开发的项目，Maven 的运行，也要基于本地的 J
 
 IDEA 配置集成 Maven 有两种方案：
 
-- 方案一：在当前项目（工程）中，集成 Maven。
-- 方案二：创建一个 Maven 项目。
+- 方案一：在当前项目（工程）中，集成 Maven 模块。
+- 方案二：创建一个 Maven 项目（工程）。
 
-这里演示方案一的；方案二的步骤与方案一类似，只是要将创建模块（module）改为创建项目（project）。
+这里演示方案一；方案二的步骤与方案一类似，只是要将创建模块（module）改为创建项目（project）。
 
 ### 1.空项目集成 Maven
 
@@ -175,12 +179,12 @@ IDEA 配置集成 Maven 有两种方案：
 
 1. 接第一步，在右侧打开 Advanced Setting；
 
-2. 配置 GroupId，ArtifactId，version；它们分别表示：组织名，模块名，版本号；maven 项目中这也信息被称为**坐标**。比如：
-   - GroupId，设为 `com.kkcf`；
+2. 配置 GroupId，ArtifactId，version；maven 项目中，这些信息被称为**坐标**。比如：
+   - GroupId，设为 `com.kkcf`；表示：组织名
 
-   - ArtifactId，设为 `maven-01`；
+   - ArtifactId，设为 `maven-01`；表示：模块名，
 
-   - version 会被 IDEA 自动生成，创建时无需指定。
+   - version 会被 IDEA 自动生成，创建时无需指定。表示：版本号。
 
 3. 点击 Create 创建项目。maven 会自动加载项目所依赖的插件，放入本地仓库中。
 
@@ -247,13 +251,14 @@ demo-project/normal_project_with_maven/maven-01/pom.xml
 `<properties>` 标签下：
 
 - `<maven.compiler.source>` 标签，表示当前 maven 项目使用的 JDK 版本。
-- `<maven.compiler.target>` 标签，表示当前 maven 项目打包时，使用的 JDK 版本，
+- `<maven.compiler.target>` 标签，表示当前 maven 项目打包时使用的 JDK 版本，
 
 ## 八、Maven 项目的坐标
 
-Maven 项目中的坐标，是资源的唯一标识，它可以唯一定位资源位置。
+Maven 项目中的坐标，是资源的唯一标识，它可以唯一定位资源位置。Maven 项目中：
 
-Maven 项目中，要使用坐标来定义项目，也要使用坐标来引入项目中需要的依赖。
+- 要使用坐标来定义项目；
+- 也要使用坐标来引入项目中需要的依赖。
 
 Maven 坐标的主要组成：
 
@@ -289,16 +294,18 @@ Maven 中的依赖：就是当前项目运行所需要的 jar 包。
 
 Maven 项目中可以引入多个依赖：步骤如下：
 
-1. 在 pom.xml 中编写 `<dependencies>` 标签
+1. 在 pom.xml 中编写 `<dependencies>` 标签；
 
-2. 在 `<dependencies>` 标签中使用 `<dependency>` 引入依赖的坐标。
+2. 在 `<dependencies>` 标签中使用 `<dependency>` 引入依赖的坐标；
 
-3. 定义依赖的坐标：`<groupId>`、`<artifactId>`、`<version>`。
+3. 定义依赖的坐标：`<groupId>`、`<artifactId>`、`<version>`；
 
-4. 在 IDEA 中点击刷新按钮，加载最新描述的依赖
+4. 在 IDEA 中点击**刷新按钮**，让 Maven 加载最新描述的依赖。
    - 刷新依赖：保证每一次引入新的依赖，或者修改现有的依赖配置，都可以加入最新的坐标。
 
-> 在 IDEA 中，右侧 maven 面板，查看 maven 项目目录下是否有 `Dependencies`。如果没有，点击刷新来加载依赖。
+> 在 IDEA 中，右侧 maven 面板，查看 maven 项目目录下是否有 `Dependencies`。
+>
+> 如果没有，点击刷新来加载依赖。
 
 注意事项：
 
@@ -352,7 +359,7 @@ pom.xml
 </dependency>
 ```
 
-在 IDEA 中，pom.xml 文件更新后，通常要点击刷新来生效文件。
+在 IDEA 中，pom.xml 配置文件更新后，通常要点击刷新来生效文件。
 
 ### 3.依赖范围
 
@@ -366,7 +373,7 @@ Maven 项目中，依赖的 jar 包，默认情况下，可以在任何地方使
 - 测试程序范围有效（`test` 文件夹范围内）。
 - 是否参与打包运行（`package` 指令范围内）。
 
-下方的配置，将 `logback-classic` 依赖，通过 `<scope>` 标签指定了 `test` 的作用范围。
+下方的配置，将 `logback-classic` 依赖，通过 `<scope>` 标签指定了 `test` 作用范围。
 
 - 那么这个依赖，就只能作用在 `test` 文件夹内。
 
@@ -458,7 +465,7 @@ Maven 的生命周期是抽象的，这意味着生命周期本身不做任何�
 
 ![maven生命周期](NoteAssets/Maven生命周期.png)
 
-Maven 本质上是一个插件的执行框架。
+Maven 本质上是一个**插件的执行框架**。
 
 ## 十一、Maven 本地仓库中不完整 jar 包处理
 
