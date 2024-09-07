@@ -8,9 +8,9 @@ Controller 控制器中的方法，除了接收请求外，还可以返回响应
 
 ## 一、@ResponseBody 注解
 
-`@ResponseBody` 注解，可以是方法注解、类注解；
+`@ResponseBody` 注解，可以是方法注解、或类注解；
 
-`@ResponseBody` 注解，可以写在 Controller 控制器类上，也可以写在其中的方法上。
+- 可以写在 Controller 控制器类上，也可以写在其中的方法上。
 
 `@ResponseBody` 注解，作用是将方法返回值，直接响应给客户端；
 
@@ -253,7 +253,7 @@ public class ResponseController {
 
 加载并解析 XML 文件中的员工数据，完成数据处理，并返回给页面展示。
 
-步骤一；在 pom.xml 配置文件中，引入 `dom4j` 依赖，用于解析 XML 文件
+步骤一；在 `pom.xml` 配置文件中，引入 `dom4j` 依赖，用于解析 XML 文件
 
 demo-project/springboot-web-quickstart/pom.xml
 
@@ -269,7 +269,7 @@ demo-project/springboot-web-quickstart/pom.xml
 </dependencies>
 ```
 
-- 在 IDEA 中，点击 pom.xml 配置文件中的刷新按钮，生效修改。
+- 在 IDEA 中，点击 `pom.xml` 配置文件中的刷新按钮，生效修改。
 
 步骤二：引入提供的解析 XML 的工具类 `XMLParserUtils`；实体类 `Emp`；XML 文件 `emp.xml`
 
