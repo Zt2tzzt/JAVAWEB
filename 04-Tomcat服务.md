@@ -39,7 +39,8 @@ Tomcat 服务器，也被称为 **Web 容器**、**Servlet 容器**；
 
 安装：解压压缩包；
 
-- 最好解压到一个不包含中文和空格的目录；因为后期在部署项目的时候，如果路径有中文或者空格可能会导致程序部署失败
+- 最好解压到一个**不包含中文和空格**的目录；
+- 因为后期在部署项目的时候，如果路径有中文或者空格可能会导致程序部署失败
 
 目录结构如下：
 
@@ -111,8 +112,10 @@ Tomcat 服务器关闭，有三种方式：
 
 将静态资源目录，放到 `webapps` 目录下，即可完成部署。
 
-- 比如现有 haha 目录，下面有 haha.html 文件；将 haha 目录放到 webapps 目录下，就可以通过 `localhost:8080/haha/haha.html` 访问到静态资源。
-- 不能放单个文件，要放目录。
+- 比如现有 haha 目录，下面有 haha.html 文件；
+  1. 将 haha 目录放到 webapps 目录下，就可以通过 `localhost:8080/haha/haha.html` 访问到静态资源。
+
+不能放单个文件，要放目录。
 
 ## 三、Spring Boot 入门程序分析
 
@@ -120,19 +123,19 @@ Tomcat 服务器关闭，有三种方式：
 
 Spring 官方提供了生成 Spring 项目的[网站](https://start.spring.io/)；
 
-- IDEA 也是基于此来创建 Spring 项目的；
+- IDEA 也是基于此，来创建 Spring 项目的；
 - 所以，IDEA 创建 Spring 项目时，是需要联网的。
 
 ### 2.Spring Boot 起步依赖
 
 当创建 Spring Boot 项目时，会添加两个依赖：
 
-- spring-boot-starter-web 依赖，包含了 web 应用开发所需要的常见依赖。
-- spring-boot-starter-test 依赖，包含了单元测试所需要的常见依赖。
+- `spring-boot-starter-web` 依赖，包含了 web 应用开发所需要的常见依赖。
+- `spring-boot-starter-test` 依赖，包含了单元测试所需要的常见依赖。
 
 它们也被称为**起步依赖**，它们利用 Maven 的依赖传递特性，将很多依赖聚合在了一起。
 
-在 SpringBoot 项目中，有很多起步依赖，它们有一个共同的特征：就是以 `”spring-boot-starter-“` 作为开头。
+在 Spring Boot 项目中，有很多起步依赖，它们有一个共同的特征：就是以 `”spring-boot-starter-“` 作为开头。
 
 Spring 的官方，提供了很多现成的 [starter（起步依赖）](https://docs.spring.io/spring-boot/docs/2.7.2/reference/htmlsingle/#using.build-systems.starters)，在开发应用相关功能时，只需要引入对应的 starter 即可。
 
@@ -140,7 +143,7 @@ Spring 的官方，提供了很多现成的 [starter（起步依赖）](https://
 
 ### 3.Spring Boot 父工程
 
-在之前开发的 Spring Boot 入门案例中，使用 maven 引入的依赖，没有指定具体的依赖版本号。
+在之前开发的 Spring Boot 入门案例中，使用 maven 引入的依赖，没有指定具体的依赖版本号，如下方所示：
 
 demo-project/springboot-web-quickstart/pom.xml
 
@@ -159,7 +162,7 @@ demo-project/springboot-web-quickstart/pom.xml
 </dependencies>
 ```
 
-这是因为，每一个 SpringBoot 工程，都有一个父工程；引入依赖的版本号，会在父工程中统一管理。
+这是因为，每一个 Spring Boot 工程，都有一个父工程；引入的 Spring Boot 相关依赖的版本号，会在父工程中统一管理。
 
 demo-project/springboot-web-quickstart/pom.xml
 
@@ -174,7 +177,7 @@ demo-project/springboot-web-quickstart/pom.xml
 
 ### 4.Spring Boot 内嵌 Tomcat
 
-之前开发的 Spring Boot 入门程序，并没有部署到 Tomcat 的 webapps 目录下，也可以运行。
+之前开发的 Spring Boot 入门程序，并没有部署到 Tomcat 的 webapps 目录下，也可以作为 Web 服务器运行。
 
 这是因为在 Spring Boot 项目中，引入了 `spring-boot-starter-web` 起步依赖，其内部已经集成了内置的 Tomcat 服务器。
 

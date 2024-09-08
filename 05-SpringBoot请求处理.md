@@ -1,6 +1,6 @@
 # Spring Boot 请求处理
 
-在之前开发的 SpringBoot 入门程序中，使用 Controller 控制器进行了 Http GET 请求的处理
+在之前开发的 Spring Boot 入门程序中，使用 Controller 控制器进行了 Http GET 请求的处理
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/controller/HelloController.java
 
@@ -24,24 +24,26 @@ public class HelloController {
 Spring Boot 内置的 Tomcat 服务器，并不能识别项目中的 Controller 类。它们是怎么联系起来的？
 
 - Tomcat 是 Servlet 容器，所以它能识别 Servlet 规范，
-- 而在基于 Spring Boot 开发的 Web 应用程序中，提供了一个核心的 Servlet 程序 DispatchServlet，它实现了 Servlet 规范中的接口。
+- Spring Boot 框架中，提供了一个核心的 Servlet 程序 `DispatchServlet`，它实现了 Servlet 规范中的接口。
 
-所以 SpringBoot 项目中，对于 Http 请求的处理过程是：
+所以在 Spring Boot 项目中，对于 Http 请求的处理过程是：
 
 1. 浏览器（客户端）发送请求到 Spring Boot 后端服务；
-2. Spring Boot 后端服务，通过 DispatchServlet 将请求转给 Controller 处理器。
-3. Controller 处理器处理完成后，将响应放回给 DispatchServlet；
-4. DispatchServlet 再将响应返回给浏览器（客户端）。
+2. Spring Boot 后端服务，通过 `DispatchServlet`，将请求转给 Controller 处理器。
+3. Controller 处理器处理完成后，将响应返回给 `DispatchServlet`；
+4. `DispatchServlet` 再将响应返回给浏览器（客户端）。
 
 ## 二、DispatchServlet 核心控制器
 
-DispatchServlet 类的继承体系如下
+`DispatchServlet` 类的继承体系如下
 
 ![DispatchServlet继承体系](NoteAssets/DispatchServlet继承体系.png)
 
-- 可以看到，Servlet 继承自 DispatchServlet。
+- 可以看到，Servlet 继承自 `DispatchServlet`。
 
-可以看出 DispatchServlet 是非常核心的类，在应用程序中被称为“**核心控制器**”或”**前端控制器**“
+可以看出 `DispatchServlet` 是非常核心的类，在应用程序中被称为“**核心控制器**”或”**前端控制器**“
+
+它的所用，如下图所示：
 
 ![SpringBoot请求响应1](NoteAssets/SpringBoot请求响应1.png)
 
@@ -49,7 +51,7 @@ DispatchServlet 类的继承体系如下
 
 浏览器（客户端）发送的请求，在 Spring Boot 项目中，会经过 Tomcat 封装成一个 `HttpServletRequest` 对象（请求对象）；
 
-- 应用程序通过该对象，来获取请求信息，进行处理。
+- 应用程序，通过该对象，来获取请求信息，进行处理。
 
 在 Spring Boot 项目中，可使用 `HttpServletResponse` 对象（请求对象），来封装要返回的响应信息。
 
@@ -63,7 +65,7 @@ DispatchServlet 类的继承体系如下
 
 客户端在向服务器发起请求时，传递参数的方式是：
 
-- GET 请求，传递的是一些 query 字符串形式的参数。或者通过路径传递参数。
+- GET 请求，在请求 url 中，传递 query 字符串形式的参数；或请求 url 中，通过路径传递参数。
 - POST 请求，在请求体（body）中以多种形式（比如： x-www-form-urlencoded、json）方式传递的参数
 
 ### 1.简单参数处理
@@ -71,7 +73,7 @@ DispatchServlet 类的继承体系如下
 在 Spring Boot 后端程序中，接收传递过来的参数，有两种方式：
 
 - 原始方式
-- SpringBoot 方式
+- Spring Boot 特有的方式
 
 #### 1.原始方式处理
 
@@ -105,7 +107,7 @@ public class RequestController {
 }
 ```
 
-- `getParameter` 方法，取到的参数，都是字符串类型的。
+- `HttpServletRequest` 的 `getParameter` 方法，取到的参数，都是字符串类型的。
 
 在客户端，发送请求 `localhost:8080/simpleParam?name=zzt&age=18` 测试。
 
@@ -113,7 +115,7 @@ public class RequestController {
 
 #### 2.Spring Boot 方式处理
 
-在 Spring Boot 项目中，对原始的 `HttpServletRequest` 请求对象 API 进行了封装；
+在 Spring Boot 框架中，对原始的 `HttpServletRequest` 请求对象 API 进行了封装；
 
 使得在 Controller 控制器的方法中，接收参数的形式更加简单。
 
@@ -174,9 +176,9 @@ public class RequestController {
 
 ##### 2.required 属性
 
-`@RequestParam` 注解中的 `required` 属性，默认为 `true`，表示该请求参数必须传递，如果不传递将报错
+`@RequestParam` 注解中的 `required` 属性，默认为 `true`，表示该请求参数必须传递，如果不传递就报错。
 
-如果参数是可选的，要手动将 `required` 属性设置为 `false` 。
+- 如果参数是可选的，要手动将 `required` 属性设置为 `false` 。
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/controller/RequestController.java
 
@@ -458,11 +460,9 @@ public class RequestController {
 
 ### 5.JSON 参数处理
 
-客户端请求传递 JSON 格式的参数，通常会使用 POST 请求方式，比如：
+客户端请求传递 JSON 格式的参数，通常会使用 POST 请求方式，并在请求体中携带 JSON 数据，比如：
 
-- `localhost:8080/jsonParam`
-
-并在请求体中，携带如下 json 参数：
+- `localhost:8080/jsonParam`，在请求体中，携带如下 json 参数：
 
 ```json
 {
@@ -513,7 +513,9 @@ public class RequestController {
 
 #### 1.@PathVariable 注解
 
-服务器端 Controller 控制器的处理方法，要使用 `@RequestMapping` 和 `@PathVariable` 注解来处理
+服务器端 Controller 控制器的处理方法，要使用 `@RequestMapping` 结合 `@PathVariable` 注解来处理：
+
+demo-project/springboot-web-quickstart/src/main/java/com/kkcf/controller/RequestController.java
 
 ```java
 package com.kkcf.controller;

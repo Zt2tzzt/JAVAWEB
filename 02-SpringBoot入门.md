@@ -1,6 +1,6 @@
 # Spring
 
-## 一、Spring
+## 一、Spring 框架
 
 [Spring](https://spring.io)，是最受欢迎的 Java 框架，没有之一。Spring 发展到今天，已经形成了一种开发生态圈；
 
@@ -15,7 +15,7 @@ Spring 家族旗下最基础、最核心的，就是 Spring Framework 框架。�
 - 配置繁琐；
 - 入门难度大。
 
-因此 Spring 官方推荐使用者从另外一个项目开始学习，那就是目前最火爆的 Spring Boot。
+因此 Spring 官方推荐开发者，从另外一个项目开始学习，那就是目前最火爆的 Spring Boot。
 
 Spring Boot 最大的特点有两个 ：
 
@@ -24,7 +24,7 @@ Spring Boot 最大的特点有两个 ：
 
 Spring Boot 可以非常快速的构建应用程序、简化开发、提高效率 。
 
-Spring Boot 框架底层，仍然基于 Spring frameworrk 实现。
+Spring Boot 框架底层，仍然基于 Spring Frameworrk 实现。
 
 ## 二、Spring Boot 快速入门
 
@@ -143,7 +143,7 @@ src/main/resource 目录下，创建了两个目录，和一个配置文件，�
 
 在 src/main/java/com.kkcf 目录下，创建一个目录 controller 目录，用于存放请求处理类。
 
-创建一个控制器类 HelloController。用于请求处理：
+创建一个控制器类 `HelloController`。用于请求处理：
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/controller/HelloController.java
 
@@ -166,7 +166,7 @@ public class HelloController {
 
 #### 1.@RestController 注解
 
-`@RestController` 注解，表示 Spring Boot 的请求处理类；
+`@RestController` 注解，表示 Spring Boot 控制器类，用于 HTTP 请求处理；
 
 #### 2.@RequestMapping 注解
 
