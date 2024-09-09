@@ -61,23 +61,26 @@ INSERT INTO user(username, name, gender) VALUES ('admin', '管理员', 1);
 案例二：向 user 表的所有字段，插入数据。
 
 ```mysql
-INSERT INTO user VALUES (NULL, 'kunkun', '蔡徐坤', 26, 1, now(), now());
+INSERT INTO user VALUES (NULL, 'kunkun', '蔡徐坤', 26, 1, NOW(), NOW());
 -- 或者 👇
 INSERT INTO user VALUES (NULL, 'cxk', '蔡徐坤', 26, 1, DEFAULT, DEFAULT);
 ```
 
-- `now()` 函数，用于获取当前系统时间。
+- MySQL 的 `NOW()` 函数，用于获取当前系统时间。
 
 案例三：批量向 user 表的 username、name、gender 字段，插入数据
 
 ```mysql
-INSERT INTO user(username, name, gender) VALUES ('dz', '礼堂丁真', 1), ('lx', '龙傲天', 1), ('jx', '贾乃亮', 1);
+INSERT INTO user(username, name, gender) VALUES ('dz', '礼堂丁真', 1),
+  ('lx', '龙傲天', 1), ('jx', '贾乃亮', 1);
 ```
 
 案例四：批量向 user 表的所有字段插入数据：
 
 ```mysql
-INSERT INTO user VALUES (NULL, 'hh', '黄子韬', 26, 1, DEFAULT, DEFAULT), (NULL, 'er', '尔康', 26, 1, DEFAULT, DEFAULT), (NULL, 'ff', '范冰冰', 26, 2, DEFAULT, DEFAULT);
+INSERT INTO user VALUES (NULL, 'hh', '黄子韬', 26, 1, DEFAULT, DEFAULT),
+  (NULL, 'er', '尔康', 26, 1, DEFAULT, DEFAULT),
+  (NULL, 'ff', '范冰冰', 26, 2, DEFAULT, DEFAULT);
 ```
 
 ## 二、UPDATE 语句
@@ -101,7 +104,7 @@ UPDATE 表名 SET 字段名1 = 值1, 字段名2 = 值2, ……;
 案例一：将 user 表中 id 为 1 的用户，姓名 name 字段更新为 `'张三'`
 
 ```mysql
-UPDATE user SET name = '张三', updated_at = now() WHERE id = 1;
+UPDATE user SET name = '张三', updated_at = NOW() WHERE id = 1;
 ```
 
 案例二：将 user 表的所有用户入职日期更新为'2010-01-01'
@@ -112,7 +115,7 @@ UPDATE user SET employ_date = '2020-01-01', created_at = NOW();
 
 注意事项：
 
-1. UPDATE 语句的条件（WHERE 语句）可以有，也可以没有，如果没有条件，则会修改整张表的所有数据。
+1. UPDATE 语句的条件（WHERE 语句）可以有，也可以没有，如果没有条件，则会修改整张表的数据。
 
 2. 在修改数据时，一般需要同时修改公共字段 `updated_at`，将其修改为当前操作时间。
 
@@ -134,7 +137,7 @@ DELETE FROM 表名 WHERE 条件;
 DELETE FROM 表名;
 ```
 
-案例一：删除 user 表中 id为 1 的员工：
+案例一：删除 user 表中 id 为 1 的员工：
 
 ```mysql
 DELETE FROM user WHERE id = 1;
@@ -149,4 +152,4 @@ DELETE FROM user;
 DELETE 语句注意事项。
 
 - DELETE 语句的条件可以有，也可以没有，如果没有条件，则会删除整张表的所有数据。
-​- DELETE 语句不能删除某一个字段的值，职能使用 UPDATE 语句，将该字段值置为 NULL。
+- DELETE 语句不能删除某一个字段的值，只能使用 UPDATE 语句，将该字段值置为 NULL。

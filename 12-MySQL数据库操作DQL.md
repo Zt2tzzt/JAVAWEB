@@ -39,10 +39,8 @@ LIMIT
 - 条件查询（WHERE）
 
   ```mysql
-  SELECT
-    字段列表
-  FROM
-    表名列表
+  SELECT 字段列表
+  FROM 表名列表
   WHERE
     条件列表
   ```
@@ -50,12 +48,9 @@ LIMIT
 - 分组查询（GROUP BY …… HAVING）
 
   ```mysql
-  SELECT
-    字段列表
-  FROM
-    表名列表
-  WHERE
-    条件列表
+  SELECT 字段列表
+  FROM 表名列表
+  WHERE 条件列表
   GROUP BY
     分组字段列表
   HAVING
@@ -65,16 +60,11 @@ LIMIT
 - 排序查询（ORDER BY）
 
   ```mysql
-  SELECT
-    字段列表
-  FROM
-    表名列表
-  WHERE
-    条件列表
-  GROUP BY
-    分组字段列表
-  HAVING
-    分组后条件列表
+  SELECT 字段列表
+  FROM 表名列表
+  WHERE 条件列表
+  GROUP BY 分组字段列表
+  HAVING 分组后条件列表
   ORDER BY
     排序字段列表
   ```
@@ -82,20 +72,14 @@ LIMIT
 - 分页查询（LIMIT …… OFFSET）
 
   ```mysql
-  SELECT
-    字段列表
-  FROM
-    表名列表
-  WHERE
-    条件列表
-  GROUP BY
-    分组字段列表
-  HAVING
-    分组后条件列表
-  ORDER BY
-    排序字段列表
+  SELECT 字段列表
+  FROM 表名列表
+  WHERE 条件列表
+  GROUP BY 分组字段列表
+  HAVING 分组后条件列表
+  ORDER BY 排序字段列表
   LIMIT
-    分页参数
+    [偏移量（offset）], 限制量（limit）
   ```
 
 ## 一、基本查询
@@ -449,22 +433,157 @@ HAVING 和 WHERE 的区别：
 分组查询的注意事项：
 
 - 分组之后，查询的字段，一般为聚合函数和分组字段，查询其他字段无任何意义。
-- 执行顺序：WHERE > 聚合函数 > HAVING 
+- 执行顺序：WHERE > 聚合函数 > HAVING
 
-## 二、排序查询
+## 四、排序查询
 
 排序查询，语法：
 
+```mysql
+SELECT
+  字段列表
+FROM
+  表名
+[WHERE 条件列表]
+[GROUP BY 分组字段]
+ORDER BY
+  字段1 排序方式1,
+  字段2 排序方式2, …… ;
+```
 
+### 1.排序方式
 
-排序方式，两种：升序、降序；
+排序方式，有两种：
 
+- `ASC`：升序（默认值）。
 
+- `DESC`：降序。
 
-案例理解。
+案例 1：根据入职时间，对员工进行升序排序：
 
+```mysql
+SELECT * FROM emp ORDER BY entrydate;
+-- 或者 👇
+SELECT * FROM emp ORDER BY entrydate ASC;
+```
 
+案例 2：根据入职时间，对员工进行降序排序：
 
-排序的注意事项：
+```mysql
+SELECT * FROM emp ORDER BY entrydate DESC;
+```
 
-当第一个字段值相同时，才会对第二个字段进行排序。
+### 2.多字段排序
+
+案例 3：根据入职时间，对公司的员工进行升序排序，如果入职时间相同，再按照最后更新时间，进行降序排序：
+
+```mysql
+SELECT * FROM emp ORDER BY entrydate, update_time DESC;
+```
+
+- 如果是多字段排序，当第一个字段值相同时，才会根据第二个字段，进行排序 ；
+
+## 五、分页查询
+
+分页查询，语法：
+
+```mysql
+SELECT 字段列表 FROM 表名 LIMIT 起始索引, 查询记录数;
+```
+
+案例 1：从起始索引 0 开始，查询员工数据，每页展示 5 条记录；
+
+```mysql
+SELECT * FROM emp LIMIT 0, 5;
+```
+
+案例 2：查询第 1 页员工数据，每页展示 5 条记录。
+
+```mysql
+SELECT * FROM emp LIMIT 5;
+```
+
+- 效果和上面案例一样。
+
+案例 3：查询第 2 页员工数据，每页展示 5 条记录。
+
+```mysql
+SELECT * FROM emp LIMIT 5, 5;
+```
+
+案例 4：查询第 3 页员工数据，每页展示 5 条记录
+
+```mysql
+SELECT * FROM emp LIMIT 10, 5;
+```
+
+分页查询，注意事项：
+
+1. 起始索引从 0 开始；计算公式：`起始索引 = (查询页码 - 1）* 每页显示记录数`；
+
+2. 分页查询，是数据库的方言，不同的数据库有不同的实现，MySQL 中使用 LIMIT 语句来实现；
+
+3. 如果查询的是第一页数据，起始索引可以省略，直接简写为 `LIMIT 页码条数`。
+
+## 六、案例练习
+
+### 1.案例一：条件排序分页查询
+
+案例：根据需求，完成员工管理的条件分页查询：
+
+如下图所示，根据输入的条件，查询第1页数据
+
+1. 在员工管理的列表上方，有一些查询条件：员工姓名、员工性别，员工入职时间（开始时间~结束时间）
+   - 姓名：包含“张”字
+   - 性别：男
+   - 入职时间：2000-01-01  ~  2015-12-31
+
+2. 除了查询条件外，在列表的下面还有一个分页条，这就涉及到了分页查询
+   - 查询第 1 页数据（每页显示 10 条数据）
+3. 基于查询的结果，按照修改时间，进行降序排序。
+
+结论：条件查询 + 分页查询 + 排序查询
+
+![条件分页查询案例](NoteAssets/条件分页查询案例.png)
+
+```mysql
+SELECT *
+FROM emp
+WHERE name LIKE '%张%'
+  AND gender = 1
+  AND entrydate BETWEEN '2000-01-01' AND '2015-12-31'
+ORDER BY entrydate DESC
+LIMIT 0, 10;
+```
+
+### 2.案例二：分组查询
+
+如下图所示：根据需求，完成员工信息的统计：
+
+![分页查询案例](NoteAssets/分页查询案例.png)
+
+员工性别统计：以饼状图的形式，展示出企业男性员工人数，和女性员工人数
+
+```mysql
+SELECT IF(gender = 1, '男性员工', '女性员工') '性别', COUNT(*) '人数'
+FROM emp
+GROUP BY gender;
+```
+
+> MySQL 流程控制函数 `IF(条件表达式, TRUE取值, FALSE取值)`
+
+员工职位统计：以柱状图的形式展示各职位的在岗人数
+
+```mysql
+SELECT (CASE job
+            WHEN 1 THEN '班主任'
+            WHEN 2 THEN '讲师'
+            WHEN 3 THEN '学工主管'
+            WHEN 4 THEN '教研主管'
+            ELSE '未分配职位' END) '职位',
+       COUNT(*) '人数'
+FROM emp
+GROUP BY job;
+```
+
+> MySQL 流程控制函数 `CASE 表达式 WHEN 值1 THEN 结果1 WHEN 值2 THEN 结果2 …… ELSE 结果N END`

@@ -96,12 +96,12 @@ DROP DATABASE IF EXISTS 数据库名;
 数据库表创建，语法如下：
 
 ```mysql
-create table 表名 (
-  字段1 字段1类型 [约束] [comment 字段1注释],
-  字段2 字段2类型 [约束] [comment 字段2注释],
+CREATE TABLE 表名 (
+  字段1 字段1类型 [约束] [COMMENT 字段1注释],
+  字段2 字段2类型 [约束] [COMMENT 字段2注释],
   ......
-  字段n 字段n类型 [约束] [comment 字段n注释]
-) [comment 表注释] ;
+  字段n 字段n类型 [约束] [COMMENT 字段n注释]
+) [COMMENT 表注释] ;
 ```
 
 - 注意： `[ ]` 中的内容为可选参数；
