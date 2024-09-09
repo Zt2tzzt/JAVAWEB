@@ -8,7 +8,7 @@ Controller 控制器中的方法，除了接收请求外，还可以返回响应
 
 ## 一、@ResponseBody 注解
 
-`@ResponseBody` 注解，可以是方法注解、或类注解；
+`@ResponseBody` 注解，可以是类注解，或方法注解；
 
 - 可以写在 Controller 控制器类上，也可以写在其中的方法上。
 
@@ -271,7 +271,7 @@ demo-project/springboot-web-quickstart/pom.xml
 
 - 在 IDEA 中，点击 `pom.xml` 配置文件中的刷新按钮，生效修改。
 
-步骤二：引入提供的解析 XML 的工具类 `XMLParserUtils`；实体类 `Emp`；XML 文件 `emp.xml`
+步骤二：引入以下文件：
 
 - `XMLParserUtils` 工具类，用于解析 XML 文件中的数据。demo-project/springboot-web-quickstart/src/main/java/com/kkcf/utils/XmlParserUtils.java
 - `Emp` 实体类，用于封装员工（Employee）的信息。demo-project/springboot-web-quickstart/src/main/java/com/kkcf/pojo/Emp.java
@@ -373,6 +373,6 @@ public class EmpController {
 }
 ```
 
-在浏览器地址栏中，输入 `http://localhost:8080/emp.html` 请求静态资源；
+在浏览器地址栏中，访问 `http://localhost:8080/emp.html`，请求静态资源；
 
 其中加载的 JS 代码，会发送请求 `/listEmp` 获取数据，并展示在页面上。

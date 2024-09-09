@@ -2,9 +2,9 @@
 
 ## 一、Web 开发三层架构思想
 
-分层架构，遵循**单一职责原则**。它指的是一个类或一个方法，就只管一块功能，只管一件事。
+分层架构，遵循**单一职责原则**。它指的是一个类，或一个方法，就只管一块功能，或只管一件事。
 
-- 这样就可以让类、接口、方法的复杂度更低，可读性更强，扩展性更好，也更利用后期的维护。
+- 这样就可以让类、接口、方法的复杂度更低，可读性更强，扩展性更好，也更利于后期的维护。
 
 上文中编写的程序，并不满足单一职责原则：
 
@@ -24,9 +24,9 @@
 2. Controller 层接收请求
 3. Controller 层调用 Service 层，来进行逻辑处理，
 4. Serivce 层调用 Dao 层，逻辑处理过程中，需要用到的一些数据要从 Dao 层获取。
-5. Dao 层操作文件中的数据，Dao 层拿到的数据，会返回给 Service 层。
+5. Dao 层操作文件中的数据，将操作结果返回给 Service 层。
 6. Service 层处理完后，把处理结果，返回给 Controller 层；
-7. 最后再由 Controller 层响应数据给前端；
+7. 最后再由 Controller 层响应数据给客户端；
 
 使用三层架构思想，重构之前的代码。
 
@@ -97,7 +97,7 @@ public interface EmpService {
 
 创建一个 `EmpServiceA` 类，实现 `EmpService` 接口：
 
-- 调用 `empDao` 的方法，获取数据。
+- 使用 Dao 层创建的实例对象 `empDao` 调用方法，获取数据。
 
 ```java
 package com.kkcf.service.impl;
@@ -145,7 +145,7 @@ public class EmpServiceA implements EmpService {
 
 ### 3.Controller 层
 
-在 `EmpController` 中，使用 Service 层，获取数据。
+在 `EmpController` 中，使用 Service 层创建的实例对象 `empService`，获取数据。
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/controller/EmpController.java
 
@@ -187,17 +187,19 @@ public class EmpController {
 软件设计原则是：高内聚，低耦合；
 
 - 高内聚，指的是一个模块中，各个元素（语句、代码段）之间的联系程度越高越好。
-- 低耦合，指的是软件中各个层、模块之间的依赖关联程序越低越好。
+- 低耦合，指的是软件中各个层、模块之间的依赖关联程度越低越好。
 
 高内聚、低耦合的目的，是使程序模块的可重用性、移植性大大增强。
 
 ![高内聚低耦合](NoteAssets/高内聚低耦合.png)
 
-在之前编写的代码中，内聚体现在：
+在之前编写的代码中，
+
+内聚体现在：
 
 - `EmpServiceA` 类中，只编写了和员工相关的逻辑处理代码。
 
-在之前编写的代码中，耦合体现在：
+耦合体现在：
 
 - 如果把业务类，变为 `EmpServiceB` 时，需要修改 Controller 层中的代码；
 - 也就是说：当 Service 层的实现类，变了之后， 我们还需要修改 Controller 层的代码，改变引入的 Service 层实例对象。
@@ -215,13 +217,12 @@ public class EmpController {
 }
 ```
 
-不能 new，意味着没有业务层对象，程序运行就会报错：
+不能 `new`，意味着没有业务层对象，程序运行就会报错：
 
 为解决这个问题，就要引入容器的概念。
 
-- 容器中存储一些对象（比如：`EmpService` 类型的对象)。
-
-Controller 层会从容器中，获取 `EmpService` 类型的对象。
+- 容器中存储一些对象（比如：`EmpService` 接口类型的对象)。
+- Controller 层会从容器中，获取这些对象。
 
 ### 2.IOC 控制反转、DI 依赖注入、Bean 对象
 
@@ -241,16 +242,16 @@ Controller 层会从容器中，获取 `EmpService` 类型的对象。
 
 将 Dao 层，Service 层的实现类，都交给 IOC 容器管理。
 
-### 1.@Components 注解
+### 1.@Component 注解
 
-那么就要将 Dao 层，Service 层的实现类上，加上 `@Componet` 注解
+那么就要将 Dao 层、Service 层的实现类上，加上 `@Componet` 注解
 
 Dao 层 `EmpDaoA` 实现类：
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/dao/impl/EmpDaoA.java
 
 ```java
-@Component // 将当前类，交给 IOC 容器管理，成为 IOC 容器中的 Bean
+@Component // 将当前类，交给 IOC 容器管理，成为 IOC 容器中的 Bean 对象
 public class EmpDaoA implements EmpDao {
     // ……
 }
@@ -261,7 +262,7 @@ Service 层 `EmpServiceA` 实现类：
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/service/impl/EmpServiceA.java
 
 ```java
-@Component // 将当前类，交给 IOC 容器管理，成为 IOC 容器中的 Bean
+@Component // 将当前类，交给 IOC 容器管理，成为 IOC 容器中的 Bean 对象
 public class EmpServiceA implements EmpService {
     // ……
 }
@@ -344,7 +345,7 @@ public class EmpServiceA implements EmpService {
 
 IOC 容器，创建的对象，称为 bean 对象。
 
-在上面的入门案例中，要把某个类的对象交给 IOC 容器管理，需要在类上添加一个注解：`@Component`
+在上面的入门案例中，要把某个类的对象，交给 IOC 容器管理，需要在类上添加一个注解：`@Component`
 
 ### 1.@Controller、@Service、@Repository 注解
 
@@ -358,7 +359,7 @@ IOC 容器，创建的对象，称为 bean 对象。
 | `@Repository` | `@Component` 的衍生注解    | 标注在数据访问（Dao 层）类上（后续使用 Mybatis 框架后，用的很少） |
 
 - 因为 Controller 控制器类上，通常标注了 `@RestController` 注解。它是 `@Controller` + `@ResponseBody` 的组合注解，所以不用再标注 `@Controller` 注解。
-- 使用以上四个注解，都可以声明 Bean 对象，但是在 Spring Boot 集成 Web 开发中，声明控制器（Controller）Bean 只能用 `@Controller` 注解。
+- 使用以上四个注解，都可以声明 Bean 对象，但是在 Spring Boot 框架中，声明控制器（Controller）Bean 只能用 `@Controller` 注解。
 
 使用这些注解，重构上方代码：
 
@@ -389,7 +390,7 @@ public class EmpDaoA implements EmpDao {
  在 IOC 容器中，每一个Bean 对象，都有一个标识，也就是名字。
 
 - 默认为类名首字母小写（比如：`empDaoA`）
-- 也可以用注解的 value 属性，指定 bean 对象的名字。
+- 也可以用 `@Component` 注解或其衍生注解的 `value` 属性，指定 bean 对象的名字。
 
 将 bean 对象  `empDaoA`，指定名称为 `daoA`；
 
@@ -411,9 +412,11 @@ public class EmpDaoA implements EmpDao {
 }
 ```
 
+- `value` 在括号中可省略不写。
+
 ## 七、Spring Boot Bean 组件扫描
 
-使用上面注解声明的 Bean 对象，想要生效，还需要被组件扫描
+使用上面注解声明的 Bean 对象，想要生效，还需要被组件扫描：
 
 下面通过修改项目工程 dao 包的目录结构，来测试 Dao 层的 bean 对象是否生效：
 
@@ -446,11 +449,11 @@ The injection point has the following annotations:
 
 ### 2.@SpringBootApplication 注解
 
-`@ComponentScan` 注解，虽然没有显式配置，但是已经包含在了引导类声明注解 `@SpringBootApplication` 中；
+`@ComponentScan` 注解，虽然没有显式配置，但是已经包含在了引导类（` SpringbootWebQuickstartApplication`）声明注解 `@SpringBootApplication` 中；
 
 - 其中默认扫描的范围是 Spring Boot 启动类所在包，及其子包。
 
-解决上面保持的方案：手动添加 `@ComponentScan` 注解，指定要扫描的包（仅做了解，不推荐）。
+为解决上面的错误：要手动添加 `@ComponentScan` 注解，指定要扫描的包（仅做了解，不推荐）。
 
 推荐做法：将定义的 controller，service，dao 这些包，都放在引导类所在包（比如：`com.kkcf` ）的子包下，如下方目录结构所示：
 
@@ -521,7 +524,7 @@ Field empService in com.kkcf.controller.EmpController required a single bean, bu
 
 ### 1.@Primary 注解
 
-当存在多个相同类型的 Bean 对象可供注入时，使用 `@Primary` 注解：来设置默认（优先级高）的Bean 对象注入。
+当存在多个相同类型的 Bean 对象可供注入时，使用 `@Primary` 注解：来设置默认（优先级高）的 Bean 对象注入。
 
 比如：为 Service 层 `EmpServiceA` 类上，加上该注解，
 
@@ -537,9 +540,9 @@ public class EmpServiceA implements EmpService {
 
 ### 2.@Qualifier 注解
 
-当存在多个相同类型的 Bean 注入时，可以使用 `@Autowired` 结合 `@Qualifier` 注解
+当存在多个相同类型的 Bean 对象可供注入时，可以使用 `@Autowired` 结合 `@Qualifier` 注解
 
-- `@Qualifier` 注解不能单独使用，必须配合 `@Autowired` 使用。
+- `@Qualifier` 注解不能单独使用，必须配合 `@Autowired` 注解使用。
 - `@Qualifier` 注解，使用 `value` 属性。按照类型，进行 Bean 对象注入，
 
 比如：在 Controller 层中，为 Bean 对象注入指定一个对象：
@@ -562,7 +565,7 @@ public class EmpController {
 ```java
 @RestController
 public class EmpController {
-    @Autowired // 运行时，IOC 容器会提供该类的 Bean 对象，并赋值给该变量，这杯称为依赖注入
+    @Autowired // 运行时，IOC 容器会提供该类的 Bean 对象，并赋值给该变量，这被称为依赖注入
     @Qualifier("empServiceA")
     public EmpService empService;
 
@@ -574,7 +577,7 @@ public class EmpController {
 
 当存在多个相同类型的 Bean 注入时，也可以使用 `@Resource` 注解。
 
-- `@Resource` 注解，由 JDK 提供，而非 Spring 框架。
+- `@Resource` 注解，由 JDK 提供，而非 Spring 框架提供。
 - `@Resource` 注解，使用 `name` 属性。按照名称，进行 Bean 对象注入。
 
 比如：在 Controller 层中，为 Bean 对象注入指定一个对象：
