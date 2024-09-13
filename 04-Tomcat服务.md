@@ -11,7 +11,7 @@ Web 服务器，指的是软件服务器：
 
 Web 服务器对 HTTP 协议的请求、响应操作进行封装：
 
-- 使得开发者不用自行解析 Http 协议的请求和封装 Http 协议的响应。让 Web 开发更加便捷。
+- 使得开发者不用自行解析 Http 协议的请求，和封装 Http 协议的响应。让 Web 开发更加便捷。
 
 Web 服务器，主要功能是"提供网上信息浏览服务"。
 
@@ -33,14 +33,14 @@ Tomcat 服务器，也被称为 **Web 容器**、**Servlet 容器**；
 
 ### 1.Tomcat 下载
 
-从[官方网站](https://tomcat.apache.org)下载。
+直接从[官方网站](https://tomcat.apache.org)下载。
 
 ### 2.Tomcat 安装
 
 安装：解压压缩包；
 
 - 最好解压到一个**不包含中文和空格**的目录；
-- 因为后期在部署项目的时候，如果路径有中文或者空格可能会导致程序部署失败
+- 因为后期在部署项目的时候，如果路径有中文或者空格，可能会导致程序部署失败。
 
 目录结构如下：
 
@@ -113,7 +113,8 @@ Tomcat 服务器关闭，有三种方式：
 将静态资源目录，放到 `webapps` 目录下，即可完成部署。
 
 - 比如现有 haha 目录，下面有 haha.html 文件；
-  1. 将 haha 目录放到 webapps 目录下，就可以通过 `localhost:8080/haha/haha.html` 访问到静态资源。
+  1. 将 haha 目录放到 webapps 目录下；
+  1. 就可以通过 `localhost:8080/haha/haha.html` 访问到静态资源。
 
 不能放单个文件，要放目录。
 
@@ -139,11 +140,11 @@ Spring 官方提供了生成 Spring 项目的[网站](https://start.spring.io/)�
 
 Spring 的官方，提供了很多现成的 [starter（起步依赖）](https://docs.spring.io/spring-boot/docs/2.7.2/reference/htmlsingle/#using.build-systems.starters)，在开发应用相关功能时，只需要引入对应的 starter 即可。
 
-- 比如：在 Spring Boot 项目中，要使用 redis 数据库时，只需要引入 `spring-boot-starter-redis`，即可导入redis开发所需要的依赖。
+- 比如：在 Spring Boot 项目中，要使用 redis 数据库时，只需要引入 `spring-boot-starter-redis`，即可导入 redis 开发所需要的依赖。
 
 ### 3.Spring Boot 父工程
 
-在之前开发的 Spring Boot 入门案例中，使用 maven 引入的依赖，没有指定具体的依赖版本号，如下方所示：
+在上文开发的 Spring Boot 入门案例中，使用 maven 引入的依赖，没有指定具体的依赖版本号，如下方所示：
 
 demo-project/springboot-web-quickstart/pom.xml
 
@@ -181,7 +182,7 @@ demo-project/springboot-web-quickstart/pom.xml
 
 这是因为在 Spring Boot 项目中，引入了 `spring-boot-starter-web` 起步依赖，其内部已经集成了内置的 Tomcat 服务器。
 
-- IDEA开发工具右侧的 maven 面板中，可以看到 Tomcat 相关依赖被传递下来了；
+- IDEA 开发工具右侧的 maven 面板中，可以看到 Tomcat 相关依赖被传递下来了；
 - 所以在 Spring Boot 项目中，可以直接使用 Tomcat 服务器。
 
 ![SpringBoot内置Tomcat](NoteAssets/SpringBoot内置Tomcat.png)
