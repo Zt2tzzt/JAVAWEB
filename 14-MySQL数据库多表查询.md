@@ -83,7 +83,7 @@ SELECT * FROM emp, dept WHERE emp.dept_id = dept.id;
 
 ### 1.内连接
 
-内连接，查询的是两张表，或多占表有交集的部分，即下图 A∩B 部分：
+内连接，查询的是两张表，或多张表有交集的部分，即下图 A∩B 部分：
 
 ![连接查询](NoteAssets/连接查询.png)
 
@@ -179,7 +179,7 @@ FROM emp e
 
 - 一共查询到了 18 条记录，其中左表与右表的交集 16 条记录， 右表 2 条记录。
 
-左外连接和右外连接可以相互替换，只需要调整连接查询时SQL语句中表的先后顺序就可以了。
+左外连接和右外连接可以相互替换，只需要调整连接查询时，SQL 语句中表的先后顺序就可以了。
 
 使用左外连接，实现上方查询的结果：
 
@@ -195,6 +195,8 @@ FROM dept d
 
 SQL 语句中，嵌套 SQL 语句，称为嵌套查询，又称子查询。
 
+- 子查询相对于连接查询，效率较低，尽量使用连接查询来替代子查询。
+
 子查询的形式有很多，比如：
 
 ```mysql
@@ -208,27 +210,404 @@ SELECT * FROM t1 WHERE column1 = (SELECT column1 FROM t2 ...);
 - 标量子查询：子查询结果为单个值，即一行一列；
 - 列子查询：子查询结果为一列，但可以是多行；
 - 行子查询：子查询结果为一行，但可以是多列；
-- 表子查询：子查询结果为多行多列，相当于子查询结果是一张表。
+- 表子查询：子查询结果为多行多列，相当于子查询结果是一张临时表。
 
 ### 1.标量子查询
 
-标量子查询，返回的结果，是单个值（数字、字符串、日期……）；
+标量子查询，返回的结果，是单个值（数字、字符串、日期……）；这是子查询最简单的形式，
 
-这是子查询最简单的形式，
+标量子查询中，常用的操作符有：`=`、`<>`、`>`、`>=`、`<`、`<=`
 
-标量子查询中，常用的操作符有：`=`、`<>`、`>`、`>=`、`<`、`<=`。   
+案例理解：查询"教研部"的所有员工信息，可以将需求分解为两步：
 
+1. 查询 "教研部" 部门 ID
+2. 根据 "教研部" 部门 ID，查询员工信息
 
+```mysql
+SELECT id
+FROM dept
+WHERE name = '教研部'; -- 结果为 2
 
-列子查询
+SELECT *
+FROM emp
+WHERE dept_id = 2;
+```
 
+使用标量子查询，进行 SQL 合并：
 
+```mysql
+SELECT *
+FROM emp
+WHERE dept_id = (SELECT id
+                 FROM dept
+                 WHERE name = '教研部');
+```
 
-行子查询
+案例理解：查询在"方东白"入职之后的员工信息，可以将需求分解为两步：
 
-组合值查询，优化的写法
+1. 查询“方东白”的入职日期。
+2. 查询该入职日期之后入职的员工信息。
 
+```mysql
+SELECT entrydate
+FROM emp
+WHERE name = '方东白';
 
+SELECT *
+FROM emp
+WHERE entrydate > '2012-11-01';
+```
 
-表子查询。
+使用标量子查询，进行优化：
 
+```mysql
+SELECT *
+FROM emp
+WHERE entrydate > (SELECT entrydate
+                   FROM emp
+                   WHERE name = '方东白');
+```
+
+### 2.列子查询
+
+列子查询，返回的结果是一列（可以是多行）。
+
+列子查询中，查用的操作符有：`IN`、`NOT IN`
+
+案例理解：查询"教研部"和"咨询部"的所有员工信息，分解为以下两步：
+
+1. 查询"销售部"和"市场部"的部门 ID。
+2. 根据部门 ID，查询员工信息。
+
+```mysql
+SELECT id
+FROM dept
+WHERE name IN ('教研部', '咨询部');
+
+SELECT *
+FROM emp
+WHERE dept_id IN (2, 3);
+```
+
+使用列子查询，进行优化
+
+```mysql
+SELECT *
+FROM emp
+WHERE dept_id IN (SELECT id
+                  FROM dept
+                  WHERE name IN ('教研部', '咨询部'));
+```
+
+### 3.行子查询
+
+行子查询，返回的结果是一行（可以是多列）。
+
+常用的操作符：`=` 、`<>`、`IN`、`NOT IN`
+
+案例理解：查询与"韦一笑"的入职日期及职位都相同的员工信息，可以拆解为两步进行：
+
+1. 查询"韦一笑" 的入职日期及职位
+2. 查询与"韦一笑"的入职日期及职位相同的员工信息
+
+```mysql
+SELECT entrydate, job
+FROM emp
+WHERE name = '韦一笑'; -- 查询结果为 2007-01-01   2
+
+SELECT *
+FROM emp
+WHERE (entrydate, job) = ('2007-01-01', 2);
+```
+
+- 以上是组合值查询的写法。
+
+使用行子查询，进行优化：
+
+```mysql
+SELECT *
+FROM emp
+WHERE (entrydate, job) = (SELECT entrydate, job
+                          FROM emp
+                          WHERE name = '韦一笑');
+```
+
+### 4.表子查询
+
+表子查询，返回的结果是多行多列，常作为临时表。
+
+案例理解：查询入职日期是"2006-01-01"之后的员工信息 , 及其部门信息，分解为两步执行：
+
+1. 查询入职日期是"2006-01-01"之后的员工信息。
+2. 基于查询到的员工信息表，在查询对应的部门信息。
+
+```mysql
+SELECT *
+FROM emp
+WHERE entrydate > '2006-01-01';
+
+SELECT e.*, d.*
+FROM (SELECT *
+      FROM emp
+      WHERE entrydate > '2006-01-01') e
+         LEFT JOIN dept d ON e.dept_id = d.id;
+```
+
+## 三、案例练习
+
+表结构，和数据初始化。创建四张表：分类表 category，菜品表 dish，套餐表 setmeal，中间表 setmeal_dish
+
+```mysql
+-- 分类表
+CREATE TABLE category
+(
+    id          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT '主键ID',
+    name        VARCHAR(20)      NOT NULL UNIQUE COMMENT '分类名称',
+    type        TINYINT UNSIGNED NOT NULL COMMENT '类型 1 菜品分类 2 套餐分类',
+    sort        TINYINT UNSIGNED NOT NULL COMMENT '顺序',
+    status      TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '状态 0 禁用，1 启用',
+    create_time DATETIME         NOT NULL COMMENT '创建时间',
+    update_time DATETIME         NOT NULL COMMENT '更新时间'
+) COMMENT '分类';
+
+-- 菜品表
+CREATE TABLE dish
+(
+    id          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT '主键ID',
+    name        VARCHAR(20)      NOT NULL UNIQUE COMMENT '菜品名称',
+    category_id INT UNSIGNED     NOT NULL COMMENT '菜品分类ID',
+    price       DECIMAL(8, 2)    NOT NULL COMMENT '菜品价格',
+    image       VARCHAR(300)     NOT NULL COMMENT '菜品图片',
+    description VARCHAR(200) COMMENT '描述信息',
+    status      TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '状态, 0 停售 1 起售',
+    create_time DATETIME         NOT NULL COMMENT '创建时间',
+    update_time DATETIME         NOT NULL COMMENT '更新时间'
+) COMMENT '菜品';
+
+-- 套餐表
+CREATE TABLE setmeal
+(
+    id          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT '主键ID',
+    name        VARCHAR(20)      NOT NULL UNIQUE COMMENT '套餐名称',
+    category_id INT UNSIGNED     NOT NULL COMMENT '分类id',
+    price       DECIMAL(8, 2)    NOT NULL COMMENT '套餐价格',
+    image       VARCHAR(300)     NOT NULL COMMENT '图片',
+    description VARCHAR(200) COMMENT '描述信息',
+    status      TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '状态 0:停用 1:启用',
+    create_time DATETIME         NOT NULL COMMENT '创建时间',
+    update_time DATETIME         NOT NULL COMMENT '更新时间'
+) COMMENT '套餐';
+
+-- 套餐菜品关联表
+CREATE TABLE setmeal_dish
+(
+    id         INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT '主键ID',
+    setmeal_id INT UNSIGNED     NOT NULL COMMENT '套餐id ',
+    dish_id    INT UNSIGNED     NOT NULL COMMENT '菜品id',
+    copies     TINYINT UNSIGNED NOT NULL COMMENT '份数'
+) COMMENT '套餐菜品中间表';
+
+-- ================================== 导入测试数据 ====================================
+-- category
+INSERT INTO category (id, type, name, sort, status, create_time, update_time)
+VALUES (1, 1, '酒水饮料', 10, 1, '2022-08-09 22:09:18', '2022-08-09 22:09:18');
+INSERT INTO category (id, type, name, sort, status, create_time, update_time)
+VALUES (2, 1, '传统主食', 9, 1, '2022-08-09 22:09:32', '2022-08-09 22:18:53');
+INSERT INTO category (id, type, name, sort, status, create_time, update_time)
+VALUES (3, 2, '人气套餐', 12, 1, '2022-08-09 22:11:38', '2022-08-10 11:04:40');
+INSERT INTO category (id, type, name, sort, status, create_time, update_time)
+VALUES (4, 2, '商务套餐', 13, 1, '2022-08-09 22:14:10', '2022-08-10 11:04:48');
+INSERT INTO category (id, type, name, sort, status, create_time, update_time)
+VALUES (5, 1, '经典川菜', 6, 1, '2022-08-09 22:17:42', '2022-08-09 22:17:42');
+INSERT INTO category (id, type, name, sort, status, create_time, update_time)
+VALUES (6, 1, '新鲜时蔬', 7, 1, '2022-08-09 22:18:12', '2022-08-09 22:18:28');
+INSERT INTO category (id, type, name, sort, status, create_time, update_time)
+VALUES (7, 1, '汤类', 11, 1, '2022-08-10 10:51:47', '2022-08-10 10:51:47');
+
+-- dish
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (1, '王老吉', 1, 6.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/41bfcacf-7ad4-4927-8b26-df366553a94c.png', '', 1,
+        '2022-06-09 22:40:47', '2022-06-09 22:40:47');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (2, '北冰洋', 1, 4.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/4451d4be-89a2-4939-9c69-3a87151cb979.png',
+        '还是小时候的味道', 1, '2022-06-10 09:18:49', '2022-06-10 09:18:49');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (3, '雪花啤酒', 1, 4.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/bf8cbfc1-04d2-40e8-9826-061ee41ab87c.png', '', 1,
+        '2022-06-10 09:22:54', '2022-06-10 09:22:54');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (4, '米饭', 2, 2.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/76752350-2121-44d2-b477-10791c23a8ec.png', '精选五常大米', 1,
+        '2022-06-10 09:30:17', '2022-06-10 09:30:17');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (5, '馒头', 2, 1.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/475cc599-8661-4899-8f9e-121dd8ef7d02.png', '优质面粉', 1,
+        '2022-06-10 09:34:28', '2022-06-10 09:34:28');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (6, '老坛酸菜鱼', 5, 56.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/4a9cefba-6a74-467e-9fde-6e687ea725d7.png',
+        '原料：汤，草鱼，酸菜', 1, '2022-06-10 09:40:51', '2022-06-10 09:40:51');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (7, '经典酸菜鮰鱼', 5, 66.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/5260ff39-986c-4a97-8850-2ec8c7583efc.png',
+        '原料：酸菜，江团，鮰鱼', 1, '2022-06-10 09:46:02', '2022-06-10 09:46:02');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (8, '蜀味水煮草鱼', 5, 38.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/a6953d5a-4c18-4b30-9319-4926ee77261f.png', '原料：草鱼，汤', 1,
+        '2022-06-10 09:48:37', '2022-06-10 09:48:37');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (9, '清炒小油菜', 6, 18.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/3613d38e-5614-41c2-90ed-ff175bf50716.png', '原料：小油菜', 1,
+        '2022-06-10 09:51:46', '2022-06-10 09:51:46');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (10, '蒜蓉娃娃菜', 6, 18.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/4879ed66-3860-4b28-ba14-306ac025fdec.png', '原料：蒜，娃娃菜',
+        1, '2022-06-10 09:53:37', '2022-06-10 09:53:37');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (11, '清炒西兰花', 6, 18.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/e9ec4ba4-4b22-4fc8-9be0-4946e6aeb937.png', '原料：西兰花', 1,
+        '2022-06-10 09:55:44', '2022-06-10 09:55:44');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (12, '炝炒圆白菜', 6, 18.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/22f59feb-0d44-430e-a6cd-6a49f27453ca.png', '原料：圆白菜', 1,
+        '2022-06-10 09:58:35', '2022-06-10 09:58:35');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (13, '清蒸鲈鱼', 5, 98.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/c18b5c67-3b71-466c-a75a-e63c6449f21c.png', '原料：鲈鱼', 1,
+        '2022-06-10 10:12:28', '2022-06-10 10:12:28');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (14, '东坡肘子', 5, 138.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/a80a4b8c-c93e-4f43-ac8a-856b0d5cc451.png', '原料：猪肘棒', 1,
+        '2022-06-10 10:24:03', '2022-06-10 10:24:03');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (15, '梅菜扣肉', 5, 58.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/6080b118-e30a-4577-aab4-45042e3f88be.png', '原料：猪肉，梅菜',
+        1, '2022-06-10 10:26:03', '2022-06-10 10:26:03');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (16, '剁椒鱼头', 5, 66.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/13da832f-ef2c-484d-8370-5934a1045a06.png', '原料：鲢鱼，剁椒',
+        1, '2022-06-10 10:28:54', '2022-06-10 10:28:54');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (17, '馋嘴牛蛙', 5, 98.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/7a55b845-1f2b-41fa-9486-76d187ee9ee1.png',
+        '配料：鲜活牛蛙，丝瓜，黄豆芽', 1, '2022-06-10 10:37:52', '2022-06-10 10:37:52');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (18, '鸡蛋汤', 7, 4.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/c09a0ee8-9d19-428d-81b9-746221824113.png', '配料：鸡蛋，紫菜',
+        1, '2022-06-10 10:54:25', '2022-06-10 10:54:25');
+INSERT INTO dish (id, name, category_id, price, image, description, status, create_time, update_time)
+VALUES (19, '平菇豆腐汤', 7, 6.00,
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/16d0a3d6-2253-4cfc-9b49-bf7bd9eb2ad2.png', '配料：豆腐，平菇',
+        1, '2022-06-10 10:55:02', '2022-06-10 10:55:02');
+
+-- setmeal
+INSERT INTO setmeal (id, category_id, name, price, status, description, image, create_time, update_time)
+VALUES (1, 4, '商务套餐A', 20.00, 1, '',
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/21a5ed3a-97f6-447a-af9d-53deabfb5661.png',
+        '2022-06-10 10:58:09', '2022-06-10 10:58:09');
+INSERT INTO setmeal (id, category_id, name, price, status, description, image, create_time, update_time)
+VALUES (2, 4, '商务套餐B', 22.00, 1, '',
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/8d0075f8-9008-4390-94ca-2ca631440304.png',
+        '2022-06-10 11:00:13', '2022-06-10 11:11:37');
+INSERT INTO setmeal (id, category_id, name, price, status, description, image, create_time, update_time)
+VALUES (3, 3, '人气套餐A', 49.00, 1, '',
+        'https://reggie-itcast.oss-cn-beijing.aliyuncs.com/8979566b-0e17-462b-81d8-8dbace4138f4.png',
+        '2022-06-10 11:11:23', '2022-06-10 11:11:23');
+
+-- setmeal_dish
+INSERT INTO setmeal_dish (id, setmeal_id, dish_id, copies)
+VALUES (1, 1, 1, 1);
+INSERT INTO setmeal_dish (id, setmeal_id, dish_id, copies)
+VALUES (2, 1, 4, 1);
+INSERT INTO setmeal_dish (id, setmeal_id, dish_id, copies)
+VALUES (3, 1, 11, 1);
+INSERT INTO setmeal_dish (id, setmeal_id, dish_id, copies)
+VALUES (4, 2, 2, 1);
+INSERT INTO setmeal_dish (id, setmeal_id, dish_id, copies)
+VALUES (5, 2, 4, 1);
+INSERT INTO setmeal_dish (id, setmeal_id, dish_id, copies)
+VALUES (6, 2, 9, 1);
+INSERT INTO setmeal_dish (id, setmeal_id, dish_id, copies)
+VALUES (7, 3, 2, 1);
+INSERT INTO setmeal_dish (id, setmeal_id, dish_id, copies)
+VALUES (8, 3, 6, 1);
+INSERT INTO setmeal_dish (id, setmeal_id, dish_id, copies)
+VALUES (9, 3, 5, 1);
+```
+
+他们的关系，如下图所示：
+
+![多表查询案例](NoteAssets/多表查询案例.png)
+
+### 1.案例一：内连接应用
+
+案例一：查询价格低于 10 元的菜品的名称、价格及其菜品的分类名称。
+
+```mysql
+SELECT d.name '菜品名称', d.price '菜品价格', c.name '分类名称'
+FROM dish d
+         INNER JOIN category c ON d.category_id = c.id
+WHERE d.price < 10;
+```
+
+### 2.案例二：左连接应用
+
+案例二：查询所有价格在 10 元（含）到 50 元（含）之间，且状态为"起售"的菜品名称，价格及其分类名称。
+
+- 即使菜品没有分类 , 也要将菜品查询出来。
+
+```mysql
+SELECT d.name, d.price, c.name
+FROM dish d
+         LEFT JOIN category c ON d.category_id = c.id
+WHERE d.price BETWEEN 10 AND 50
+  AND d.status = 1;
+```
+
+### 3.案例三：内连接和分组应用
+
+案例三：查询每个分类下，最贵的菜品，展示出分类的名称，最贵的菜品的价格。
+
+```mysql
+SELECT c.name '菜品分类', MAX(d.price)
+FROM dish d
+         INNER JOIN category c ON d.category_id = c.id
+GROUP BY c.name;
+```
+
+### 4.案例四：内连接和分组条件应用
+
+案例四：查询各个分类下，菜品状态为"起售"，并且该分类下菜品总数量大于等于 3  的分类名称。
+
+```mysql
+SELECT c.name '菜品分类', COUNT(*)
+FROM dish d
+         INNER JOIN category c ON d.category_id = c.id
+WHERE d.status = 1
+GROUP BY c.name
+HAVING COUNT(*) >= 3;
+```
+
+### 5.案例五：多对多（中间表）的内连接应用
+
+案例五：查询出"商务套餐A"中，包含了哪些菜品（展示出套餐名称、价格，包含的菜品名称、价格、份数）
+
+```mysql
+SELECT s.name '套餐名称', s.price '套餐价格', d.name '菜品名称', d.price '菜品价格', sd.copies '份数'
+FROM setmeal s
+         INNER JOIN setmeal_dish sd ON s.id = sd.setmeal_id
+         INNER JOIN dish d ON sd.dish_id = d.id
+WHERE s.name = '商务套餐A';
+```
+
+### 6.案例六：子查询应用
+
+案例六：查询出低于菜品平均价格的菜品信息（展示出菜品名称、菜品价格）。
+
+```mysql
+SELECT d.name, d.price
+FROM dish d
+WHERE d.price < (SELECT AVG(d.price) FROM dish d);
+```
