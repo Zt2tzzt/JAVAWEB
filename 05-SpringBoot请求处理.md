@@ -21,7 +21,7 @@ public class HelloController {
 
 ## 一、Tomcat 与 Controller 控制器的关系
 
-Spring Boot 内置的 Tomcat 服务器，并不能识别项目中的 Controller 类。它们是怎么联系起来的？
+Spring Boot 内置的 Tomcat 服务器，并不能识别项目中的 Controller 控制器类。它们是怎么联系起来的？
 
 - Tomcat 是 Servlet 容器，所以它能识别 Servlet 规范，
 - Spring Boot 框架中，提供了一个核心的 Servlet 程序 `DispatchServlet`，它实现了 Servlet 规范中的接口。
@@ -43,7 +43,7 @@ Spring Boot 内置的 Tomcat 服务器，并不能识别项目中的 Controller 
 
 可以看出 `DispatchServlet` 是非常核心的类，在应用程序中被称为“**核心控制器**”或”**前端控制器**“
 
-它的所用，如下图所示：
+它的作用，如下图所示：
 
 ![SpringBoot请求响应1](NoteAssets/SpringBoot请求响应1.png)
 
@@ -61,7 +61,7 @@ Spring Boot 内置的 Tomcat 服务器，并不能识别项目中的 Controller 
 
 开发者需要重点关注 Controller  控制器，在其中获取请求信息，处理请求，返回响应。
 
-## 四、SpringBoot 请求处理
+## 四、Spring Boot 请求处理
 
 客户端在向服务器发起请求时，传递参数的方式是：
 
@@ -204,11 +204,11 @@ public class RequestController {
 
 ### 2.实体参数处理
 
-请求在传递简单参数时，请求中有多少个请求参数，后端 Controller 控制器的处理方法中，形参就要有多少个。
+上面的案例中，请求在传递简单参数时，请求中有多少个请求参数，后端 Controller 控制器的处理方法中，形参就要有多少个。
 
-如果请求参数比较多，通过上述的方式一个参数一个参数的接收，会比较繁琐。
+如果请求参数比较多，一个参数一个参数的接收，会比较繁琐。
 
-可以考虑将请求参数，封装到一个实体（pojo）类的对象中。
+这时，可以考虑将请求参数，封装到一个实体（pojo）类的对象中。
 
 - 要遵守**请求参数名与实体类的属性名相同**的规则。
 
@@ -388,6 +388,8 @@ public class RequestController {
 
 要求请求参数名，与形参集合对象名相同；且请求参数为多个，
 
+##### 1.@RequestParam 注解
+
 要使用 `@RequestParam` 注解，绑定请求参数与集合类型的形参之间的关系。
 
 Controller 控制器：
@@ -509,7 +511,7 @@ public class RequestController {
 
 实际开发中，经常会直接在请求的 URL 中，传递参数。比如：
 
-- `localhost:880/pathParam/1/zzt`
+- `localhost:8080/pathParam/1/zzt`
 
 #### 1.@PathVariable 注解
 
