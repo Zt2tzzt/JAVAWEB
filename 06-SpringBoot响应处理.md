@@ -18,11 +18,11 @@ Controller 控制器中的方法，除了接收请求外，还可以返回响应
 
 事实上，在前面编写的 Controller 控制器中，并没有写 `@ResponseBody` 注解。
 
-因为在 Controller 控制器类上，添加的 `@RestController` 注解，是一个组合注解。
+因为在 Controller 控制器类上，添加的 `@RestController` 注解，它是一个组合注解。
 
 - `@RestController` = `@Controller` + `@ResponseBody`
 
-Spring Boot 的 `@RestController` 注解源码如下
+Spring Boot 的 `@RestController` 注解源码如下：
 
 RestController.class
 

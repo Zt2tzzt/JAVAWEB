@@ -12,9 +12,9 @@
 
 在 Web 项目开发中，可以将代码分为三层：
 
-- Controller：控制层。接收前端发送的请求，对请求进行处理，并响应数据。
-- Service：业务逻辑层。处理具体的业务逻辑。
-- Dao（Data Access Object）：数据访问层，也称为持久层。负责数据访问操作，包括数据的增、删、改、查。
+- Controller 控制层：接收前端发送的请求，对请求进行处理，并响应数据。
+- Service 业务逻辑层：处理具体的业务逻辑。
+- Dao（Data Access Object）数据访问层：也称为持久层。负责数据访问操作，包括数据的增、删、改、查。
 
 基于三层架构的程序执行流程：
 
@@ -201,7 +201,7 @@ public class EmpController {
 
 耦合体现在：
 
-- 如果把业务类，变为 `EmpServiceB` 时，需要修改 Controller 层中的代码；
+- 如果把 Controller 层中要用到的业务类，变为 `EmpServiceB` 时，需要修改 Controller 层中的代码；
 - 也就是说：当 Service 层的实现类，变了之后， 我们还需要修改 Controller 层的代码，改变引入的 Service 层实例对象。
 
 为了解决上方代码耦合度高的问题，就不能在 `EmpController` 中使用 `new` 创建 Servcie 层的对象。如下方所示：
@@ -418,9 +418,9 @@ public class EmpDaoA implements EmpDao {
 
 使用上面注解声明的 Bean 对象，想要生效，还需要被组件扫描：
 
-下面通过修改项目工程 dao 包的目录结构，来测试 Dao 层的 bean 对象是否生效：
+下面修改项目 dao 包的目录结构，来测试 Dao 层的 bean 对象是否生效：
 
-demo-project/springboot-web-quickstart/src/main/java
+修改后的结构如下：demo-project/springboot-web-quickstart/src/main/java
 
 ├─📁 com/
 │ └─📁 kkcf/
