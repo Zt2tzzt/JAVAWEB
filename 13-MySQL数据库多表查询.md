@@ -56,9 +56,11 @@ VALUES (1, 'jinyong', '123456', '金庸', 1, '1.jpg', 4, '2000-01-01', 2, now(),
        (17, 'chenyouliang', '123456', '陈友谅', 1, '17.jpg', NULL, '2015-03-21', NULL, now(), now());
 ```
 
-直接进行多表查询，得到结果的总记录数，是两张表的笛卡尔积。
+直接进行多表查询，得到结果的总记录数，是两张表的笛卡尔积。比如：
 
-- 比如 dept 表中有 5 条记录；emp 表中有 17 条记录；那么执行下方的 SQL 语句，会得到 5 * 17 = 85 条数据。
+- dept 表中有 5 条记录；
+- emp 表中有 17 条记录；
+- 那么执行下方的 SQL 语句，会得到 5 * 17 = 85 条数据。
 
 ```mysql
 SELECT * FROM dept, emp;
@@ -96,7 +98,9 @@ SELECT * FROM emp, dept WHERE emp.dept_id = dept.id;
 隐式内连接语法：
 
 ```mysql
-SELECT 字段列表 from 表1, 表2 WHERE 条件 ... ;
+SELECT 字段列表
+FROM 表1, 表2
+WHERE 条件 ... ;
 ```
 
 - 查询时，字段使用 `表名.字段名` 来指定。
@@ -104,22 +108,29 @@ SELECT 字段列表 from 表1, 表2 WHERE 条件 ... ;
 显式内连接语法：
 
 ```mysql
-SELECT 字段列表 FROM 表1 [INNER] JOIN 表2 ON 连接条件 ... ;
+SELECT 字段列表
+FROM 表1
+        [INNER] JOIN 表2 ON 连接条件 ... ;
 ```
 
 案例理解；查询员工的姓名及所属的部门名称
 
 ```mysql
-SELECT emp.name, dept.name FROM emp, dept WHERE emp.dept_id = dept.id;
+SELECT emp.name, dept.name
+FROM emp,
+     dept
+WHERE emp.dept_id = dept.id;
+
 -- 或者 👇
-SELECT emp.name, dept.name FROM emp INNER JOIN dept ON emp.dept_id = dept.id;
+
+SELECT emp.name, dept.name
+FROM emp
+         INNER JOIN dept ON emp.dept_id = dept.id;
 ```
 
 查询时，也可以为表起别名；格式如下：
 
-- tableA  AS  别名1  ,  tableB  AS  别名2 ;
-
-- tableA  别名1  ,  tableB  别名2 ;
+- `tableA  AS  别名1` 或 `tableA  别名1`；
 
 ```mysql
 SELECT e.name '员工姓名', d.name '部门名称'
@@ -129,7 +140,7 @@ FROM emp e
 
 - 一共查询到了 16 条数据。
 
-一旦为表起了别名，就不能再使用表名来指定对应的字段了，只能使用别名来指定字段。
+一旦为表起了别名，就只能使用别名来指定字段。不能再使用表名指定对应的字段了，
 
 ### 2.外连接
 
@@ -140,10 +151,17 @@ FROM emp e
 左外连接语法：
 
 ```mysql
-SELECT 字段列表 FROM 表1 LEFT [OUTER] JOIN 表2 ON 连接条件 ... ;
+SELECT 字段列表
+FROM 表1
+        LEFT [OUTER] JOIN 表2 ON 连接条件 ... ;
 ```
 
-左外连接，查询的是左表的全部，以及左表与右表有交集的部分。即下图的 A 和 A∩B 部分。
+左外连接，查询的是：
+
+- 左表的全部；
+- 以及左表与右表有交集的部分。
+
+即下图的 A 和 A∩B 部分。
 
 ![连接查询](NoteAssets/连接查询.png)
 
@@ -162,10 +180,17 @@ FROM emp e
 右外连接语法：
 
 ```mysql
-SELECT 字段列表 FROM 表1 RIGHT [OUTER] JOIN 表2 ON 连接条件 ... ;
+SELECT 字段列表
+FROM 表1
+        RIGHT [OUTER] JOIN 表2 ON 连接条件 ... ;
 ```
 
-右外连接，查询到是右表的全部，以及右表与左表有交集的部分，即下图的 B 和 A∩B 部分。
+右外连接，查询到是：
+
+- 右表的全部；
+- 以及右表与左表有交集的部分。
+
+即下图的 B 和 A∩B 部分。
 
 ![连接查询](NoteAssets/连接查询.png)
 
@@ -179,7 +204,7 @@ FROM emp e
 
 - 一共查询到了 18 条记录，其中左表与右表的交集 16 条记录， 右表 2 条记录。
 
-左外连接和右外连接可以相互替换，只需要调整连接查询时，SQL 语句中表的先后顺序就可以了。
+左外连接和右外连接，可以相互替换，只要调整连接查询时，表的先后顺序就可以了。
 
 使用左外连接，实现上方查询的结果：
 
@@ -200,17 +225,20 @@ SQL 语句中，嵌套 SQL 语句，称为嵌套查询，又称子查询。
 子查询的形式有很多，比如：
 
 ```mysql
-SELECT * FROM t1 WHERE column1 = (SELECT column1 FROM t2 ...);
+SELECT *
+FROM t1
+WHERE column1 = (SELECT column1
+                 FROM t2 ...);
 ```
 
-子查询**外部的**的语句，可以是 SELECT、INSERT、UPDATE、DELETE 语句；最为常见的是 SELECT 语句。
+子查询**外部的**的语句，可以是 `SELECT`、`INSERT`、`UPDATE`、`DELETE` 语句；最为常见的是 `SELECT` 语句。
 
 子查询，有如下分类：
 
-- 标量子查询：子查询结果为单个值，即一行一列；
-- 列子查询：子查询结果为一列，但可以是多行；
-- 行子查询：子查询结果为一行，但可以是多列；
-- 表子查询：子查询结果为多行多列，相当于子查询结果是一张临时表。
+- 标量子查询：子查询结果为一行一列,，即单个值；
+- 列子查询：子查询结果为一列，但可以是多行，即一个数组；
+- 行子查询：子查询结果为一行，但可以是多列，即一个对象；
+- 表子查询：子查询结果为多行多列，即一张临时表。
 
 ### 1.标量子查询
 
@@ -251,7 +279,7 @@ WHERE dept_id = (SELECT id
 ```mysql
 SELECT entrydate
 FROM emp
-WHERE name = '方东白';
+WHERE name = '方东白'; -- 结果为 2012-11-01
 
 SELECT *
 FROM emp
@@ -272,7 +300,7 @@ WHERE entrydate > (SELECT entrydate
 
 列子查询，返回的结果是一列（可以是多行）。
 
-列子查询中，查用的操作符有：`IN`、`NOT IN`
+列子查询中，常用的操作符有：`IN`、`NOT IN`
 
 案例理解：查询"教研部"和"咨询部"的所有员工信息，分解为以下两步：
 
@@ -305,9 +333,9 @@ WHERE dept_id IN (SELECT id
 
 常用的操作符：`=` 、`<>`、`IN`、`NOT IN`
 
-案例理解：查询与"韦一笑"的入职日期及职位都相同的员工信息，可以拆解为两步进行：
+案例理解：查询与"韦一笑"的入职日期、职位都相同的员工信息，可以拆解为两步进行：
 
-1. 查询"韦一笑" 的入职日期及职位
+1. 查询"韦一笑" 的入职日期、职位。
 2. 查询与"韦一笑"的入职日期及职位相同的员工信息
 
 ```mysql
@@ -320,7 +348,7 @@ FROM emp
 WHERE (entrydate, job) = ('2007-01-01', 2);
 ```
 
-- 以上是组合值查询的写法。
+- 以上是**组合值查询**的写法。
 
 使用行子查询，进行优化：
 
@@ -336,7 +364,7 @@ WHERE (entrydate, job) = (SELECT entrydate, job
 
 表子查询，返回的结果是多行多列，常作为临时表。
 
-案例理解：查询入职日期是"2006-01-01"之后的员工信息 , 及其部门信息，分解为两步执行：
+案例理解：查询入职日期是"2006-01-01"之后的员工信息 , 及其部门信息，可分解为两步执行：
 
 1. 查询入职日期是"2006-01-01"之后的员工信息。
 2. 基于查询到的员工信息表，在查询对应的部门信息。
@@ -541,14 +569,14 @@ VALUES (9, 3, 5, 1);
 
 ![多表查询案例](NoteAssets/多表查询案例.png)
 
-### 1.案例一：内连接应用
+### 1.案例一：左连接应用
 
-案例一：查询价格低于 10 元的菜品的名称、价格及其菜品的分类名称。
+案例一：查询价格低于 10 元的菜品的名称、价格，及其菜品的分类名称。
 
 ```mysql
 SELECT d.name '菜品名称', d.price '菜品价格', c.name '分类名称'
 FROM dish d
-         INNER JOIN category c ON d.category_id = c.id
+         LEFT JOIN category c ON d.category_id = c.id
 WHERE d.price < 10;
 ```
 
@@ -566,25 +594,25 @@ WHERE d.price BETWEEN 10 AND 50
   AND d.status = 1;
 ```
 
-### 3.案例三：内连接和分组应用
+### 3.案例三：左连接和分组应用
 
 案例三：查询每个分类下，最贵的菜品，展示出分类的名称，最贵的菜品的价格。
 
 ```mysql
 SELECT c.name '菜品分类', MAX(d.price)
 FROM dish d
-         INNER JOIN category c ON d.category_id = c.id
+         LEFT JOIN category c ON d.category_id = c.id
 GROUP BY c.name;
 ```
 
-### 4.案例四：内连接和分组条件应用
+### 4.案例四：左连接和分组条件应用
 
 案例四：查询各个分类下，菜品状态为"起售"，并且该分类下菜品总数量大于等于 3  的分类名称。
 
 ```mysql
 SELECT c.name '菜品分类', COUNT(*)
 FROM dish d
-         INNER JOIN category c ON d.category_id = c.id
+         LEFT JOIN category c ON d.category_id = c.id
 WHERE d.status = 1
 GROUP BY c.name
 HAVING COUNT(*) >= 3;
@@ -611,3 +639,13 @@ SELECT d.name, d.price
 FROM dish d
 WHERE d.price < (SELECT AVG(d.price) FROM dish d);
 ```
+
+## 四、处理复杂表查询总结
+
+”一对多“关系，“多”对应的子表，一般写在子查询中；
+
+- 如果查询中，仅有一个“一对多”关系，那么可写在 `LEFT JOIN` 中；
+
+“多对一”关系，“一”对应的父表，一般写在 `LEFT JOIN` 中。
+
+”多对多“关系，关系表和后者“多”对应的表，一般写在 `LEFT JOIN` 中。

@@ -98,9 +98,9 @@ SQL（Structured Query Language）：表示结构化查询语言。其中定义�
 语法一：SQL 语句可以单行或多行书写，以分号结尾。
 
 ```mysql
-mysql> create
-    -> database
-    -> javaweb_demo_db
+mysql> CREATE
+    -> DATABASE
+    -> JAVAWEB_DEMO_DB
     -> ;
 ```
 

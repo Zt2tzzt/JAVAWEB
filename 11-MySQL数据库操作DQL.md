@@ -45,7 +45,7 @@ LIMIT
     条件列表
   ```
 
-- 分组查询（GROUP BY …… HAVING）
+- 分组查询（GROUP BY …… HAVING ……）
 
   ```mysql
   SELECT 字段列表
@@ -69,7 +69,7 @@ LIMIT
     排序字段列表
   ```
 
-- 分页查询（LIMIT …… OFFSET）
+- 分页查询（LIMIT …… OFFSET ……）
 
   ```mysql
   SELECT 字段列表
@@ -210,83 +210,117 @@ WHERE
 
 | 比较运算符            | 功能                                                         |
 | --------------------- | ------------------------------------------------------------ |
-| >                     | 大于                                                         |
-| >=                    | 大于等于                                                     |
-| <                     | 小于                                                         |
-| <=                    | 小于等于                                                     |
-| =                     | 等于                                                         |
-| <> 或 !=              | 不等于                                                       |
-| BETWEEN ...  AND ...  | 在某个范围之内（含最小、最大值）                             |
-| IN(...)               | 在 IN 之后的列表中的值，多选一                               |
-| LIKE 占位符           | 模糊匹配 `_` 匹配单个字符，`%` 匹配任意个字符（可以是 0 个） |
-| IS NULL / IS NOT NULL | 是 NULL / 不是 NULL                                          |
+| `>`                     | 大于                                                         |
+| `>=`                    | 大于等于                                                     |
+| `<`                     | 小于                                                         |
+| `<=`                    | 小于等于                                                     |
+| `=`                     | 等于                                                         |
+| `<>` 或 `!=`              | 不等于                                                       |
+| `BETWEEN...AND...`  | 在某个范围之内（含最小、最大值）                             |
+| `IN(...)`               | 在 IN 之后的列表中的值，多选一                               |
+| `LIKE` 占位符           | 模糊匹配 `_` 匹配单个字符，`%` 匹配任意个字符（可以是 0 个） |
+| `IS NULL` / `IS NOT NULL` | 是 NULL / 不是 NULL                                          |
 
 ### 2.逻辑运算符构建条件
 
-| 逻辑运算符 | 功能                        |
-| ---------- | --------------------------- |
-| AND 或 &&  | 并且 (多个条件同时成立)     |
-| OR 或 \|\| | 或者 (多个条件任意一个成立) |
-| NOT 或 !   | 非 , 不是                   |
+| 逻辑运算符    | 功能                         |
+| ------------- | ---------------------------- |
+| `AND` 或 `&&` | 并且（多个条件同时成立）     |
+| `OR` 或 \|\|  | 或者（多个条件任意一个成立） |
+| `NOT` 或  `!` | 非，不是                     |
 
-案例 1：查询姓名为"杨逍"的员工。
+案例 1：查询姓名为"杨逍"的员工信息。
 
 ```mysql
-SELECT * FROM emp WHERE name = '杨逍';
+SELECT *
+FROM emp
+WHERE name = '杨逍';
 ```
 
 案例 2：查询 id 小于等于 5 的员工信息；
 
 ```mysql
-SELECT * FROM emp WHERE ID <= 5;
+SELECT *
+FROM emp
+WHERE ID <= 5;
 ```
 
 案例 3：查询没有分配职位的员工信息。
 
 ```mysql
-SELECT * FROM emp WHERE job IS NULL;
+SELECT *
+FROM emp
+WHERE job IS NULL;
 ```
 
 案例 4：查询有职位的员工信息。
 
 ```mysql
-SELECT * FROM emp WHERE job IS NOT NULL;
+SELECT *
+FROM emp
+WHERE job IS NOT NULL;
 ```
 
-案例 5：查询密码不等于 '123456' 的员工信息：
+案例 5：查询密码不等于 “123456” 的员工信息：
 
 ```mysql
-SELECT * FROM emp WHERE password != '123456';
+SELECT *
+FROM emp
+WHERE password != '123456';
+
 -- 或者 👇
-SELECT * FROM emp WHERE password <> '123456';
+
+SELECT *
+FROM emp
+WHERE password <> '123456';
 ```
 
-案例 6：查询入职日期在 '2000-01-01'（包含）到 '2010-01-01'（包含）之间的员工信息
+案例 6：查询入职日期在 “2000-01-01”（包含）到 “2010-01-01”（包含）之间的员工信息
 
 ```mysql
-SELECT * FROM emp WHERE entrydate BETWEEN '2000-01-01' AND '2010-01-01';
+SELECT *
+FROM emp
+WHERE entrydate BETWEEN '2000-01-01' AND '2010-01-01';
+
 -- 或者 👇
-SELECT * FROM emp WHERE entrydate >= '2000-01-01' AND entrydate <= '2010-01-01';
+
+SELECT *
+FROM emp
+WHERE entrydate >= '2000-01-01'
+  AND entrydate <= '2010-01-01';
 ```
 
-案例7：查询入职日期在 '2000-01-01'（包含）到 '2010-01-01'（包含）之间且性别为 '女' 的员工信息。
+案例7：查询入职日期在 ”2000-01-01“（包含）到 “2010-01-01”（包含）之间且性别为 '女' 的员工信息。
 
 ```mysql
-SELECT * FROM emp WHERE entrydate BETWEEN '2000-01-01' AND '2010-01-01' AND gender = 2;
+SELECT *
+FROM emp
+WHERE entrydate BETWEEN '2000-01-01' AND '2010-01-01'
+  AND gender = 2;
 ```
 
 案例 8：查询职位是 2（讲师），3（学工主管），4（教研主管）的员工信息：
 
 ```mysql
-SELECT * FROM emp WHERE job IN (2, 3, 4);
+SELECT *
+FROM emp
+WHERE job IN (2, 3, 4);
+
 -- 或者 👇
-SELECT * FROM emp WHERE job = 2 OR job = 3 OR  job = 4;
+
+SELECT *
+FROM emp
+WHERE job = 2
+   OR job = 3
+   OR job = 4;
 ```
 
 案例9：查询姓名为两个字的员工信息：
 
 ```mysql
-SELECT * FROM emp WHERE name LIKE '__';
+SELECT *
+FROM emp
+WHERE name LIKE '__';
 ```
 
 - 通配符 "`_`" 代表任意1个字符
@@ -294,7 +328,9 @@ SELECT * FROM emp WHERE name LIKE '__';
 案例 10：查询姓 '张' 的员工信息：
 
 ```mysql
-SELECT * FROM emp WHERE name LIKE '张%';
+SELECT *
+FROM emp
+WHERE name LIKE '张%';
 ```
 
 ## 三、分组查询
@@ -331,11 +367,11 @@ SELECT 聚合函数(字段列表) FROM  表名 ;
 
 | 函数  | 功能                                     |
 | ----- | ---------------------------------------- |
-| COUNT | 按照列去统计有多少行数据                 |
-| MAX   | 计算指定列的最大值                       |
-| MIN   | 计算指定列的最小值                       |
-| AVG   | 计算指定列的平均值                       |
-| SUM   | 求和，如果不是数值类型，那么计算结果为 0 |
+| `COUNT` | 按照列去统计有多少行数据                 |
+| `MAX`   | 计算指定列的最大值                       |
+| `MIN`   | 计算指定列的最小值                       |
+| `AVG`   | 计算指定列的平均值                       |
+| `SUM`   | 求和，如果不是数值类型，那么计算结果为 0 |
 
 `COUNT` 聚合函数，三种使用方式。
 
@@ -348,10 +384,14 @@ SELECT 聚合函数(字段列表) FROM  表名 ;
 ```mysql
 SELECT COUNT(id) FROM emp; -- 结果：29
 SELECT COUNT(job) FROM emp; -- 结果：28 （聚合函数对 NULL 值不做计算）
+
 -- 或者 👇
+
 SELECT COUNT(0) FROM emp;
-SELECT count('A') FROM emp;
+SELECT COUNT('A') FROM emp;
+
 -- 或者 👇
+
 SELECT COUNT(*) FROM emp; -- 推荐的做法
 ```
 
@@ -361,7 +401,7 @@ SELECT COUNT(*) FROM emp; -- 推荐的做法
 SELECT MIN(entrydate) FROM emp;
 ```
 
-案例 3：统计该企业最迟入职的员工
+案例 3：统计该企业最迟入职的员工：
 
 ```mysql
 SELECT MAX(entrydate) FROM emp;
@@ -411,20 +451,20 @@ GROUP BY
 HAVING COUNT(*) >= 2;
 ```
 
-- HAVING，用于对分组后的条件，进行筛选；
+- `HAVING`，用于对分组后的条件，进行筛选，可在其中使用聚合函数；
 
-HAVING 和 WHERE 的区别：
+`HAVING` 和 `WHERE` 的区别：
 
 - 执行时机不同：
-  - WHERE 是分组之前进行过滤，不满足 WHERE 条件，不参与分组。
-  - HAVING 是分组之后，对（聚合函数的）结果进行过滤。
+  - `WHERE` 是分组之前进行过滤，不满足 `WHERE` 条件，不参与分组。
+  - `HAVING` 是分组之后，对（聚合函数的）结果进行过滤。
 - 判断条件不同：
-  - WHERE 不能对聚合函数进行判断；
-  - HAVING 可以对聚合函数进行判断；
+  - `WHERE` 不能对聚合函数进行判断；
+  - `HAVING` 可以对聚合函数进行判断；
 
 分组查询的注意事项：
 
-- 分组之后，查询的字段，一般为聚合函数和分组字段，查询其他字段无任何意义。
+- 分组之后，查询的字段，一般为聚合函数，和分组字段；查询其他字段无任何意义。
 - 执行顺序：WHERE > 聚合函数 > HAVING
 
 ## 四、排序查询
@@ -432,10 +472,8 @@ HAVING 和 WHERE 的区别：
 排序查询，语法：
 
 ```mysql
-SELECT
-  字段列表
-FROM
-  表名
+SELECT 字段列表
+FROM 表名
 [WHERE 条件列表]
 [GROUP BY 分组字段]
 ORDER BY
@@ -454,15 +492,25 @@ ORDER BY
 案例 1：根据入职时间，对员工进行升序排序：
 
 ```mysql
-SELECT * FROM emp ORDER BY entrydate;
+SELECT *
+FROM emp
+ORDER BY entrydate;
+
 -- 或者 👇
-SELECT * FROM emp ORDER BY entrydate ASC;
+
+SELECT *
+FROM emp
+ORDER BY entrydate ASC;
 ```
 
-案例 2：根据入职时间，对员工进行降序排序：
+- `ASC` 可省略；
+
+案例 2：根据入职时间，对员工进行降序：
 
 ```mysql
-SELECT * FROM emp ORDER BY entrydate DESC;
+SELECT *
+FROM emp
+ORDER BY entrydate DESC;
 ```
 
 ### 2.多字段排序
@@ -470,7 +518,9 @@ SELECT * FROM emp ORDER BY entrydate DESC;
 案例 3：根据入职时间，对公司的员工进行升序排序，如果入职时间相同，再按照最后更新时间，进行降序排序：
 
 ```mysql
-SELECT * FROM emp ORDER BY entrydate, update_time DESC;
+SELECT *
+FROM emp
+ORDER BY entrydate, update_time DESC;
 ```
 
 - 如果是多字段排序，当第一个字段值相同时，才会根据第二个字段，进行排序 ；
@@ -480,19 +530,25 @@ SELECT * FROM emp ORDER BY entrydate, update_time DESC;
 分页查询，语法：
 
 ```mysql
-SELECT 字段列表 FROM 表名 LIMIT 偏移量, 限制量;
+SELECT 字段列表
+FROM 表名
+LIMIT [偏移量（offset）], [限制量（limit）];
 ```
 
 案例 1：从起始索引 0 开始，查询员工数据，每页展示 5 条记录；
 
 ```mysql
-SELECT * FROM emp LIMIT 0, 5;
+SELECT *
+FROM emp
+LIMIT 0, 5;
 ```
 
 案例 2：查询第 1 页员工数据，每页展示 5 条记录。
 
 ```mysql
-SELECT * FROM emp LIMIT 5;
+SELECT *
+FROM emp
+LIMIT 5;
 ```
 
 - 效果和上面案例一样。
@@ -500,20 +556,24 @@ SELECT * FROM emp LIMIT 5;
 案例 3：查询第 2 页员工数据，每页展示 5 条记录。
 
 ```mysql
-SELECT * FROM emp LIMIT 5, 5;
+SELECT *
+FROM emp
+LIMIT 5, 5;
 ```
 
 案例 4：查询第 3 页员工数据，每页展示 5 条记录
 
 ```mysql
-SELECT * FROM emp LIMIT 10, 5;
+SELECT *
+FROM emp
+LIMIT 10, 5;
 ```
 
 分页查询，注意事项：
 
 1. 起始索引从 0 开始；计算公式：`偏移量（起始索引） = (查询页码 - 1）* 每页记录数`；
 2. 分页查询，是数据库的方言，不同的数据库有不同的实现，
-   - MySQL 中使用 LIMIT 语句来实现；
+   - MySQL 中使用 `LIMIT` 语句来实现；
 3. 如果查询的是第一页数据，起始索引可以省略，直接简写为 `LIMIT 页码条数`。
 
 ## 六、案例练习
@@ -529,7 +589,7 @@ SELECT * FROM emp LIMIT 10, 5;
    - 性别：男；
    - 入职时间：2000-01-01—2015-12-31。
 
-2. 除了查询条件外，在列表的下面还有一个分页条，这就涉及到了分页查询
+2. 除了查询条件外，在列表的下面还有一个分页条，这就涉及到了分页查询。
    - 查询第 1 页数据（每页显示 10 条数据）。
 3. 基于查询的结果，按照修改时间，进行降序排序。
 

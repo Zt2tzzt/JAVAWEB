@@ -42,7 +42,7 @@ INSERT INTO 表名 (字段名1, 字段名2) VALUES (值1, 值2), (值1, 值2), �
 INSERT INTO 表名 VALUES (值1, 值2, ...), (值1, 值2, ...), ……;
 ```
 
-INSER 语句的三点注意事项：
+INSERT 语句的三点注意事项：
 
 1. 插入数据时，指定的字段顺序，与值的顺序是一一对应的。
 
@@ -149,7 +149,7 @@ DELETE FROM user WHERE id = 1;
 DELETE FROM user;
 ```
 
-DELETE 语句注意事项。
+DELETE 语句注意事项：
 
 - DELETE 语句的条件可以有，也可以没有，如果没有条件，则会删除整张表的所有数据。
 - DELETE 语句不能删除某一个字段的值，只能使用 UPDATE 语句，将该字段值置为 NULL。
