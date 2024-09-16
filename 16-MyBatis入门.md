@@ -203,7 +203,7 @@ spring.datasource.url=jdbc:mysql://localhost:3306/javawebdb
 # 连接数据库用户名
 spring.datasource.username=root
 # 连接数据库密码
-spring.datasource.password=wee1219
+spring.datasource.password=123456
 ```
 
 ### 3.MyBatis 入门程序编写 SQL 语句
