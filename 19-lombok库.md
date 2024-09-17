@@ -1,13 +1,13 @@
 # Lombok 库
 
-Lombok 是一个实用的 Java 类库，可以通过简单的注解，来简化和消除一些必须有但显得很臃肿的 Java 代码。
+Lombok 是一个实用的 Java 类库，可以通过简单的注解，来简化和消除一些必须有，但显得很臃肿的 Java 代码。
 
 比如对于实体（pojo）类来说，可以通过注解的形式：自动生成
 
 - 构造器
 - getter、setter 方法
-- equals、hashcode 方法
-- toString 方法；
+- `equals`、`hashcode` 方法
+- `toString` 方法；
 
 并可以自动化生成日志变量，简化 java 开发、提高效率。
 
@@ -26,8 +26,8 @@ Lombok 是一个实用的 Java 类库，可以通过简单的注解，来简化�
 
 在基于 Maven 构建的 Spring Boot 项目中，添加 lombok 依赖。
 
-- Spring  Boot 父工程中，管理了 Lombok 的版本号。
-- 所以，在 pom.xml 中，引入 Lombok 依赖，不用指定版本号
+- Spring Boot 父工程中，管理了 Lombok 的版本号。
+- 所以，在 pom.xml 中，引入 Lombok 依赖，不用指定版本号。
 
 demo-project/springbot-mybatis-quickstart/pom.xml
 
@@ -65,4 +65,4 @@ public class User {
 Lombok 的注意事项：
 
 - Lombok 会在程序编译时，自动生成对应的 java 代码，再编译成字节码文件。
-- 在使用 lombok 时，还需要安装一个 lombok 的插件（DEA 中自带）
+- 在使用 lombok 时，还需要安装一个 lombok 的插件（IDEA 中已自带）
