@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkcf.mapper.EmpMapper">
+    <sql id="commonSelect">
+        SELECT id, username, password, name, gender, image, job, entrydate, dept_id, create_time, update_time FROM emp
+    </sql>
+
+    <!-- resultType 指的是单条记录对应的类型-->
+    <select id="selectEmpById" resultType="com.kkcf.pojo.Emp">
+        <include refid="commonSelect"/>
+        WHERE id = #{id};
+    </select>
+
+    <select id="selectEmpByCondition" resultType="com.kkcf.pojo.Emp">
+        <include refid="commonSelect"/>
+        <where>
+            <if test="name != null">
+                name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="gender != null">
+                AND gender = #{gender}
+            </if>
+            <if test="startDate != null and endDate != null">
+                AND entrydate BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+        ORDER BY entrydate DESC;
+    </select>
+
+    <update id="updateEmpById">
+        UPDATE emp
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="image != null">
+                image = #{image},
+            </if>
+            <if test="job != null">
+                job = #{job},
+            </if>
+            <if test="entrydate != null">
+                entrydate = #{entrydate},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId},
+            </if>
+            <if test="update_time != null">
+                update_time = #{updateTime}
+            </if>
+        </set>
+        WHERE id = #{id};
+    </update>
+
+    <delete id="deleteEmpByIds">
+        DELETE FROM emp WHERE id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

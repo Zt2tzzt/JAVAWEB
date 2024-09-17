@@ -1,6 +1,6 @@
 # MyBatis 入门
 
-在客户端工具（Navicat、DataGrip）中，编写 SQL语句，发给 MySQL 数据库管理系统（DBMS），由数据库管理系统（DBMS）执行 SQL 语句，并返回执行结果。
+在客户端工具（Navicat、DataGrip）中，编写 SQL 语句，发给 MySQL 数据库管理系统（DBMS），由数据库管理系统（DBMS）执行 SQL 语句，并返回执行结果。
 
 - 增、删、改操作，返回受影响行数；
 - 查操作：返回结果集（查询的结果）
@@ -9,7 +9,7 @@
 
 ## 一、MyBatis 是什么
 
-Java 程序操作数据库，现在主流的方式是：Mybatis。
+Java 程序操作数据库，现在主流的框架是：MyBatis。
 
 MyBatis 是一款优秀的**持久层框架**，用于简化 JDBC 的开发。
 
