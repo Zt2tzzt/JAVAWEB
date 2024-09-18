@@ -195,20 +195,19 @@ Spring Boot 整合的 MyBatis 矿建，配置数据库连接信息在 applicatio
 demo-project/springbot-mybatis-quickstart/src/main/resources/application.properties
 
 ```properties
-spring.application.name=springbot-mybatis-quickstart
 # 驱动类名称
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 # 数据库连接 url
-spring.datasource.url=jdbc:mysql://localhost:3306/javawebdb
+spring.datasource.url=jdbc:mysql://localhost:3306/xxxxxx
 # 连接数据库用户名
-spring.datasource.username=root
+spring.datasource.username=xxxxxx
 # 连接数据库密码
-spring.datasource.password=123456
+spring.datasource.password=xxxxxx
 ```
 
 ### 3.MyBatis 入门程序编写 SQL 语句
 
-可以通过注解，或 XML 方式，编写 SQL 语句。
+在 MyBatis 框架中，可以通过注解，或 XML 映射文件方式，编写 SQL 语句。
 
 创建 mapper 包，相当于三层架构中的 dao 包，用于存放 MyBatis 框架中用到的 Mapper 接口。
 
@@ -228,7 +227,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
-@Mapper // 在程序运行时，MyBatis 框架会自动生成该接口的实现类对昂（代理对象），并且将该对象，交给 IOC 容器管理。
+@Mapper // 在程序运行时，MyBatis 框架会自动生成该接口的实现类对象（代理对象），并且将该对象，交给 IOC 容器管理。
 public interface UserMapper {
     @Select("SELECT * FROM user")
     List<User> userlist();
@@ -237,9 +236,9 @@ public interface UserMapper {
 
 ### 4.MyBatis 入门程序单元测试
 
-Spring Boot工程，在 src 下的 test 目录下，已经自动帮我们创建好了测试类  `SpringbotMybatisQuickstartApplicationTests`，
+Spring Boot 工程，在 src 下的 test 目录下，已经自动创建好了测试类 `SpringbotMybatisQuickstartApplicationTests`，
 
-- `@SpringBootTest` 注解，是 Spring Boot 整合单元测试注解，表示该测试类，已经与 Spring Boot 整合。
+- `该类上的 @SpringBootTest` 注解，是 Spring Boot 整合单元测试注解，表示该测试类，已经与 Spring Boot 整合。
   - 类中的单元测试方法，在运行时，会自动通过引导类 `SpringbotMybatisQuickstartApplication`，加载 Spring Boot 环菌，并创建 IOC 容器。
   - 要测试哪个 bean 对象，就可直接通过 `@Autowired` 注解，将其注入。
 
@@ -264,12 +263,9 @@ class SpringbotMybatisQuickstartApplicationTests {
     private UserMapper userMapper;
 
     @Test
-    void contextLoads() {
-    }
-
-    @Test
     public void testListUser() {
         List<User> users = userMapper.listUser();
+
         users.stream().forEach(System.out::println);
     }
 
@@ -278,10 +274,10 @@ class SpringbotMybatisQuickstartApplicationTests {
 
 ## 四、IDEA 配置 MyBatis SQL 提示
 
-在 UserMapper 类中：
+在 `UserMapper` 类中：
 
-- 右键 @Select 注解中的 SQL 语句 -> 点击 “Show Context Actions” -> 点击 “Language Injection Setting” -> ID 选择 MySQL；
+- 右键 `@Select` 注解中的 SQL 语句 -> 点击 “Show Context Actions” -> 点击 “Language Injection Setting” -> ID 选择 MySQL；
 
-会发现，查询的表 user 报红色。这是因为在 IDEA 中，没有配置操作数据库的连接。所以 IDEA 没法给出 SQL 语句正确性的提示。
+会发现，查询的表 user 报红色。这是因为在 IDEA 中，没有配置要操作的数据库的连接。所以 IDEA 没法给出 SQL 语句正确性的提示。
 
 - 在 IDEA 右侧 Database 面板中，配置目标数据库的连接即可。
