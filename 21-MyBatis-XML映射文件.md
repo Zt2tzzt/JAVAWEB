@@ -7,7 +7,7 @@ MyBatis 开发，有两种方式：
 
 Mybatis 的注解方式，主要是来完成一些简单的增、删、改、查功能。
 
-如果需要执行复杂的 SQL 功能，建议使用 XML 来配置映射语句，也就是将 SQL 语句，写在 XML 配置文件中。
+如果需要执行复杂的 SQL 功能，建议使用 XML 映射文件来配置 SQL 语句，也就是将 SQL 语句，写在 XML 配置文件中。
 
 MyBatis 中的 XML 配置文件，又称为 XML 映射文件。
 
@@ -16,7 +16,8 @@ MyBatis 中的 XML 配置文件，又称为 XML 映射文件。
 在 Mybatis 中，使用 XML 映射文件，需要符合下面规范：
 
 1. 一个 Mapper 接口，对应一个 XML 映射文件。
-2. XML 映射文件的名称，与  Mapper 接口名称一致，并且将 XML 映射文件和 Mapper 接口放置在相同包下（同包同名）
+2. XML 映射文件的名称，与  Mapper 接口名称一致；
+   - 并且将 XML 映射文件和 Mapper 接口，分别放置在 resources 目录相 java 目录同包下（同包同名）
 3. XML 映射文件中，`<mapper>` 标签的 `namespace` 属性值，与 Mapper 接口全限定名保持一致。
 4. XML 映射文件中， SQL 语句对应的标签（比如 `<select>` 标签）的
    - `id` 属性值，与 Mapper 接口中的方法名保持一致；
@@ -24,13 +25,13 @@ MyBatis 中的 XML 配置文件，又称为 XML 映射文件。
 
 `<select>` 标签：就是用于编写 SELECT 查询语句的。
 
-- `resultType` 属性，指的是查询返回的单条记录，所对应的类型。
+- 其 `resultType` 属性，指的是查询返回的单条记录，所对应的类型。
 
 ## 二、MyBatis XML 映射文件操作数据库
 
 使用 MyBatis XML 映射文件的方式，执行查询语句：
 
-第一步，创建 Mapper 接口 EmpMapper；在其中定义一个方法 selectEmpById；
+第一步，创建 Mapper 接口 `EmpMapper`；在其中定义一个方法 `selectEmpById`；
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/EmpMapper.java
 
@@ -64,7 +65,7 @@ public interface EmpMapper {
 
 第三步：编写 XML 映射文件的约束
 
-- MyBatis XML 映射文件的约束，在[官网](https://mybatis.org/mybatis-3/zh_CN/getting-started.html#%E6%8E%A2%E7%A9%B6%E5%B7%B2%E6%98%A0%E5%B0%84%E7%9A%84-sql-%E8%AF%AD%E5%8F%A5)中复制下来。
+- MyBatis XML 映射文件的约束，可在[官网](https://mybatis.org/mybatis-3/zh_CN/getting-started.html#%E6%8E%A2%E7%A9%B6%E5%B7%B2%E6%98%A0%E5%B0%84%E7%9A%84-sql-%E8%AF%AD%E5%8F%A5)中复制下来。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>

@@ -65,9 +65,11 @@ VALUES (1, '学工部', now(), now()),
 在员工表 emp 中，增加一个字段 dept_id，来关联部门表 dept  的主键。使用外键约束。
 
 ```mysql
-ALTER TABLE emp ADD dept_id INT UNSIGNED COMMENT '部门 ID（外键）' -- 添加字段
+ALTER TABLE emp
+    ADD dept_id INT UNSIGNED COMMENT '部门 ID（外键）' -- 添加字段
 
-ALTER TABLE emp ADD CONSTRAINT fk_emp_dept_id FOREIGN KEY (dept_id) REFERENCES dept (id); -- 为字段添加外键约束
+ALTER TABLE emp
+    ADD CONSTRAINT fk_emp_dept_id FOREIGN KEY (dept_id) REFERENCES dept (id); -- 为字段添加外键约束
 ```
 
 删除 emp 表中的全部数据：
@@ -102,12 +104,14 @@ VALUES (1, 'jinyong', '123456', '金庸', 1, '1.jpg', 4, '2000-01-01', 2, now(),
 
 ### 2.物理外键和逻辑外键
 
-物理外键，指的是使用 `FOREIGN KEY` 定义外键关联另外一张表。以上做法，在表中加入的外键约束，称为物理外键。
+物理外键，指的是使用 `FOREIGN KEY` 定义外键关联另外一张表。
+
+以上做法，在表中加入的外键约束，称为物理外键。
 
 物理外键的缺点：：
 
 - 增、删、改效率低，需要检查外键关系。
-- 仅用于单节点数据库，不适用与分布式、集群场景。
+- 仅用于单节点数据库，不适用于分布式、集群场景。
 - 容易引发数据库的死锁问题，消耗性能。
 
 逻辑外键，指的是在业务层逻辑中，解决外键关联。它可以很方便的解决物理外键存在的问题。
@@ -239,7 +243,7 @@ CREATE TABLE student_course
 INSERT INTO student_course(student_id, course_id) VALUES (1,1), (1,2), (1,3), (2,2), (2,3), (3,4);
 ```
 
-- 在中间表中，为体现关联关系，使用物理外键；在实际开发中很少见。
+- 在中间表中，为体现关联关系，使用了物理外键；实际开发中很少用。
 
 > 在 IDEA 中，以图形化的方式，查看表与表之间的关系：选中有关联关系的表，右键 -> Show Diagram
 

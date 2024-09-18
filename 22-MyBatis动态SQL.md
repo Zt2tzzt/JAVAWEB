@@ -1,13 +1,13 @@
 # MyBatis 动态 SQL
 
-实际开发中，在查询数据时，如果条件为空，则表示不传。
+实际开发中，在查询数据时，如果条件为空，一般表示不传。
 
-上文在根据条件查询的接口方法 selectEmpByCondition 中，编写的 SQL 语句中，将条件直接写死了。
+上文条件查询的接口方法 `selectEmpByCondition` 中，编写的 SQL 语句中，将条件直接写死了。
 
-- 如果只传递了参数 name 字段，其他两个字段 gender 和 entrydate 不传，那么这两个参数的值就是 null。这个查询结果，是不正确的。
+- 如果只传递了参数 name 字段，其它两个字段 gender 和 entrydate 不传，那么这两个参数的值就是 null。这个查询结果，是不正确的。
 - 正确的做法应是：传递了参数，再组装这个查询条件；没有传递参数，就不应该组装这个查询条件。
 
-比如：如果姓名输入了"张", 对应的 SQL 应为：
+比如：如果姓名输入了"张"，对应的 SQL 应为：
 
 ```mysql
 SELECT *
@@ -16,7 +16,7 @@ WHERE name LIKE '%张%'
 ORDER BY update_time DESC;
 ```
 
-比如：姓名输入了"张",，性别选择了"男"，则对应的 SQL 应为:
+比如：姓名输入了"张"，性别选择了"男"，则对应的 SQL 应为:
 
 ```mysql
 SELECT *
@@ -47,7 +47,7 @@ SQL 语句，会随着用户的输入，或外部条件的变化，而变化，�
 
 案例理解：在 XML 映射文件中，把 SQL 语句，改造为动态 SQL 方式
 
-原有的 SQL 语句：
+原 SQL 语句：
 
 demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/EmpMapper.xml
 
@@ -197,9 +197,9 @@ Caused by: java.sql.SQLSyntaxErrorException: You have an error in your SQL synta
 `<where>` 标签：
 
 - 只会在子标签有内容的情况下，才插入 WHERE 子句；
-- 而且会自动去除子句的开头的 AND 或 OR
+- 而且会自动去除子句开头的 AND 或 OR 关键字。
 
-对上方 XML 映射文件，进行优化：
+使用 `<where>` 标签，对上方 XML 映射文件，进行优化：
 
 demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/EmpMapper.xml
 
@@ -247,11 +247,11 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
 
 案例理解：编写动态 SQL，实现更新员工功能，
 
-- 如果更新时，有对字段传递，则更新；否则，不更新。
+- 如果更新时，有对字段传值，则更新；否则，不更新。
 
 在 XML 映射文件中，需要使用到 `<set>` 标签，代替 UPDATE 语句中的 `SET` 关键字：
 
-修改 EmpMapper 接口中的方法 updateEmpById
+修改 `EmpMapper` 接口中的方法 `updateEmpById`
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/EmpMapper.java
 
@@ -269,7 +269,7 @@ public interface EmpMapper {
 }
 ```
 
-在 XML 映射文件中，动态更行员工信息。
+在 XML 映射文件中，动态更新员工信息。
 
 demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/EmpMapper.xml
 
@@ -312,7 +312,7 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
 </mapper>
 ```
 
-> MyBatisX 插件，会根据方法名，自动生成补全 XML 映射文件。
+> IDEA 中的 MyBatisX 插件，会根据方法名，自动生成补全 XML 映射文件。
 >
 > - 方法名中有 update，就生成 UPDATE 语句；
 > - 方法名中有 select，就生成 SELECT 语句；
@@ -324,7 +324,7 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
 
 案例理解：批量删除员工功能实现。
 
-SQL语句：
+SQL 语句：
 
 ```mysql
 DELETE
@@ -332,7 +332,7 @@ FROM emp
 WHERE id IN (1, 2, 3);
 ```
 
-在 EmpMapper 中，定义方法 deleteEmpByIds
+在 `EmpMapper` 中，定义方法 `deleteEmpByIds`
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/EmpMapper.java
 
@@ -357,7 +357,7 @@ public interface EmpMapper {
 </foreach>
 ```
 
-在 XML 映射文件：使用 `<foreach>` 标签，遍历 deleteEmpByIds 方法中传递的参数 ids 集合
+在 XML 映射文件：使用 `<foreach>` 标签，遍历 `deleteEmpByIds` 方法中传递的参数 `ids` 集合
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>

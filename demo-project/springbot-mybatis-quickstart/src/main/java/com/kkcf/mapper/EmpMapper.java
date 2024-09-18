@@ -40,7 +40,7 @@ public interface EmpMapper {
             "       create_time,\n" +
             "       update_time\n" +
             "FROM emp\n" +
-            "WHERE name LIKE CONCAT('%', '张', '%')\n" +
+            "WHERE name LIKE CONCAT('%', #{name}, '%')\n" +
             "  AND gender = #{gender}\n" +
             "  AND entrydate BETWEEN #{startDate} AND #{endDate}\n" +
             "ORDER BY entrydate DESC;")

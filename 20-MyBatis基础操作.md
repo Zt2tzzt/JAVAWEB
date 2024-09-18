@@ -91,18 +91,19 @@ demo-project/springbot-mybatis-quickstart/pom.xml
 demo-project/springbot-mybatis-quickstart/src/main/resources/application.properties
 
 ```properties
-spring.application.name=springbot-mybatis-quickstart
 # 驱动类名称
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 # 数据库连接 url
-spring.datasource.url=jdbc:mysql://localhost:3306/javawebdb
+spring.datasource.url=jdbc:mysql://localhost:3306/xxxxxx
 # 连接数据库用户名
-spring.datasource.username=root
+spring.datasource.username=xxxxxx
 # 连接数据库密码
 spring.datasource.password=xxxxxx
 ```
 
 创建一个实体（pojo）类 Emp，其中的属性，与表结构中的字段一一对应。
+
+- 使用 Lombok 注解，为其生成 getter、setter、toString、equals、hashcode，空参构造、带参构造方法。
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/pojo/Emp.java
 
@@ -135,7 +136,7 @@ public class Emp {
 ```
 
 - 数据库 `DATE` 类型，对应 JDK1.8 的 `LocalDate` 类型；数据库的 `DATETIME` 类型，对应 JDK1.8 的 `LocalDateTime` 类型。
-- 数据库字段名中的 `_` 下划线，再实体类中使用规范的驼峰命名代替。
+- 数据库字段名中的 `_` 下划线，在实体类中使用规范的驼峰命名代替。
 
 创建一个 Mapper 接口 EmpMapper，
 
@@ -143,9 +144,9 @@ public class Emp {
 
 根据主键（Id）删除记录。
 
-创建一个 mapper 包（package），在其中创建一个 EmpMapper 接口
+创建一个 mapper 包（package），在其中创建一个 `EmpMapper` 接口
 
-- 再接口中的方法上，使用 `@Delete` 注解，表示该方法用于执行 DELETE 语句。
+- 在接口中定义一个方法 `deleteEmp`，为它使用 `@Delete` 注解，表示该方法用于执行 DELETE 语句。
 - MyBatis 中，提供了 `#{}` 用于 SQL 语句中的占位符。
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/EmpMapper.java
@@ -163,7 +164,7 @@ public interface EmpMapper {
 }
 ```
 
-> 如果 mapper 接口方法的形参只有一个，那么 SQL 占位符中的变量名可以用任意值。
+> 如果 mapper 接口方法的形参，只有一个，那么 SQL 占位符中的变量名，可以用任意值。
 >
 > 但是建议两者保持一致，增强可读性。
 
@@ -248,9 +249,9 @@ mybatis.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
 - Preparing 表示执行的 SQL 语句，其中的 `?` 表示占位符。
 - Parameters 表示填充 SQL 语句占位符的参数。
 
-可知，MyBatis 在底层执行的是**预编译** SQL 语句：
+可知 MyBatis 在底层，执行的是**预编译** SQL 语句：
 
-- MyBatis 会将 SQL 语句，与传入占位符的参数，一并发给数据库管理形同（DBMS）
+- MyBatis 会将 SQL 语句，与传入占位符的参数，一并发给数据库管理系统（DBMS）
 - 数据库管理系统（DBMS）将占位符参数，替换掉 SQL 语句中的占位符后，再执行 SQL
 
 ## 四、预编译 SQL
@@ -307,9 +308,9 @@ SQL 注入：是通过操作输入的数据，来修改事先定义好的 SQL �
 
 ## 六、MyBatis 新增
 
-使用 MyBatis 矿建，新增一条员工记录。
+使用 MyBatis 框架，新增一条员工记录。
 
-在 EmpMapper 接口中，新增抽象方法 insertEmp。
+在 EmpMapper 接口中，新增抽象方法 `insertEmp`。
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/EmpMapper.java
 
@@ -374,17 +375,17 @@ class SpringbotMybatisQuickstartApplicationTests {
 
 概念：在数据添加成功后，需要获取插入数据库数据的主键。
 
-新增主键返回的使用场景：
+插入记录后，主键返回的使用场景：
 
-- 在有中间表的情况下，比如新增套餐后，还需要录入套餐中的菜品，它们是多对多关系。
-- 所以要拿到套餐、菜品的主键（Id），用于在中间表中建立它们的关联关系。
+- 在有中间表的情况下，比如新增套餐后，还需要录入套餐中的菜品，它们的数据库表结构是多对多关系。
+- 所以要拿到套餐、菜品的主键（Id），用于在中间表中，建立它们的关联关系。
 
-默认情况下，执行插入操作时，不会值返回主键值。
+默认情况下，执行插入操作时，不会返回主键值。
 
 如果要拿到主键值，需要在 Mapper 接口的方法上：
 
 - 添加一个 `@Options` 注解，并在注解中；
-- 指定属性 `useGeneratedKeys=true` 和`keyProperty="实体类属性名"`
+- 指定属性 `useGeneratedKeys=true` 和 `keyProperty="实体类属性名"`
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/EmpMapper.java
 
@@ -452,7 +453,7 @@ class SpringbotMybatisQuickstartApplicationTests {
 
 根据主键（id），修改记录的信息。
 
-在 EmpMapper 接口中，定义一个方法 updateEmp 用于更行 emp 记录。
+在 `EmpMapper` 接口中，定义一个方法 `updateEmp` 用于更行 emp 记录。
 
 ```java
 package com.kkcf.mapper;
@@ -522,7 +523,7 @@ Emp(id=18, username=linghushaoxiao, password=123456, name=令狐少校, gender=1
 MyBatis 查询操作的数据封装
 
 - 实体类属性名，与数据库表查询返回的字段名一致，Mybatis 会自动封装。
-- 实体类属性名，与数据库表查询返回的字段名不一致，不能自动封装。
+- 实体类属性名，与数据库表查询返回的字段名不一致，不能自动动封装。
 
 解决方案有三种：
 
@@ -545,7 +546,7 @@ public interface EmpMapper {
 }
 ```
 
-### 2.MyBatis 查询 @Results、@Result 注解
+### 2.MyBatis 查询 @Results、@Result 注解使用
 
 在 Mapper 接口抽象方法上，使用 `@Results` 和 `@Result` 注解，手动映射封装。
 
@@ -575,11 +576,9 @@ public interface EmpMapper {
 
 开启 MyBatis 驼峰命名自动映射的开关；
 
-对实体类属性名，与表中字段名，有严格要求：比如：
+这种做法，对实体类属性命名，与表中字段命名，有严格要求：
 
-- 当表中字段名为 abc_xyz 时；
-- 实体类中属性名必须是 abcXyz。
-- 否则无法进行映射。
+- 比如：当表中字段名为 abc_xyz 时；实体类中属性名必须是 abcXyz。否则无法进行映射。
 
 demo-project/springbot-mybatis-quickstart/src/main/resources/application.properties
 
@@ -647,9 +646,11 @@ WHERE name LIKE '%张%'
 ORDER BY entrydate DESC;
 ```
 
-在 Mapper 接口中，定义抽象方法 selectEmpByCondition
+在 Mapper 接口中，定义抽象方法 `selectEmpByCondition`
 
 查询条件中的字符串拼接，有两种方式：
+
+### 1.${…} 的使用
 
 方式一：使用 `${…}` 拼接姓名（性能低，有安全风险，不推荐）
 
@@ -685,6 +686,8 @@ public interface EmpMapper {
     List<Emp> selectEmpByCondition(String name, Short gender, LocalDate startDate, LocalDate endDate);
 }
 ```
+
+### 2.MySQL CONCAT 函数
 
 方式二：使用 MySQL 提供的函数 `CONCAT()`
 
@@ -736,7 +739,7 @@ public interface EmpMapper {
             "       create_time,\n" +
             "       update_time\n" +
             "FROM emp\n" +
-            "WHERE name LIKE CONCAT('%', '张', '%')\n" +
+            "WHERE name LIKE CONCAT('%', #{name}, '%')\n" +
             "  AND gender = #{gender}\n" +
             "  AND entrydate BETWEEN #{startDate} AND #{endDate}\n" +
             "ORDER BY entrydate DESC;")
@@ -811,7 +814,7 @@ Spring Boot 1.X 版本，或单独使用 MyBatis 框架时
         "       create_time,\n" +
         "       update_time\n" +
         "FROM emp\n" +
-        "WHERE name LIKE CONCAT('%', '张', '%')\n" +
+        "WHERE name LIKE CONCAT('%', #{name}, '%')\n" +
         "  AND gender = #{gender}\n" +
         "  AND entrydate BETWEEN #{startDate} AND #{endDate}\n" +
         "ORDER BY entrydate DESC;")
