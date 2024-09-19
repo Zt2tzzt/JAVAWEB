@@ -16,12 +16,11 @@ MyBatis 中的 XML 配置文件，又称为 XML 映射文件。
 在 Mybatis 中，使用 XML 映射文件，需要符合下面规范：
 
 1. 一个 Mapper 接口，对应一个 XML 映射文件。
-2. XML 映射文件的名称，与  Mapper 接口名称一致；
-   - 并且将 XML 映射文件和 Mapper 接口，分别放置在 resources 目录相 java 目录同包下（同包同名）
-3. XML 映射文件中，`<mapper>` 标签的 `namespace` 属性值，与 Mapper 接口全限定名保持一致。
+2. XML 映射文件的名称，与  Mapper 接口名称一致；它们分别放在 resources 目录相 java 目录同名包下（同包同名）
+3. XML 映射文件中，`<mapper>` 标签的 `namespace` 属性值，与 Mapper 接口全限定名（全类名）保持一致。
 4. XML 映射文件中， SQL 语句对应的标签（比如 `<select>` 标签）的
    - `id` 属性值，与 Mapper 接口中的方法名保持一致；
-   - `resultType` 属性值，与返回类型的全限定名保持一致。
+   - `resultType` 属性值，与返回类型的全限定名（全类名）保持一致。
 
 `<select>` 标签：就是用于编写 SELECT 查询语句的。
 
@@ -31,7 +30,7 @@ MyBatis 中的 XML 配置文件，又称为 XML 映射文件。
 
 使用 MyBatis XML 映射文件的方式，执行查询语句：
 
-第一步，创建 Mapper 接口 `EmpMapper`；在其中定义一个方法 `selectEmpById`；
+第一步，在 Mapper 接口 `EmpMapper` 中；定义一个方法 `selectEmpById`；
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/EmpMapper.java
 

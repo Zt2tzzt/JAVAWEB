@@ -2,7 +2,7 @@
 
 实际开发中，在查询数据时，如果条件为空，一般表示不传。
 
-上文条件查询的接口方法 `selectEmpByCondition` 中，编写的 SQL 语句中，将条件直接写死了。
+上文条件查询的接口方法 `selectEmpByCondition` 中，编写的 SQL 语句，将条件直接写死了。
 
 - 如果只传递了参数 name 字段，其它两个字段 gender 和 entrydate 不传，那么这两个参数的值就是 null。这个查询结果，是不正确的。
 - 正确的做法应是：传递了参数，再组装这个查询条件；没有传递参数，就不应该组装这个查询条件。
@@ -58,17 +58,7 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkcf.mapper.EmpMapper">
     <select id="selectEmpByCondition" resultType="com.kkcf.pojo.Emp">
-        SELECT id,
-        username,
-        password,
-        name,
-        gender,
-        image,
-        job,
-        entrydate,
-        dept_id,
-        create_time,
-        update_time
+        SELECT id, username, password, name, gender, image, job, entrydate, dept_id, create_time, update_time
         FROM emp
         WHERE name LIKE CONCAT('%', #{name}, '%')
             AND gender = #{gender}
@@ -89,17 +79,7 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkcf.mapper.EmpMapper">
     <select id="selectEmpByCondition" resultType="com.kkcf.pojo.Emp">
-        SELECT id,
-        username,
-        password,
-        name,
-        gender,
-        image,
-        job,
-        entrydate,
-        dept_id,
-        create_time,
-        update_time
+        SELECT id, username, password, name, gender, image, job, entrydate, dept_id, create_time, update_time
         FROM emp
         WHERE
         <if test="name != null">
@@ -210,17 +190,7 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkcf.mapper.EmpMapper">
     <select id="selectEmpByCondition" resultType="com.kkcf.pojo.Emp">
-        SELECT id,
-        username,
-        password,
-        name,
-        gender,
-        image,
-        job,
-        entrydate,
-        dept_id,
-        create_time,
-        update_time
+        SELECT id, username, password, name, gender, image, job, entrydate, dept_id, create_time, update_time
         FROM emp
         <where>
             <if test="name != null">
@@ -303,7 +273,7 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
             <if test="deptId != null">
                 dept_id = #{deptId},
             </if>
-            <if test="update_time != null">
+            <if test="updateTime != null">
                 update_time = #{updateTime}
             </if>
         </set>
