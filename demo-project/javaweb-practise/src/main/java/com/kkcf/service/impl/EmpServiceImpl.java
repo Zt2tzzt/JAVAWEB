@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -40,9 +41,23 @@ public class EmpServiceImpl implements EmpService {
         PageHelper.startPage(page, pageSize);
 
         // 2.进行分页查询
-        List<Emp> list = empMapper.listEmp(name, gender, startDate, endDate);
+        List<Emp> list = empMapper.list(name, gender, startDate, endDate);
         Page<Emp> p = (Page<Emp>) list;
 
         return new EmpPageBean(p.getTotal(), p.getResult());
+    }
+
+    @Override
+    public int removeByIds(int[] ids) {
+        return empMapper.deleteByIds(ids);
+    }
+
+    @Override
+    public int addEmp(Emp emp) {
+        // 补充基础属性
+        emp.setCreateTime(LocalDateTime.now());
+        emp.setUpdateTime(LocalDateTime.now());
+
+        return empMapper.insertEmp(emp);
     }
 }

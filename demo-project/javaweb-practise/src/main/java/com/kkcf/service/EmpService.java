@@ -1,5 +1,6 @@
 package com.kkcf.service;
 
+import com.kkcf.pojo.Emp;
 import com.kkcf.pojo.EmpPageBean;
 
 import java.time.LocalDate;
@@ -12,4 +13,8 @@ public interface EmpService {
             int gender,
             LocalDate startDate,
             LocalDate endDate);
+
+    int removeByIds(int[] ids);
+
+    int addEmp(Emp emp);
 }

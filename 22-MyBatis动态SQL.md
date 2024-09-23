@@ -4,10 +4,10 @@
 
 上文条件查询的接口方法 `selectEmpByCondition` 中，编写的 SQL 语句，将条件直接写死了。
 
-- 如果只传递了参数 name 字段，其它两个字段 gender 和 entrydate 不传，那么这两个参数的值就是 null。这个查询结果，是不正确的。
+- 如果只传递了参数 name，其它两个字段 gender 和 entrydate 不传，那么这两个参数的值就是 null。这个查询结果，是不正确的。
 - 正确的做法应是：传递了参数，再组装这个查询条件；没有传递参数，就不应该组装这个查询条件。
 
-比如：如果姓名输入了"张"，对应的 SQL 应为：
+比如：如果姓名输入了"张"，其它表单字段没有填写，那么对应的 SQL 应为：
 
 ```mysql
 SELECT *
@@ -16,7 +16,7 @@ WHERE name LIKE '%张%'
 ORDER BY update_time DESC;
 ```
 
-比如：姓名输入了"张"，性别选择了"男"，则对应的 SQL 应为:
+比如：姓名输入了"张"，性别选择了"男"，其它表单字段没有填写，则对应的 SQL 应为:
 
 ```mysql
 SELECT *
@@ -96,6 +96,8 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
 </mapper>
 ```
 
+- `<if>` 标签的 `test` 属性，其中的关键字（比如 `and`）都是小写的。
+
 单元测试：
 
 demo-project/springbot-mybatis-quickstart/src/test/java/com/kkcf/SpringbotMybatisQuickstartApplicationTests.java
@@ -128,7 +130,7 @@ class SpringbotMybatisQuickstartApplicationTests {
 }
 ```
 
-当修改测试方法中的代码如下，
+修改测试方法中的代码如下，
 
 demo-project/springbot-mybatis-quickstart/src/test/java/com/kkcf/SpringbotMybatisQuickstartApplicationTests.java
 
@@ -176,8 +178,8 @@ Caused by: java.sql.SQLSyntaxErrorException: You have an error in your SQL synta
 
 `<where>` 标签：
 
-- 只会在子标签有内容的情况下，才插入 WHERE 子句；
-- 而且会自动去除子句开头的 AND 或 OR 关键字。
+- 只会在子标签有内容的情况下，才插入 `WHERE` 子句；
+- 而且会自动去除子句开头的 `AND` 或 `OR` 关键字。
 
 使用 `<where>` 标签，对上方 XML 映射文件，进行优化：
 
@@ -208,18 +210,18 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
 </mapper>
 ```
 
+- `<where>` 标签下，第一个 `<if>` 子标签中的子句，没有 `AND` 关键字。
+
 ## 三、set 标签
 
 `<set>` 标签：
 
-- 会为动态 SQL 语句（UPDATE 语句）中，插入 `SET` 关键字；
+- 会为动态 SQL 语句（`UPDATE` 语句）中，插入 `SET` 关键字；
 - 并会删掉额外的 `,` 逗号。
 
 案例理解：编写动态 SQL，实现更新员工功能，
 
 - 如果更新时，有对字段传值，则更新；否则，不更新。
-
-在 XML 映射文件中，需要使用到 `<set>` 标签，代替 UPDATE 语句中的 `SET` 关键字：
 
 修改 `EmpMapper` 接口中的方法 `updateEmpById`
 
@@ -239,7 +241,7 @@ public interface EmpMapper {
 }
 ```
 
-在 XML 映射文件中，动态更新员工信息。
+在 XML 映射文件中，编写 `<update>` 标签中的 SQL 语句，动态更新员工信息。
 
 demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/EmpMapper.xml
 

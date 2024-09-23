@@ -1,6 +1,7 @@
 package com.kkcf.mapper;
 
 import com.kkcf.pojo.Emp;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDate;
@@ -14,10 +15,15 @@ public interface EmpMapper {
     @Select("SELECT COUNT(*) FROM emp;")
     Long listCount();*/
 
-    List<Emp> listEmp(
+    List<Emp> list(
             String name,
             int gender,
             LocalDate startDate,
             LocalDate endDate
     );
+
+    int deleteByIds(int[] ids);
+
+    @Insert("INSERT INTO emp(username, password, name, gender, image, job, entrydate, dept_id, create_time, update_time) VALUES (#{username}, #{password}, #{name}, #{gender}, #{image}, #{job}, #{entrydate}, #{deptId}, #{createTime}, #{updateTime});")
+    int insertEmp(Emp emp);
 }

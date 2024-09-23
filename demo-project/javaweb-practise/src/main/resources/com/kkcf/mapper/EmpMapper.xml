@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkcf.mapper.EmpMapper">
-    <select id="listEmp">
+    <select id="list" resultType="com.kkcf.pojo.Emp">
         SELECT id, username, password, name, gender, image, job, entrydate, dept_id, create_time, update_time
         FROM emp
         <where>
@@ -18,4 +18,11 @@
             </if>
         </where>
     </select>
+
+    <delete id="deleteByIds">
+        DELETE FROM emp WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
