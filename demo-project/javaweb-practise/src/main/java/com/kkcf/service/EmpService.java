@@ -17,4 +17,8 @@ public interface EmpService {
     int removeByIds(int[] ids);
 
     int addEmp(Emp emp);
+
+    Emp empById(int id);
+
+    int modifyEmp(Emp emp);
 }

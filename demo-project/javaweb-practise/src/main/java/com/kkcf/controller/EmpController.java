@@ -20,6 +20,15 @@ public class EmpController {
     @Autowired
     private EmpService empService;
 
+    @GetMapping("/{id}")
+    public Result<Emp> empById(@PathVariable int id) {
+        log.info("查询员工信息，id：{}", id);
+
+        Emp emp = empService.empById(id);
+
+        return Result.success(emp);
+    }
+
     @GetMapping
     public Result<EmpPageBean> listWithPageAndCount(
             @RequestParam(defaultValue = "1") int page,
@@ -48,5 +57,14 @@ public class EmpController {
         log.info("新增员工，员工信息：{}", emp);
 
         return empService.addEmp(emp) > 0 ? Result.success() : Result.error("新增失败");
+    }
+
+    @PatchMapping
+    public Result<String> updateEmp(@RequestBody Emp emp) {
+        log.info("修改员工信息，员工信息：{}", emp);
+
+        int i = empService.modifyEmp(emp);
+
+        return Result.success("修改了" + i + "条数据");
     }
 }

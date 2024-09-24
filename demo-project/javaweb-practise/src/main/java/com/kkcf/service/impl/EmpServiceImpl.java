@@ -60,4 +60,18 @@ public class EmpServiceImpl implements EmpService {
 
         return empMapper.insertEmp(emp);
     }
+
+    @Override
+    public Emp empById(int id) {
+
+        return empMapper.selectById(id);
+    }
+
+    @Override
+    public int modifyEmp(Emp emp) {
+        // 补充数据
+        emp.setUpdateTime(LocalDateTime.now());
+
+        return empMapper.updateEmp(emp);
+    }
 }

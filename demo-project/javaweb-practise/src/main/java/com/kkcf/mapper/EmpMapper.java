@@ -3,6 +3,7 @@ package com.kkcf.mapper;
 import com.kkcf.pojo.Emp;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,4 +27,9 @@ public interface EmpMapper {
 
     @Insert("INSERT INTO emp(username, password, name, gender, image, job, entrydate, dept_id, create_time, update_time) VALUES (#{username}, #{password}, #{name}, #{gender}, #{image}, #{job}, #{entrydate}, #{deptId}, #{createTime}, #{updateTime});")
     int insertEmp(Emp emp);
+
+    @Select("SELECT id, username, password, name, gender, image, job, entrydate, dept_id, create_time, update_time FROM emp WHERE id = #{id};")
+    Emp selectById(int id);
+
+    int updateEmp(Emp emp);
 }
