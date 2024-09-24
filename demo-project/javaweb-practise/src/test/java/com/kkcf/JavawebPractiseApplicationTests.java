@@ -1,18 +1,26 @@
 package com.kkcf;
 
-import com.kkcf.utils.AliyunOSSUtil2;
+import com.kkcf.utils.AliyunOSSProperties1;
+import com.kkcf.utils.AliyunOSSProperties2;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+@Slf4j
 @SpringBootTest
 class JavawebPractiseApplicationTests {
-    //@Autowired
-    private AliyunOSSUtil2 aliyunOSSUtil2;
+    @Autowired
+    private AliyunOSSProperties1 aliyunOSSProperties1;
+    @Autowired
+    private AliyunOSSProperties2 aliyunOSSProperties2;
 
     @Test
     void contextLoads() {
-        AliyunOSSUtil2 aliyunOSSUtil2 = new AliyunOSSUtil2();
-        System.out.println(aliyunOSSUtil2.bucketName);
+        String endpoint1 = aliyunOSSProperties1.getEndpoint();
+        log.info("endpoint1: {}", endpoint1);
+
+        String endpoint2 = aliyunOSSProperties2.getEndpoint();
+        log.info("endpoint2: {}", endpoint2);
     }
 }

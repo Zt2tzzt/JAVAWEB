@@ -1,16 +1,18 @@
 package com.kkcf.utils;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@Data
 @Component
-public class AliyunOSSUtil2 {
-    @Value("${aliyun.oos.endpoint}")
+public class AliyunOSSProperties1 {
+    @Value("${aliyun.oss.endpoint}")
     public String endpoint;
-    @Value("${aliyun.oos.accessKeyId}")
+    @Value("${aliyun.oss.accessKeyId}")
     public String accessKeyId;
-    @Value("${aliyun.oos.accessKeySecret}")
+    @Value("${aliyun.oss.accessKeySecret}")
     public String accessKeySecret;
-    @Value("${aliyun.oos.bucketName}")
+    @Value("${aliyun.oss.bucketName}")
     public String bucketName;
 }
