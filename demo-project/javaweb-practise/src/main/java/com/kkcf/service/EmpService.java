@@ -21,4 +21,6 @@ public interface EmpService {
     Emp empById(int id);
 
     int modifyEmp(Emp emp);
+
+    Emp loginEmp(Emp emp);
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-public class SessionController {
+public class CookieController {
 
     @GetMapping("/c1")
     public Result<Null> cookie1(HttpServletResponse res) {
