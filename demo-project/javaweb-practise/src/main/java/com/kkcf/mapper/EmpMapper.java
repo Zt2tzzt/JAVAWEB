@@ -33,6 +33,6 @@ public interface EmpMapper {
 
     int updateEmp(Emp emp);
 
-    @Select("SELECT id FROM emp WHERE username = #{username} AND password = #{password}")
+    @Select("SELECT id, username, name FROM emp WHERE username = #{username} AND password = #{password}")
     Emp selectByLogin(Emp emp);
 }
