@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@SpringBootTest
+//@SpringBootTest
 class JavawebPractiseApplicationTests {
     @Autowired
     private AliyunOSSProperties1 aliyunOSSProperties1;
@@ -57,7 +57,7 @@ class JavawebPractiseApplicationTests {
     public void testJWTparse() {
         Claims claims = Jwts.parser()
                 .setSigningKey("kkcf")
-                .parseClaimsJws("eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiemV0aWFuIiwiZXhwIjoxNzI3MzE2NTQ5LCJpZCI6MX0.7514DsLRwRK3Fm6D7Tqn97qNWZi_T9WKS9r8NzJPYoU")
+                .parseClaimsJws("eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiemV0aWFuIiwiZXhwIjoxNzI3NDExMTM5LCJpZCI6MX0.XibFHXMs1hOMfJ19fV7_DZ9CACWESl4TV1Nf2ETqM6s")
                 .getBody();
 
         System.out.println("claims: " + claims);
