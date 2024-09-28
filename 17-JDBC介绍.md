@@ -8,19 +8,19 @@ JDBC 是 SUN 公司官方定义的一套操作所有关系型数据库的规范�
 
 - MySQL 的 Java 驱动是 `mysql-connector-j`，
 
-开发者，可以使用这套接口（JDBC）编程，而真正执行的代码是驱动 jar 包中的实现类。
+开发者，可以使用这套接口（JDBC）编程，而真正执行的代码是驱动（jar 包）中的实现类。
 
-Mybatis 框架，就是对原始的 JDBC 程序的封装。
+MyBatis 框架，就是对原始的 JDBC 程序的封装。
 
 ## 一、JDBC 的实际应用
 
 使用 JDBC 规范，操作数据库，步骤如下：
 
-1. 注册驱动
-2. 获取连接对象
-3. 执行 SQL 语句，返回执行结果
-4. 处理执行结果
-5. 释放资源
+1. 注册驱动；
+2. 获取连接对象；
+3. 执行 SQL 语句，返回执行结果；
+4. 处理执行结果；
+5. 释放资源。
 
 在 Maven 项目的 pom.xml 配置文件中，已引入 MySQL 驱动依赖 `mysql-connector-j`；
 
@@ -57,7 +57,7 @@ public class JdbcTest {
 
         // 3.执行 SQL
         Statement statement = connection.createStatement(); // 操作 SQL 的对象
-        String sql = "SELECT id,name,age,gender,phone FROM user";
+        String sql = "SELECT id, name, age, gender, phone FROM user";
         ResultSet rs = statement.executeQuery(sql); // SQL 查询结果会封装在ResultSet对象中
 
         List<User> userList = new ArrayList<>();// 集合对象（用于存储 User 对象）
@@ -70,6 +70,7 @@ public class JdbcTest {
             short age = rs.getShort("age");
             short gender = rs.getShort("gender");
             String phone = rs.getString("phone");
+
             // 把一行记录中的数据，封装到 User 对象中
             User user = new User(id, name, age, gender, phone);
             userList.add(user); // User 对象添加到集合
@@ -113,7 +114,7 @@ public class JdbcTest {
 
 原始的 JDBC 程序，存在以下问题：
 
-1. 数据库连接的四要素：驱动、连接、用户名、密码，全部硬编码在 java 代码中。
+1. 数据库连接的四要素：驱动、连接、用户名、密码，全部硬编码在代码中。
 2. 查询结果的解析及封装非常繁琐；
 3. 每一次数据库操作，都需要先获取连接，再释放连接；造成资源浪费，性能降低。
 
@@ -151,13 +152,13 @@ MyBatis 中，是如何解决这些问题的：
 
   ```java
   package com.kkcf.mapper;
-
+  
   import com.kkcf.pojo.User;
   import org.apache.ibatis.annotations.Mapper;
   import org.apache.ibatis.annotations.Select;
-
+  
   import java.util.List;
-
+  
   @Mapper // 在程序运行时，MyBatis 框架会自动生成该接口的实现类对象（代理对象），并且将该对象，交给 IOC 容器管理。
   public interface UserMapper {
       @Select("SELECT * FROM user")

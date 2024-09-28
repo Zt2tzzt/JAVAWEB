@@ -64,7 +64,7 @@ class JavawebPractiseApplicationTests {
 }
 ```
 
-> 在测试类中，注释掉上方的 `@SpringBootTest` 注解，不用加载整个 Spring 环境，以进行简单的单元测试
+> 在测试类中，注释掉上方的 `@SpringBootTest` 注解，以进行简单的单元测试，不用加载整个 Spring 环境。
 
 运行测试方法，得到生成的令牌为
 
@@ -72,7 +72,7 @@ class JavawebPractiseApplicationTests {
 eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiemV0aWFuIiwiZXhwIjoxNzI3MzE2NTQ5LCJpZCI6MX0.7514DsLRwRK3Fm6D7Tqn97qNWZi_T9WKS9r8NzJPYoU
 ```
 
-- 可发现 JWT 令牌,，通过英文的点，对三个部分进行分割；
+- 可发现 JWT 令牌,，通过英文的点（`.`），对第一、二、三部分进行分割；
 
 在 JWT [官网](https://jwt.io/)，将生成的令牌放在 Encoded 位置，此时就会自动的将令牌解析出来。
 
@@ -108,12 +108,13 @@ HMACSHA256(
 ) secret base64 encoded
 ```
 
-- 由于前两个部分是 Base64 编码，所以是可以直接解码出来。
-- 但最后一个部分并不是 Base64 编码，而是经过签名算法计算出来的，所以最后一个部分是不会解析的。
+由于前两个部分是 Base64 编码，所以是可以直接解码出来。
+
+但最后一个部分并不是 Base64 编码，而是经过签名算法计算出来的，所以最后一个部分不会解析。
 
 ## 二、JWT 解析
 
-基于 Java 代码，来解析 JWT 令牌)：
+基于 Java 代码，来解析 JWT 令牌：
 
 ```java
 package com.kkcf;
@@ -136,7 +137,7 @@ class JavawebPractiseApplicationTests {
     @Test
     public void testJWTparse() {
         Claims claims = Jwts.parser()
-                .setSigningKey("kkcf")
+                .setSigningKey("kkcf") // 加盐
                 .parseClaimsJws("eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiemV0aWFuIiwiZXhwIjoxNzI3MzE2NTQ5LCJpZCI6MX0.7514DsLRwRK3Fm6D7Tqn97qNWZi_T9WKS9r8NzJPYoU")
                 .getBody();
 
@@ -153,7 +154,9 @@ claims: {name=zetian, exp=1727411139, id=1}
 
 - 可以看到自定义的数据 `id`、`name` 和 `exp` 过期时间；
 
-在解析 JWT 令牌的过程中，没有出现异常，说明解析成功了。否则，解析失败，异常的原因有：
+在解析 JWT 令牌的过程中，没有出现异常，说明解析成功了。否则，说明解析失败，
+
+解析异常的原因有：
 
 - JWT 令牌过期；
 - JWT 令牌被篡改。
@@ -181,7 +184,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class JwtUtil {
-    public static String sigkey = "kkcf";
+    public static String sigkey = "kkcf"; // 盐
     public static Long expire = 1000 * 60 * 60L;
 
     /**
@@ -192,7 +195,7 @@ public class JwtUtil {
      */
     public static String generateToken(HashMap<String, Object> claims) {
         return Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256, sigkey) // 签名算法
+                .signWith(SignatureAlgorithm.HS256, sigkey) // 签名算法，加盐
                 .setClaims(claims) // 存放的数据
                 .setExpiration(new Date(System.currentTimeMillis() + expire)) // 设置有效期为 1 小时
                 .compact();
@@ -214,7 +217,7 @@ public class JwtUtil {
 }
 ```
 
-在 LoginControllr 控制器类中，为登录成功的用户，下发令牌。
+在 `LoginControllr` 控制器类中，为登录成功的用户，下发令牌。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/controller/LoginController.java
 
@@ -248,11 +251,13 @@ public class LoginController {
 
         Emp res = empService.loginEmp(emp);
 
-        return res != null ? Result.success(JwtUtil.generateToken(new HashMap<>(Map.of(
+        String jwt = JwtUtil.generateToken(new HashMap<>(Map.of(
                 "id", res.getId(),
                 "username", res.getUsername(),
                 "name", res.getName()
-        )))) : Result.error("登录失败");
+        )));
+
+        return res != null ? Result.success(jwt) : Result.error("登录失败");
     }
 }
 ```

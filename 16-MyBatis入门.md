@@ -41,7 +41,7 @@ MyBatis 入门程序。
    - Type 设为 Maven；
    - Group 为组织名，比如设为 `com.kkcf`
    - artifact 为项目名，比如设为 `springboot-mybatis-quickstart`；设置完成后，上方 name 会跟着修改。
-   - Pacakge name 为要在项目中创建的包的层级，比如设为 `com.kkcf`
+   - Package name 为要在项目中创建的包的层级，比如设为 `com.kkcf`
    - Java 为 Java 版本；比如设为 17；
    - Pacakging 为打包方式，比如设为 Jar；
 4. 点击 Next，进入下一步；
@@ -207,12 +207,15 @@ spring.datasource.password=xxxxxx
 
 ### 3.MyBatis 入门程序编写 SQL 语句
 
-在 MyBatis 框架中，可以通过注解，或 XML 映射文件方式，编写 SQL 语句。
+在 MyBatis 框架中，可以通过两种方式编写 SQL 语句:
 
-创建 mapper 包，相当于三层架构中的 dao 包，用于存放 MyBatis 框架中用到的 Mapper 接口。
+- 方式一：注解。
+- 方式二：XML 映射文件方式，
+
+在项目中，创建 mapper 包，相当于三层架构中的 dao 包，用于存放 MyBatis 框架中用到的 Mapper 接口。
 
 - 在 mapper 包中，一般只需要定义接口，不需要定义实现类，接口名一般为 `xxxMapper`；
-- `@Mapper` 注解，表示在程序运行时，MyBatis 框架会自动生成该接口的实现类对像（代理对象，Bean 对象），并且将该对象，交给 IOC 容器管理。
+- `@Mapper` 注解，表示在程序运行时，MyBatis 框架会自动生成该接口的实现类对像（代理对象，Bean 对象），并将该对象，交给 IOC 容器管理。
 - 在 `@Select` 注解中，写 SQL 语句。
 - 查询语句会将查询结果，自动封装到接口的返回值中。
 
@@ -239,7 +242,7 @@ public interface UserMapper {
 Spring Boot 工程，在 src 下的 test 目录下，已经自动创建好了测试类 `SpringbotMybatisQuickstartApplicationTests`，
 
 - `该类上的 @SpringBootTest` 注解，是 Spring Boot 整合单元测试注解，表示该测试类，已经与 Spring Boot 整合。
-  - 类中的单元测试方法，在运行时，会自动通过引导类 `SpringbotMybatisQuickstartApplication`，加载 Spring Boot 环菌，并创建 IOC 容器。
+  - 类中的单元测试方法，在运行时，会自动通过引导类 `SpringbotMybatisQuickstartApplication`，加载 Spring Boot 环境，并创建 IOC 容器。
   - 要测试哪个 bean 对象，就可直接通过 `@Autowired` 注解，将其注入。
 
 在其中，编写测试方法 `testListUser`

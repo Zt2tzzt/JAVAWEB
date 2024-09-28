@@ -1,8 +1,8 @@
 # JavaWeb Servlet 规范 Filter 过滤器
 
-登录后收到服务器发放的 token 令牌后：
+客户端登录后，收到服务器发放的 token 令牌：
 
-- 客户端（浏览器）后续的请求，都会在请求头中携带 JWT 令牌到服务端，
+- 客户端后续的请求，都会在请求头中携带 JWT 令牌到服务端，
 - 而服务端需要统一拦截所有的请求，来判断是否携带了合法的 JWT 令牌。
 
 在 Spring Boot 项目中，统一拦截所有请求，有两种解决方案：
@@ -12,21 +12,16 @@
 
 ## 一、Filter 过滤器是什么
 
-Filter 过滤器，是 JavaWeb 三大组件（Servlet、Filter、Listener）之一，它并不是 Spring 框架中的组件。
+Servlet 规范中的 Filter 过滤器，是 JavaWeb 三大组件（Servlet、Filter、Listener）之一，它并不是 Spring 框架中的组件。
 
 - Filter 过滤器，可以拦截经由 Web 服务器的所有对资源的请求；
-- 使用了 Fileter 过滤器后，要想访问 web 服务器上的资源，必须先经过滤器，过滤器处理完毕之后，才可以访问对应的资源。
+- 使用了 Fileter 过滤器后，要想访问 web 服务器上的资源，必须先经过 Filter 过滤器处理，才可以访问对应的资源。
 - 过滤器一般完成一些通用的操作，比如：
   - 登录校验；
   - 统一编码处理；
   - 敏感字符处理等。
 
 ![Filter过滤器](NoteAssets/Filter过滤器.png)
-
-下面我们通过Filter快速入门程序掌握过滤器的基本使用操作：
-
-- 第1步，定义过滤器 ：1.定义一个类，实现 Filter 接口，并重写其所有方法。
-- 第2步，配置过滤器：Filter类上加 @WebFilter 注解，配置拦截资源的路径。引导类上加 @ServletComponentScan 开启Servlet组件支持。
 
 ## 二、Filter 过滤器的使用
 
@@ -65,7 +60,7 @@ public class DemoFilter implements Filter {
 
 
     /**
-     * 此方法用于：拦截请求，调用多次
+     * 此方法用于：拦截请求，会调用多次
      */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -141,9 +136,7 @@ destroy 销毁方法执行了
 放行就是调用 `FilterChain` 对象的 `doFilter()` 方法：
 
 - 在调用该方法前，编写的代码属于放行之前的逻辑。
-- 在调用该方法后，编写的代码属于放行之后的逻辑。
-
-在放行并访问完 web 资源之后，还会回到过滤器中，执行放行之后的逻辑。
+- 在调用该方法后，编写的代码属于放行之后的逻辑（访问完 Web 资源后，还会回到过滤器中执行的逻辑）。
 
 ![Filter拦截器执行流程](NoteAssets/Filter拦截器执行流程.png)
 
@@ -163,16 +156,14 @@ Filter 过滤器的拦截路径，可根据需求，进行配置。
 
 过滤器链，指的是在一个 web 服务器中，可以配置多个过滤器，多个过滤器就形成了一个过滤器链。
 
-- 比如：在我们 web 服务器中，定义了两个过滤器，这两个过滤器就形成了一个过滤器链。
+- 比如：在我们 web 服务器中，定义了两个过滤器，这两个过滤器就形成了过滤器链。
 
 这个链上的过滤器，在执行的时候，会一个一个的执行：
 
-1. 先执行第一个 Filter 过滤器，放行之后再来执行第二个Filter。
-2. 执行完最后一个过滤器放行之后，才会访问对应的 web 资源。
-
-访问完 web 资源之后，按照我们刚才所介绍的过滤器的执行流程，还会回到过滤器当中，来执行过滤器放行后的逻辑；
-
-在执行放行后的逻辑的时候，顺序是反着的。
+1. 先执行第一个 Filter 过滤器，放行之后，再来执行第二个Filter 过滤器。
+2. 执行完最后一个过滤器放行之后，才会访问对应的 Web 资源。
+3. 访问完 web 资源之后，按照过滤器的执行流程，还会回到过滤器当中，来执行过滤器放行后的逻辑；
+   - 在执行放行后的逻辑的时候，顺序是反着的。
 
 ![Filter过滤器链](NoteAssets/Filter过滤器链.png)
 
@@ -180,8 +171,8 @@ Filter 过滤器的拦截路径，可根据需求，进行配置。
 
 1. 在 Filter 包下，再来新建一个 Filter 过滤器类 `AbcFilter`
 2. 在 `AbcFilter` 过滤器中，编写放行前和放行后逻辑
-3. 配置 AbcFilter 过滤器拦截请求路径为 `/*`
-4. 重启 Spring Boot 服务，查看 DemoFilter、AbcFilter 的执行日志
+3. 配置 `AbcFilter` 过滤器拦截请求路径为 `/*`
+4. 重启 Spring Boot 服务，查看 `DemoFilter`、`AbcFilter` 中的执行日志
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/filter/AbcFilter.java
 
@@ -206,13 +197,14 @@ public class AbcFilter implements Filter {
 }
 ```
 
-- 发现该过滤器在 DemoFilter 之前执行了。因为，以注解方式配置的 Filter 过滤器，默认会按照名称首字母顺序执行。
+- 发现 `AbcFilter` 过滤器在 `DemoFilter` 之前执行了。
+- 因为，以注解方式配置的 Filter 过滤器，默认会按照名称首字母顺序执行。
 
 如果想让 DemoFilter 先执行，就要修改类名。
 
 ## 六、Filter 过滤器登录校验实现
 
-Web 服务器的所有请求，都要被 Filter 过滤器拦截，登录请求列外。
+在案例中，Web 服务器的所有请求，都要被 Filter 过滤器拦截，登录请求列外。
 
 拦截到请求后，有令牌，且令牌校验通过（合法）；否则都返回未登录错误结果。
 
@@ -249,7 +241,7 @@ public class CheckLoginFilter implements Filter {
         String url = req.getRequestURL().toString();
         log.info("请求的 URL 地址是：{}", url);
 
-        // 2.判断请求 url 中是否有 login，如果包含，说明是登录请求，可直接方向
+        // 2.判断请求 url 中是否有 login，如果包含，说明是登录请求，可直接放行
         if (url.contains("login")) {
             log.info("登录请求，放行...");
             filterChain.doFilter(req, res);

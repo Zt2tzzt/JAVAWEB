@@ -27,10 +27,12 @@ public class LoginController {
 
         Emp res = empService.loginEmp(emp);
 
-        return res != null ? Result.success(JwtUtil.generateToken(new HashMap<>(Map.of(
+        String jwt = JwtUtil.generateToken(new HashMap<>(Map.of(
                 "id", res.getId(),
                 "username", res.getUsername(),
                 "name", res.getName()
-        )))) : Result.error("登录失败");
+        )));
+
+        return res != null ? Result.success(jwt) : Result.error("登录失败");
     }
 }

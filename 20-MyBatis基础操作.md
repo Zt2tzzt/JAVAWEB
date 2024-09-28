@@ -103,7 +103,7 @@ spring.datasource.password=xxxxxx
 
 创建一个实体（pojo）类 Emp，其中的属性，与表结构中的字段一一对应。
 
-- 使用 Lombok 注解，为其生成 getter、setter、toString、equals、hashcode，空参构造、带参构造方法。
+使用 Lombok 依赖提供的注解，为其生成 getter、setter、toString、equals、hashcode，空参构造、带参构造方法。
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/pojo/Emp.java
 
@@ -135,10 +135,11 @@ public class Emp {
 }
 ```
 
-- 数据库 `DATE` 类型，对应 JDK1.8 的 `LocalDate` 类型；数据库的 `DATETIME` 类型，对应 JDK1.8 的 `LocalDateTime` 类型。
+- 数据库 `DATE` 类型，对应 JDK1.8 的 `LocalDate` 类型；
+- 数据库的 `DATETIME` 类型，对应 JDK1.8 的 `LocalDateTime` 类型。
 - 数据库字段名中的 `_` 下划线，在实体类中使用规范的驼峰命名代替。
 
-创建一个 Mapper 接口 EmpMapper，
+创建一个 Mapper 接口 `EmpMapper`，
 
 ## 二、MyBatis 删除
 
@@ -146,7 +147,7 @@ public class Emp {
 
 创建一个 mapper 包（package），在其中创建一个 `EmpMapper` 接口
 
-- 在接口中定义一个方法 `deleteEmp`，为它使用 `@Delete` 注解，表示该方法用于执行 DELETE 语句。
+- 在接口中，定义一个方法 `deleteEmp`，为它使用 `@Delete` 注解，表示该方法用于执行 DELETE 语句。
 - MyBatis 中，提供了 `#{}` 用于 SQL 语句中的占位符。
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/EmpMapper.java
@@ -310,7 +311,7 @@ SQL 注入：是通过操作输入的数据，来修改事先定义好的 SQL �
 
 使用 MyBatis 框架，新增一条员工记录。
 
-在 EmpMapper 接口中，新增抽象方法 `insertEmp`。
+在 `EmpMapper` 接口中，新增抽象方法 `insertEmp`。
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/EmpMapper.java
 
@@ -355,6 +356,7 @@ class SpringbotMybatisQuickstartApplicationTests {
     @Test
     public void testInsertEmp() {
         Emp emp = new Emp();
+
         emp.setUsername("tom");
         emp.setName("汤姆");
         emp.setGender((short) 1);
@@ -384,8 +386,8 @@ class SpringbotMybatisQuickstartApplicationTests {
 
 如果要拿到主键值，需要在 Mapper 接口的方法上：
 
-- 添加一个 `@Options` 注解，并在注解中；
-- 指定属性 `useGeneratedKeys=true` 和 `keyProperty="实体类属性名"`
+- 添加一个 `@Options` 注解，
+- 并在注解中；指定属性 `useGeneratedKeys=true` 和 `keyProperty="实体类属性名"`
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/EmpMapper.java
 
@@ -453,7 +455,7 @@ class SpringbotMybatisQuickstartApplicationTests {
 
 根据主键（id），修改记录的信息。
 
-在 `EmpMapper` 接口中，定义一个方法 `updateEmp` 用于更行 emp 记录。
+在 `EmpMapper` 接口中，定义一个方法 `updateEmp` 用于更新 emp 记录。
 
 ```java
 package com.kkcf.mapper;
@@ -491,6 +493,7 @@ class SpringbotMybatisQuickstartApplicationTests {
     @Test
     public void testUpdateEmp() {
         Emp emp = new Emp();
+
         emp.setId(18);
         emp.setUsername("linghushaoxiao");
         emp.setName("令狐少校");
@@ -523,7 +526,7 @@ Emp(id=18, username=linghushaoxiao, password=123456, name=令狐少校, gender=1
 MyBatis 查询操作的数据封装
 
 - 实体类属性名，与数据库表查询返回的字段名一致，Mybatis 会自动封装。
-- 实体类属性名，与数据库表查询返回的字段名不一致，不能自动动封装。
+- 实体类属性名，与数据库表查询返回的字段名不一致，不能自动封装。
 
 解决方案有三种：
 

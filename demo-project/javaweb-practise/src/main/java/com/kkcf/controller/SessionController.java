@@ -6,12 +6,17 @@ import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.jdbc.Null;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 public class SessionController {
+    /**
+     * 此方法用于：服务器端生成 Session
+     *
+     * @param session session 对象
+     * @return Result<Null>
+     */
     @GetMapping("/s1")
     public Result<Null> generateSession(HttpSession session) {
         log.info("session hashcode: {}", session.hashCode());
@@ -20,6 +25,12 @@ public class SessionController {
         return Result.success();
     }
 
+    /**
+     * 此方法用于：服务器端解析 Session，从 Session 中获取数据
+     *
+     * @param req 请求对象
+     * @return Result<String>
+     */
     @GetMapping("/s2")
     public Result<String> parseSession(HttpServletRequest req) {
         HttpSession session = req.getSession();

@@ -23,7 +23,7 @@ public class CheckLoginFilter implements Filter {
         String url = req.getRequestURL().toString();
         log.info("请求的 URL 地址是：{}", url);
 
-        // 2.判断请求 url 中是否有 login，如果包含，说明是登录请求，可直接方向
+        // 2.判断请求 url 中是否有 login，如果包含，说明是登录请求，可直接放行
         if (url.contains("login")) {
             log.info("登录请求，放行...");
             filterChain.doFilter(req, res);

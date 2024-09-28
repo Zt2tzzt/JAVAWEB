@@ -1,4 +1,4 @@
-# Spring Boot Interceptor 拦截器
+# Spring 框架 Interceptor 拦截器
 
 ## 一、Interceptor 拦截器是什么
 
@@ -21,7 +21,7 @@ Interceptor 拦截器，是 Spring 框架提供的，用来动态拦截控制器
 
 2. 注册配置拦截器。
 
-定义拦截器类 LoginInterceptor，实现 `HandlerInterceptor` 接口，重写其中所有方法。
+定义拦截器类 `LoginInterceptor`，实现 `HandlerInterceptor` 接口，重写其中所有方法。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/interceptor/LoginInterceptor.java
 
@@ -49,7 +49,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println("preHandle……");
         //return HandlerInterceptor.super.preHandle(request, response, handler);
-        return true;
+        return true; // 直接放行
     }
 
     /**
@@ -84,9 +84,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 }
 ```
 
-- `preHandle` 方法：目标资源方法执行前执行。 返回 `true`  放行    返回 `false` 不放行。
-- `postHandle` 方法：目标资源方法执行后执行。
-- `afterCompletion` 方法：视图渲染完毕后执行，最后执行。
+- `preHandle` 方法：在目标资源方法执行前执行。 返回 `true`  则放行    返回 `false` 则不放行。
+- `postHandle` 方法：在目标资源方法执行后执行。
+- `afterCompletion` 方法：在视图渲染完毕后执行，最后执行。
 
 定义配置类 `WebConfig` 实现 `WebMvcConfigurer` 接口。
 
@@ -117,8 +117,6 @@ public class WebConfig implements WebMvcConfigurer {
 }
 ```
 
-- 设置拦截器拦截的请求路径，比如：`/**` 表示拦截所有请求。
-
 ## 三、Interceptor 拦截器路径配置
 
 指定拦截器的拦截路径：
@@ -128,12 +126,12 @@ public class WebConfig implements WebMvcConfigurer {
 
 在拦截器中除了可以设置`/**` 拦截所有资源外，还有一些常见拦截路径设置：
 
-| 拦截路径  | 含义                 | 举例                                                 |
-| --------- | -------------------- | ---------------------------------------------------- |
-| /*        | 一级路径             | 能匹配 /depts，/emps，/login；不能匹配 /depts/1      |
-| /**       | 任意级路径           | 能匹配 /depts，/depts/1，/depts/1/2                  |
-| /depts/*  | /depts下的一级路径   | 能匹配 /depts/1；不能匹配 /depts/1/2，/depts         |
-| /depts/** | /depts下的任意级路径 | 能匹配 /depts，/depts/1，/depts/1/2；不能匹配/emps/1 |
+| 拦截路径  | 含义                  | 举例                                                 |
+| --------- | --------------------- | ---------------------------------------------------- |
+| /*        | 一级路径              | 能匹配 /depts，/emps，/login；不能匹配 /depts/1      |
+| /**       | 任意级路径            | 能匹配 /depts，/depts/1，/depts/1/2                  |
+| /depts/*  | /depts 下的一级路径   | 能匹配 /depts/1；不能匹配 /depts/1/2，/depts         |
+| /depts/** | /depts 下的任意级路径 | 能匹配 /depts，/depts/1，/depts/1/2；不能匹配/emps/1 |
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/config/WebConfig.java
 
@@ -170,16 +168,16 @@ public class WebConfig implements WebMvcConfigurer {
 2. 当前是基于 Spring Boot 开发 Web 服务器，所以放行之后，进入到了 Spring 环境中，要来访问定义的 Controller 当中的方法。
 3. Tomcat 并不识别 Controller 程序，但它识别 Servlet 程序，所以在 Spring 的 Web 环境中，提供了一个非常核心的 Servlet：DispatcherServlet（前端控制器），所有请求都会经 `DispatcherServlet` 派发给 Controller。
 4. Interceptor 拦截器，会在执行 Controller 方法之前，拦截请求，执行 `preHandle()` 方法；该方法返回一个布尔类型的值：
-   - 返回 true 表示放行；
-   - 返回 false 则不会放行（controller中的方法也不会执行）。
-5. Controller 中的方法，执行完毕后，再回过来执行 Interceptor 拦截器的 `postHandle()` 方法，以及 `afterCompletion()` 方法；
+   - 返回 true 则放行；
+   - 返回 false 则不会放行（controller 中的方法也不会执行）。
+5. Controller 中的方法，执行完毕后，再回过来执行 Interceptor 拦截器的 `postHandle()` 方法， `afterCompletion()` 方法；
 6. 然后再返回给 DispatcherServlet，
-7. 最终再来执行 Filter 过滤器当中放行后的这一部分逻辑的逻辑。
+7. 最终再来执行 Filter 过滤器当中放行后的逻辑。
 8. 执行完毕之后，最终给浏览器响应数据。
 
 过滤器与拦截器的区别，主要有两点：
 
-- 接口规范不同：Filter 过滤器，需要实现 Filter 接口；Interceptor 拦截器，需要实现 HandlerInterceptor 接口。
+- 接口规范不同：Filter 过滤器，需要实现 `Filter` 接口；Interceptor 拦截器，需要实现 `HandlerInterceptor` 接口。
 - 拦截范围不同：Filter 过滤器，会拦截所有对资源的请求；Interceptor 拦截器只会拦截 Spring 环境中的资源请求。
 
 ## 五、Intercepter 拦截器登录校验实现
