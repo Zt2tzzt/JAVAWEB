@@ -21,7 +21,7 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public int removeById(Integer id) {
-        return deptMapper.deleteDeptById(id);
+        return deptMapper.deleteDeptById(id)
     }
 
     @Override

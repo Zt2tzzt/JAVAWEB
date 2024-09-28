@@ -158,10 +158,10 @@ spring.servlet.multipart.max-file-size=10MB
 spring.servlet.multipart.max-request-size=100MB
 
 # 阿里云你 OSS 服务配置
-aliyun.oos.endpoint=https://oss-cn-shenzhen.aliyuncs.com
-aliyun.oos.accessKeyId=xxxxxxx
-aliyun.oos.accessKeySecret=xxxxxx
-aliyun.oos.bucketName=xxxxxx
+aliyun.oss.endpoint=https://oss-cn-shenzhen.aliyuncs.com
+aliyun.oss.accessKeyId=xxxxxxx
+aliyun.oss.accessKeySecret=xxxxxx
+aliyun.oss.bucketName=xxxxxx
 ```
 
 application.yml 配置文件：
@@ -194,7 +194,7 @@ mybatis:
     map-underscore-to-camel-case: true
 
 aliyun:
-  oos:
+  oss:
     endpoint: https://oss-cn-shenzhen.aliyuncs.com
     accessKeyId: xxxxxx
     accessKeySecret: xxxxxx
