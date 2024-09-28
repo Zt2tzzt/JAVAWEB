@@ -39,7 +39,7 @@ public class DeptController {
      * @return Result
      */
     @DeleteMapping("/{id}")
-    public Result<Null> removeById(@PathVariable Integer id) {
+    public Result<Null> removeById(@PathVariable Integer id) throws Exception {
         log.info("删除部门信息，id：{}", id);
         int i = deptService.removeById(id);
 

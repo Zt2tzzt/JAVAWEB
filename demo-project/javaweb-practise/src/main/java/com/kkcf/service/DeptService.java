@@ -7,7 +7,7 @@ import java.util.List;
 public interface DeptService {
     List<Dept> list();
 
-    int removeById(Integer id);
+    int removeById(Integer id) throws Exception;
 
     int addDept(Dept dept);
 

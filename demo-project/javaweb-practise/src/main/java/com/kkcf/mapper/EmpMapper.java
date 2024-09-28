@@ -1,6 +1,7 @@
 package com.kkcf.mapper;
 
 import com.kkcf.pojo.Emp;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -35,4 +36,7 @@ public interface EmpMapper {
 
     @Select("SELECT id, username, name FROM emp WHERE username = #{username} AND password = #{password}")
     Emp selectByLogin(Emp emp);
+
+    @Delete("DELETE FROM emp WHERE dept_id = #{deptId}")
+    void deleteByDeptId(int detpId);
 }
