@@ -24,7 +24,7 @@ MyBatis 中的 XML 配置文件，又称为 XML 映射文件。
 
 `<select>` 标签：就是用于编写 SELECT 查询语句的。
 
-- 其 `resultType` 属性，指的是查询返回的单条记录，所对应的类型。
+- 其 `resultType` 属性，指的是查询返回的单条记录，所对应的类型的全限定名。
 
 ## 二、MyBatis XML 映射文件操作数据库
 
@@ -89,7 +89,7 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
 第五步：配置 SQL 语句对应的标签（比如 `<select>` 标签）的
 
 - `id` 属性，与 Mapper 接口中的方法名一致；
-- `selectEmpById` 标签，与返回类型的全限定名一致。
+- `resultType` 属性，与返回类型的全限定名一致。
 
 在其中编写 SQL 语句。
 

@@ -2,7 +2,7 @@
 
 ## 一、Spring Boot 默认异常处理
 
-在 Spring Boot 项目中，开发者未手动处理异常，会默认返回错误。
+在 Spring Boot 项目中，开发者未手动处理异常，默认会响应给客户端一个固定格式的错误信息。
 
 在接口测试工具中，发送请求，新增一个已经存在的部门，服务器返回的响应数据如下：
 
@@ -15,9 +15,9 @@
 }
 ```
 
-响应回来的 JSON 格式数据。不是项目开发规范中所约定的统一响应结果 `Result`。
+可以看到，响应回来的 JSON 格式数据。不是项目开发规范中约定的统一响应结果 `Result`。
 
-在 Spring Boot 中，没有做任何的异常处理时，三层架构处理异常的方式举例如下：
+在 Spring Boot 项目中，没有做任何的异常处理时，三层架构处理异常的方式举例如下：
 
 1. Mapper 接口操作数据库时出错，异常会往上抛给 Service 层。
 2. Service 层，没有做任何异常处理，会抛给 Controller 层。
@@ -38,10 +38,12 @@
 
 ## 三、Spring Boot 全局异常处理
 
+### 1.@RestControllerAdvice、@ExceptionHandler 注解
+
 Spring Boot 全局异常处理器的使用：
 
 1. 定义一个类，在类上加上注解 `@RestControllerAdvice`，表示全局异常处理器。
-2. 在该处理器类中，定义一个方法来捕获异常，在该方法上加上注解 `@ExceptionHandler` 通过 `value` 属性，来指定要捕获的异常类型。
+2. 在该处理器类中，定义一个方法来捕获异常，在该方法上，加上注解 `@ExceptionHandler`，并通过 `value` 属性，来指定要捕获的异常类型。
 
 > @RestControllerAdvice = @ControllerAdvice + @ResponseBody
 >

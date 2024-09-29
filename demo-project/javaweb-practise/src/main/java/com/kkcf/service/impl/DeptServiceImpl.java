@@ -1,6 +1,5 @@
 package com.kkcf.service.impl;
 
-import com.kkcf.mapper.DeptLogMapper;
 import com.kkcf.mapper.DeptMapper;
 import com.kkcf.mapper.EmpMapper;
 import com.kkcf.pojo.Dept;
@@ -35,10 +34,10 @@ public class DeptServiceImpl implements DeptService {
             // 删除部门下的员工
             empMapper.deleteByDeptId(id);
 
-            int i = 1 / 0;
-            /*if (true) {
+            //int i = 1 / 0;
+            if (true) {
                 throw new Exception("出错啦……");
-            }*/
+            }
 
             // 删除部门
             deptMapper.deleteDeptById(id);

@@ -7,9 +7,9 @@
 - 硬件服务器，也称伺服器。是提供计算服务的设备。
 - 软件服务器，就是运行的应用程序，能够接收客户端请求，并根据请求给客户端响应数据。
 
-Web 服务器，指的是软件服务器：
+Web 服务器，是软件服务器：
 
-Web 服务器对 HTTP 协议的请求、响应操作进行封装：
+Web 服务器对 HTTP 协议的请求解析、返回响应操作进行封装：
 
 - 使得开发者不用自行解析 Http 协议的请求，和封装 Http 协议的响应。让 Web 开发更加便捷。
 
@@ -40,7 +40,7 @@ Tomcat 服务器，也被称为 **Web 容器**、**Servlet 容器**；
 安装：解压压缩包；
 
 - 最好解压到一个**不包含中文和空格**的目录；
-- 因为后期在部署项目的时候，如果路径有中文或者空格，可能会导致程序部署失败。
+- 因为后期在部署项目的时候，如果路径中有中文或者空格，可能会导致程序部署失败。
 
 目录结构如下：
 
@@ -115,8 +115,7 @@ Tomcat 服务器关闭，有三种方式：
 - 比如现有 haha 目录，下面有 haha.html 文件；
   1. 将 haha 目录放到 webapps 目录下；
   1. 就可以通过 `localhost:8080/haha/haha.html` 访问到静态资源。
-
-不能放单个文件，要放目录。
+- 不能放单个文件，要放目录。
 
 ## 三、Spring Boot 入门程序分析
 
@@ -124,7 +123,7 @@ Tomcat 服务器关闭，有三种方式：
 
 Spring 官方提供了生成 Spring 项目的[网站](https://start.spring.io/)；
 
-- IDEA 也是基于此，来创建 Spring 项目的；
+- IDEA 也是基于此，来创建 Spring Boot 项目的；
 - 所以，IDEA 创建 Spring 项目时，是需要联网的。
 
 ### 2.Spring Boot 起步依赖
@@ -138,13 +137,14 @@ Spring 官方提供了生成 Spring 项目的[网站](https://start.spring.io/)�
 
 在 Spring Boot 项目中，有很多起步依赖，它们有一个共同的特征：就是以 `”spring-boot-starter-“` 作为开头。
 
-Spring 的官方，提供了很多现成的 [starter（起步依赖）](https://docs.spring.io/spring-boot/docs/2.7.2/reference/htmlsingle/#using.build-systems.starters)，在开发应用相关功能时，只需要引入对应的 starter 即可。
+Spring 的官方，提供了很多现成的 [starter（起步依赖）](https://docs.spring.io/spring-boot/docs/2.7.2/reference/htmlsingle/#using.build-systems.starters)，用于在开发应用相关功能时引入。比如：
 
-- 比如：在 Spring Boot 项目中，要使用 redis 数据库时，只需要引入 `spring-boot-starter-redis`，即可导入 redis 开发所需要的依赖。
+- 在 Spring Boot 项目中，集成 MyBatis 框架，要引入 `mybatis-spring-boot-starter`。
+- 在 Spring Boot 项目中，导入 redis 数据库开发所需要的依赖，只需引入 `spring-boot-starter-redis`。
 
 ### 3.Spring Boot 父工程
 
-在上文开发的 Spring Boot 入门案例中，使用 maven 引入的依赖，没有指定具体的依赖版本号，如下方所示：
+在上文开发的 Spring Boot 入门案例中，使用 maven 引入的依赖，没有指定具体的版本号，如下方所示：
 
 demo-project/springboot-web-quickstart/pom.xml
 
@@ -163,7 +163,9 @@ demo-project/springboot-web-quickstart/pom.xml
 </dependencies>
 ```
 
-这是因为，每一个 Spring Boot 工程，都有一个父工程；引入的 Spring Boot 相关依赖的版本号，会在父工程中统一管理。
+这是因为，每一个 Spring Boot 工程，都有一个父工程；
+
+Spring Boot 引入的相关依赖的版本号，会在父工程中统一管理。
 
 demo-project/springboot-web-quickstart/pom.xml
 

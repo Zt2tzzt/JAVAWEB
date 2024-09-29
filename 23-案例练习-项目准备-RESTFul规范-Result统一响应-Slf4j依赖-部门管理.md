@@ -1,4 +1,4 @@
-# 案例练习之部门管理
+# 案例练习之部门管理、RESTFul 规范、统一响应 Result、Slf4j 依赖
 
 ## 一、准备工作
 
@@ -91,7 +91,7 @@ VALUES (1, 'jinyong', '123456', '金庸', 1, '1.jpg', 4, '2000-01-01', 2, NOW(),
 
 本项目使用 RESTful 规范。
 
-REST（Representational State Transfer）表述性状态转换，它是一种软件架构风格。它与传统规范的区别如下：
+REST（Representational State Transfer）表述性状态转换，是一种软件架构风格。它与传统规范的区别如下：
 
 传统请求 URL：
 
@@ -105,7 +105,7 @@ http://localhost:8080/user/deleteUser?id=1  GET：删除 id 为 1 的用户
 REST 风格 URL
 
 ```sh
-http://localhost:8080/users/1  GET：查询 id 为1的用户
+http://localhost:8080/users/1  GET：查询 id 为 1 的用户
 http://localhost:8080/users    POST：新增用户
 http://localhost:8080/users    PUT：修改用户
 http://localhost:8080/users/1  DELETE：删除 id 为 1 的用户
@@ -120,10 +120,11 @@ http://localhost:8080/users/1  DELETE：删除 id 为 1 的用户
 - PUT ：修改
 - DELETE：删除
 
-RESTFul 风格，两点注意实现：
+RESTFul 风格，两点注意：
 
-- REST 是风格，是约定方式，约定不是规定，可以打破。
-- 描述模块的功能，通常使用复数，也就是加 `s` 的格式来描述，表示此类资源，而非单个资源。比如：`users`、`emps`、`books`…
+- REST 是风格，是约定方式，不是规定，可以打破。
+- 描述模块的功能，通常使用名词复数，即名词后加 `s` 来描述；表示的是此类资源，而非单个资源。
+  - 比如：`users`、`emps`、`books`…
 
 总结：RESTFul 风格，通过 URL 定位要操作的资源，通过 HTTP 动词（请求方式）来描述具体的操作。
 
@@ -131,7 +132,7 @@ RESTFul 风格，两点注意实现：
 
 在 Controller 控制器类中，定义了请求处理方法；
 
-上方使用 `@RequestMapping` 注解，指定请求方式（比如：GET、POST…），有两种方式：
+使用 `@RequestMapping` 注解，指定请求方式（比如：GET、POST…），有两种方式：
 
 - 方式一，使用 @RequestMapping 注解的 `method` 属性：
 
@@ -147,7 +148,16 @@ RESTFul 风格，两点注意实现：
 
 ### 2.@RequestMapping 抽取公共路径
 
-@RequestMapping 注解在类上使用，用于抽取控制器类中，用于处理请求的方法的公共路径。
+@RequestMapping 注解在类上使用，用于抽取控制器类中，处理请求方法的公共路径。
+
+demo-project/javaweb-practise/src/main/java/com/kkcf/controller/EmpController.java
+
+```java
+@RequestMapping("/emps")
+public class EmpController {
+    // ……
+}
+```
 
 ## 三、统一响应 Result 类
 
@@ -657,8 +667,10 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public int addDept(Dept dept) {
+        // 补充数据
         dept.setCreateTime(LocalDate.now());
         dept.setUpdateTime(LocalDate.now());
+
         return deptMapper.insertDept(dept);
     }
 }
@@ -705,7 +717,7 @@ public class DeptController {
 }
 ```
 
-### 4.根据 ID 查询
+### 4.根据 ID 查询（回显）
 
 #### 1.根据 ID 查询基本信息
 
