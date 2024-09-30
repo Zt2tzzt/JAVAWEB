@@ -584,24 +584,125 @@ execution 切入点表达式，可以基于接口进行匹配。
 
 #### 2.execution 通配符
 
-execution 切入点表达式，可使用通配符描述切入点，可用通配符有两个：
+execution 切入点表达式，可用通配符有两个：
 
-- `*` ：单个独立的任意符号，可以通配任意返回值、包名、类名、方法名、任意类型的一个参数，也可以通配包、类、方法名的一部分
+- `*` ：单个独立的任意符号，可以通配任意返回值、包名、类名、方法名、任意类型的一个参数，也可以通配包、类、方法名的一部分。
 - `..` ：多个连续的任意符号，可以通配任意层级的包，或任意类型、任意个数的参数
 
 execution 切入点表达式的一般用法：
 
-1. 方法的访问修饰符可以省略；
-2. 返回值可以使用`*`号代替（任意返回值类型）；
-3. 包名可以使用`*`号代替，代表任意包（一层包使用一个 `*`）；
-4. 使用 `..` 配置包名，标识此包以及此包下的所有子包；
-5. 类名可以使用 `*` 号代替，标识任意类；
-6. 方法名可以使用 `*` 号代替，表示任意方法；
-7. 可以使用 `*` 配置参数，一个任意类型的参数；
-8. 可以使用 `..` 配置参数，任意个任意类型的参数。
+省略方法的修饰符号
+
+```java
+execution(void com.kkcf.service.impl.DeptServiceImpl.delete(java.lang.Integer))
+```
+
+使用 `*` 代替返回值类型
+
+```java
+execution(* com.kkcf.service.impl.DeptServiceImpl.delete(java.lang.Integer))
+```
+
+使用 `*` 代替包名（一层包使用一个 `*`）
+
+```java
+execution(* com.kkcf.*.*.DeptServiceImpl.delete(java.lang.Integer))
+```
+
+使用 `..` 省略包名（表示此包以及此包下的所有子包；）
+
+```java
+execution(* com..DeptServiceImpl.delete(java.lang.Integer))
+```
+
+使用 `*` 代替类名（表示任意类）
+
+```java
+execution(* com..*.delete(java.lang.Integer))
+```
+
+使用 `*` 代替方法名（表示任意方法）
+
+```java
+execution(* com..*.*(java.lang.Integer))
+```
+
+使用 `*` 代替参数（表示一个任意类型的参数）
+
+```java
+execution(* com.kkcf.service.impl.DeptServiceImpl.delete(*))
+```
+
+使用 `..` 省略参数（表示任意类型，任意个数的参数）
+
+```java
+execution(* com..*.*(..))
+```
+
+可以使用且（`&&`）、或（`||`）、非（`!`），来组合比较复杂的切入点表达式。
+
+- 比如：匹配两个完全不相同的方法，使用 `||` 逻辑运算符进行连接。
+
+```jav
+execution(* com.kkcf.service.DeptService.list(..)) || execution(* com.kkcf.service.DeptService.delete(..)))
+```
+
+在项目中，建议使用规范的业务方法命名，方便切入点表达式快速匹配。
+
+- 比如：查询类方法都是 "find" 开头，更新类方法都是 "update" 开头
+
+匹配 DeptServiceImpl 类中以 find 开头的方法
+
+```java
+execution(* com.kkcf.service.impl.DeptServiceImpl.find*(..)))
+```
+
+描述切入点方法，通常基于接口描述，而不是直接描述实现类，增强拓展性
+
+```java
+execution(* com.kkcf.service.DeptService.*(..)))
+```
+
+在满足业务需要的前提下，尽量缩小切入点的匹配范围。
+
+- 比如：包名匹配尽量不使用 ..，而是使用 * 匹配单个包。
+
+```java
+execution(* com.kkcf.*.*.DeptServiceImpl.find*(..)))
+```
+
+### 2.@annotation 切入点表达式
 
 
 
+## 十一、AOP 连接点
+
+org.aspectj.lang 包下的 JoinPoint
+
+JoinPoint 是 ProceedingJoinPoint 的父类型。
 
 
-匹配两个完全不相同的方法，使用 `||` 逻辑运算符进行连接。
+
+方法调用有参的，要先获取参数，再将参数传递进去。
+
+在 AOP 中，可对连接点对象进行篡改
+
+
+
+## 十二、AOP 案例练习
+
+将案例中增、删、改相关接口的操作日志，记录到数据库表中。
+
+- 日志信息包含：操作人、操作时间、执行方法的全类名、执行方法名、方法运行时参数、返回值、方法执行时长；
+
+实现思路：
+
+- 使用 AOP 技术实现；
+- 由于增、删、改方法名没有规律，可以自定义 @Log 注解，完成目标方法匹配。
+
+准备工作：
+
+1. 引入 Spring AOP 的起步依赖；
+2. 准备数据库表结构，以及与表结构对应的实体类。
+
+编码
