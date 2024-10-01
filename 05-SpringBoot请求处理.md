@@ -1,6 +1,6 @@
 # Spring Boot 请求处理
 
-在之前开发的 Spring Boot 入门程序中，使用 Controller 控制器进行了 Http GET 请求的处理
+在 Spring Boot 入门程序中，使用 Controller 控制器，进行了 Http GET 请求的处理
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/controller/HelloController.java
 
@@ -21,14 +21,14 @@ public class HelloController {
 
 ## 一、Tomcat 与 Controller 控制器的关系
 
-Spring Boot 内置的 Tomcat 服务器，并不能识别项目中的 Controller 控制器类。它们是怎么联系起来的？
+Spring Boot 内置的 Tomcat 服务器，并不能识别 Spring 项目中的 Controller 控制器类。它们是怎么联系起来的？
 
 - Tomcat 是 Servlet 容器，所以它能识别 Servlet 规范，
-- Spring Boot 框架中，提供了一个核心的 Servlet 程序 `DispatchServlet`，它实现了 Servlet 规范中的接口。
+- Spring Boot 框架，提供了一个核心的 Servlet 程序 `DispatchServlet`，它实现了 Servlet 规范中的接口。
 
 所以在 Spring Boot 项目中，对于 Http 请求的处理过程是：
 
-1. 浏览器（客户端）发送请求到 Spring Boot 后端服务；
+1. 客户端（如浏览器）发送请求到 Spring Boot 后端服务；
 2. Spring Boot 后端服务，通过 `DispatchServlet`，将请求转给 Controller 处理器。
 3. Controller 处理器处理完成后，将响应返回给 `DispatchServlet`；
 4. `DispatchServlet` 再将响应返回给浏览器（客户端）。
@@ -39,45 +39,61 @@ Spring Boot 内置的 Tomcat 服务器，并不能识别项目中的 Controller 
 
 ![DispatchServlet继承体系](NoteAssets/DispatchServlet继承体系.png)
 
-- 可以看到，Servlet 继承自 `DispatchServlet`。
+- 可以看到，DispatchServlet 继承自 Servlet。
 
-可以看出 `DispatchServlet` 是非常核心的类，在应用程序中被称为“**核心控制器**”或”**前端控制器**“
+> `DispatcherServlet` 是 Spring 框架中用于处理 HTTP 请求的核心组件，它实现了 Servlet 规范中的 `javax.servlet.Servlet` 接口。
+>
+> 其主要作用是作为前端控制器（Front Controller），负责将请求分发到相应的处理程序（如控制器）。
+>
+> 在 Servlet 规范中，`Servlet` 负责接收和处理请求，而 `DispatcherServlet` 扩展了这一功能，提供了更强大的请求处理能力，包括：
+>
+> 1. **请求映射**：根据 URL 将请求映射到具体的处理方法。
+> 2. **视图解析**：处理响应的视图解析，支持多种视图技术（如 JSP、Thymeleaf）。
+> 3. **拦截器支持**：允许在请求处理前后添加自定义逻辑。
+>
+> 简而言之，`DispatcherServlet` 是基于 Servlet 规范的一个高级抽象，使得 Spring 框架能够更加灵活和强大。
+
+`DispatchServlet` 是 Spring 框架非常核心的组件，在应用程序中，被称为“**核心控制器**”或”**前端控制器**“。
 
 它的作用，如下图所示：
 
 ![SpringBoot请求响应1](NoteAssets/SpringBoot请求响应1.png)
 
-## 三、HttpServletRequest 请求对象、HttpServletResponse 响应对象
+## 三、HttpServletRequest 请求对象 HttpServletResponse 响应对象
 
-浏览器（客户端）发送的请求，在 Spring Boot 项目中，会经过 Tomcat 封装成一个 `HttpServletRequest` 对象（请求对象）；
+客户端（如浏览器）发送的请求，在 Spring 框架中，会经过 Tomcat 封装成一个 `HttpServletRequest` 对象（请求对象）；
 
 - 应用程序，通过该对象，来获取请求信息，进行处理。
 
-在 Spring Boot 项目中，可使用 `HttpServletResponse` 对象（请求对象），来封装要返回的响应信息。
+在 Spring 框架中，可使用 `HttpServletResponse` 对象（请求对象），来封装要返回的响应信息。
 
 - Tomcat 会将该对象中封装的响应信息，返回给浏览器（客户端）。
 
 ![SpringBoot请求响应2](NoteAssets/SpringBoot请求响应2.png)
 
-开发者需要重点关注 Controller  控制器，在其中获取请求信息，处理请求，返回响应。
+开发者需要重点关注 Controller  控制器，在其中
+
+1. 获取请求信息；
+2. 处理请求；
+3. 返回响应。
 
 ## 四、Spring Boot 请求处理
 
 客户端在向服务器发起请求时，传递参数的方式是：
 
-- GET 请求，在请求 url 中，传递 query 字符串形式的参数；或请求 url 中，通过路径传递参数。
-- POST 请求，在请求体（body）中以多种形式（比如： x-www-form-urlencoded、json）方式传递的参数
+- GET 请求，在请求 url 中传递 query 字符串，或者通过路径传递参数。
+- POST 请求，在请求体（body）中以多种形式（比如： x-www-form-urlencoded、json）方式传递的参数。
 
 ### 1.简单参数处理
 
-在 Spring Boot 后端程序中，接收传递过来的参数，有两种方式：
+在基于 Spring Boot 开发的后端服务中，接收传递过来的参数，有两种方式：
 
 - 原始方式
 - Spring Boot 特有的方式
 
 #### 1.原始方式处理
 
-Tomcat 接收到 http 请求时：会把请求的相关信息，封装到 `HttpServletRequest` 请求对象中
+Tomcat 接收到 http 请求时：会把请求的相关信息，封装到 `HttpServletRequest` 类型的请求对象中。
 
 在原始的 Web 程序当中，需要通过 Servlet 中提供的 API：`HttpServletRequest` 请求对象，获取请求的相关信息。
 
@@ -107,7 +123,7 @@ public class RequestController {
 }
 ```
 
-- `HttpServletRequest` 的 `getParameter` 方法，取到的参数，都是字符串类型的。
+- `HttpServletRequest` 的 `getParameter` 方法取到的参数，都是 String 类型的。
 
 在客户端，发送请求 `localhost:8080/simpleParam?name=zzt&age=18` 测试。
 
@@ -119,7 +135,7 @@ public class RequestController {
 
 使得在 Controller 控制器的方法中，接收参数的形式更加简单。
 
-- 如果是处理简单参数，**参数名与形参变量名相同**，即可接收参数，会进行**自动类型转换**。
+- 如果是处理简单参数，**请求参数名与形参变量名相同**，即可接收参数，会进行**自动类型转换**。
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/controller/RequestController.java
 
@@ -146,7 +162,7 @@ public class RequestController {
 
 #### 3.@RequestParam 注解
 
-如果要将不同的参数名和形参变量名映射起来，要使用 `@RequestParam` 注解
+如果要将不同的请求参数名，与形参变量名映射起来，要使用 `@RequestParam` 注解
 
 ##### 1.value 属性
 

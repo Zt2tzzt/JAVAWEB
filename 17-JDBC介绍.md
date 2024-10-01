@@ -1,10 +1,8 @@
 # JDBC 介绍
 
-JDBC（Java DataBase Connectivity）就是使用 Java 语言，操作关系型数据库的一套 API。
+JDBC（Java DataBase Connectivity）是 SUN 公司官方定义的一套操作所有关系型数据库的规范，即接口。
 
-JDBC 是 SUN 公司官方定义的一套操作所有关系型数据库的规范，即接口。它没有提供具体的实现方式。
-
-而是由各个数据库厂商，提供具体的实现。也称为 Java 程序的数据库驱动，即一个 Jar 包。
+JDBC 没有提供具体的实现方式，而是由各个数据库厂商，提供具体的实现。也称为 Java 程序的数据库驱动，即一个 Jar 包。
 
 - MySQL 的 Java 驱动是 `mysql-connector-j`，
 
@@ -14,7 +12,7 @@ MyBatis 框架，就是对原始的 JDBC 程序的封装。
 
 ## 一、JDBC 的实际应用
 
-使用 JDBC 规范，操作数据库，步骤如下：
+JDBC 规范，操作数据库，步骤如下：
 
 1. 注册驱动；
 2. 获取连接对象；
@@ -60,7 +58,7 @@ public class JdbcTest {
         String sql = "SELECT id, name, age, gender, phone FROM user";
         ResultSet rs = statement.executeQuery(sql); // SQL 查询结果会封装在ResultSet对象中
 
-        List<User> userList = new ArrayList<>();// 集合对象（用于存储 User 对象）
+        List<User> userList = new ArrayList<>(); // 集合对象（用于存储 User 对象）
 
         // 4.处理 SQL 执行结果
         while (rs.next()) {
@@ -106,7 +104,7 @@ public class JdbcTest {
 
 - SQL 语句的执行结果，会封装在 ResultSet 中
 
-我们看到，直接基于 JDBC 规范来操作数据库，代码实现非常繁琐，
+可以看到，直接基于 JDBC 规范来操作数据库，代码实现非常繁琐，
 
 在实际开发中，很少直接使用 JDBC 操作数据库，而是会使用 Mybatis 这类的高级框架，简化数据库操作、提高开发效率。
 
@@ -128,7 +126,7 @@ MyBatis 中，是如何解决这些问题的：
 
 ![JDBC与MyBatis对比](NoteAssets/JDBC与MyBatis对比.png)
 
-> Spring Boot 底层，集成了数据库连接池，统一管理分配数据库连接。
+> Spring Boot 底层，集成了**数据库连接池**，统一管理分配数据库连接。
 >
 > - 每次执行 SQL 时，只需要从连接池中获取连接，然后执行 SQL，执行完成后，再将连接归还给连接池。
 > - 这样就形成了连接的复用，避免频繁的创建、释放连接造成的资源的浪费。
@@ -159,7 +157,7 @@ MyBatis 中，是如何解决这些问题的：
   
   import java.util.List;
   
-  @Mapper // 在程序运行时，MyBatis 框架会自动生成该接口的实现类对象（代理对象），并且将该对象，交给 IOC 容器管理。
+  @Mapper // 在程序运行时，MyBatis 框架会自动生成该接口的实现类对象（代理对象），并且将该对象，交给 IOC 容器管理（Bean 对象）。
   public interface UserMapper {
       @Select("SELECT * FROM user")
       List<User> listUser();

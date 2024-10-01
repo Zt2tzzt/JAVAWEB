@@ -1,9 +1,11 @@
 # MyBatis 入门
 
-在客户端工具（Navicat、DataGrip）中，编写 SQL 语句，发给 MySQL 数据库管理系统（DBMS），由数据库管理系统（DBMS）执行 SQL 语句，并返回执行结果。
+在客户端工具（Navicat、DataGrip）中，编写 SQL 语句，发给 MySQL 数据库管理系统（DBMS）；
+
+由数据库管理系统（DBMS）执行 SQL 语句，并返回执行结果。
 
 - 增、删、改操作，返回受影响行数；
-- 查操作：返回结果集（查询的结果）
+- 查操作：返回查询的结果集。
 
 后端开发人员，通常会使用程序，来完成对数据库的操作。
 
@@ -13,7 +15,7 @@ Java 程序操作数据库，现在主流的框架是：MyBatis。
 
 MyBatis 是一款优秀的**持久层框架**，用于简化 JDBC 的开发。
 
-- 持久层，指的是数据访问层（dao），是用来操作数据库的。
+- 持久层，指的是数据访问层（dao），用来操作数据库。
 - 框架：是一套可重用的、通用的、软件基础代码模型。在框架的基础上进行软件开发更加高效、规范、通用、可拓展。
 
 > JDBC 是 SUM 公司提供的 JavaEE 13 项操作规范之一，声明了 Java 程序操作数据库的规范。
@@ -43,7 +45,7 @@ MyBatis 入门程序。
    - artifact 为项目名，比如设为 `springboot-mybatis-quickstart`；设置完成后，上方 name 会跟着修改。
    - Package name 为要在项目中创建的包的层级，比如设为 `com.kkcf`
    - Java 为 Java 版本；比如设为 17；
-   - Pacakging 为打包方式，比如设为 Jar；
+   - Packaging 为打包方式，比如设为 Jar；
 4. 点击 Next，进入下一步；
 5. 选择 Spring Boot 版本，默认是最新版本。
 6. 在下方，勾选 Web -> Spring Web；
@@ -187,6 +189,8 @@ public class User {
     // toString ……
 }
 ```
+
+- 实体类属性的类型，推荐使用包装类型。
 
 ### 2.MyBatis 入门程序配置数据库连接
 

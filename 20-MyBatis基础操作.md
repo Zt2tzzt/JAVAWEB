@@ -128,9 +128,9 @@ public class Emp {
     private Short gender;
     private String image;
     private Short job;
-    private LocalDate entrydate; //LocalDate 类型对应数据表中的 date 类型
+    private LocalDate entrydate; // LocalDate 类型对应数据表中的 date 类型
     private Integer deptId;
-    private LocalDateTime createTime; //LocalDateTime 类型对应数据表中的 datetime 类型
+    private LocalDateTime createTime; // LocalDateTime 类型对应数据表中的 datetime 类型
     private LocalDateTime updateTime;
 }
 ```
@@ -199,7 +199,7 @@ DELETE、INSERT、UPDATE 语句，都是有返回值的，表示操作影响的�
 
 在 MyBatis 框架中，拿到这个返回值：
 
-- 修改 `EmpMapper` 接口中，方法的返回值类型。
+- 修改 EmpMapper 接口中，方法的返回值类型。
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/EmpMapper.java
 
@@ -242,7 +242,7 @@ mybatis.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
 执行上方删除数据的单元测试，发现控制台输出了如下信息：
 
 ```sh
-==>  Preparing: DELETE FROM emp WHERE id = ?;
+==> Preparing: DELETE FROM emp WHERE id = ?;
 ==> Parameters: 16(Integer)
 <==    Updates: 0
 ```
@@ -300,7 +300,7 @@ SQL 注入：是通过操作输入的数据，来修改事先定义好的 SQL �
 在 Mybatis 中，提供的参数占位符有两种：
 
 - `#{…}` 用于生成预编译 SQL：
-  - 执行 SQL 时，会将 SQL 中的 `?` 替换为 `#{…}` 传入的值，
+  - 执行 SQL 时，会将预编译 SQL 中的 `?` 替换为 `#{…}` 传入的值，
   - 使用时机：参数传递，都使用 `#{…}`
 
 - `${…}` 用于拼接 SQL。
@@ -402,7 +402,7 @@ import org.apache.ibatis.annotations.Options;
 @Mapper
 public interface EmpMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    @Insert("INSERT INTO emp(username, name, gender, image, job, entrydate, dept_id, create_time, update_time) VALUES (#{username}, #{name}, #{gender}, #{image}, #{job}, #{entrydate}, #{deptId}, #{createTime}, #{updateTime});")
+    @Insert("INSERT INTO emp (username, name, gender, image, job, entrydate, dept_id, create_time, update_time) VALUES (#{username}, #{name}, #{gender}, #{image}, #{job}, #{entrydate}, #{deptId}, #{createTime}, #{updateTime});")
     int insertEmp(Emp emp);
 }
 ```
@@ -410,6 +410,8 @@ public interface EmpMapper {
 - 将插入记录的主键（Id）值，放入 emp 对象的 id 属性中。
 
 单元测试：
+
+demo-project/springbot-mybatis-quickstart/src/test/java/com/kkcf/SpringbotMybatisQuickstartApplicationTests.java
 
 ```java
 package com.kkcf;
@@ -449,13 +451,15 @@ class SpringbotMybatisQuickstartApplicationTests {
 }
 ```
 
-- emp.getId() 获取插入记录的主键（id）值。
+- `emp.getId()` 获取插入记录的主键（id）值。
 
 ## 七、MyBatis 更新
 
 根据主键（id），修改记录的信息。
 
 在 `EmpMapper` 接口中，定义一个方法 `updateEmp` 用于更新 emp 记录。
+
+demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/EmpMapper.java
 
 ```java
 package com.kkcf.mapper;
@@ -471,6 +475,8 @@ public interface EmpMapper {
 ```
 
 单元测试：
+
+demo-project/springbot-mybatis-quickstart/src/test/java/com/kkcf/SpringbotMybatisQuickstartApplicationTests.java
 
 ```java
 package com.kkcf;
@@ -513,7 +519,7 @@ class SpringbotMybatisQuickstartApplicationTests {
 
 根据 Id，查询记录，在页面中回显展示。
 
-- 返回的是一条记录，可以直接用实体对象接收。
+- 返回的是一条记录，可以直接用实体（pojo）对象接收。
 
 实体类 Emp 中，有三个字段 `deptId`、`createTime`、`updateTime` 分别对应数据库 emp 表中的三个字段 `dept_id`、`create_time`、`update_time`。
 
@@ -525,8 +531,8 @@ Emp(id=18, username=linghushaoxiao, password=123456, name=令狐少校, gender=1
 
 MyBatis 查询操作的数据封装
 
-- 实体类属性名，与数据库表查询返回的字段名一致，Mybatis 会自动封装。
-- 实体类属性名，与数据库表查询返回的字段名不一致，不能自动封装。
+- 实体（pojo）类属性名，与数据库表查询返回的字段名一致，Mybatis 会自动封装。
+- 实体（pojo）类属性名，与数据库表查询返回的字段名不一致，不能自动封装。
 
 解决方案有三种：
 
@@ -579,7 +585,7 @@ public interface EmpMapper {
 
 开启 MyBatis 驼峰命名自动映射的开关；
 
-这种做法，对实体类属性命名，与表中字段命名，有严格要求：
+这种做法，对实体（pojo）类属性命名，与表中字段命名，有严格要求：
 
 - 比如：当表中字段名为 abc_xyz 时；实体类中属性名必须是 abcXyz。否则无法进行映射。
 

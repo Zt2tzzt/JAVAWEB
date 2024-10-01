@@ -1,5 +1,7 @@
 package com.kkcf.service.impl;
 
+import com.kkcf.anno.Log;
+import com.kkcf.anno.MyLog;
 import com.kkcf.mapper.DeptMapper;
 import com.kkcf.mapper.EmpMapper;
 import com.kkcf.pojo.Dept;
@@ -22,11 +24,14 @@ public class DeptServiceImpl implements DeptService {
     @Autowired
     private DeptLogService deptLogService;
 
+    //@MyLog
     @Override
     public List<Dept> list() {
         return deptMapper.selectDepts();
     }
 
+    //@MyLog
+    @Log
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int removeById(Integer id) throws Exception {
@@ -35,9 +40,9 @@ public class DeptServiceImpl implements DeptService {
             empMapper.deleteByDeptId(id);
 
             //int i = 1 / 0;
-            if (true) {
+            /*if (true) {
                 throw new Exception("出错啦……");
-            }
+            }*/
 
             // 删除部门
             deptMapper.deleteDeptById(id);
@@ -52,6 +57,7 @@ public class DeptServiceImpl implements DeptService {
         return 0;
     }
 
+    @Log
     @Override
     public int addDept(Dept dept) {
         dept.setCreateTime(LocalDate.now());
@@ -64,6 +70,7 @@ public class DeptServiceImpl implements DeptService {
         return deptMapper.selectDeptById(id);
     }
 
+    @Log
     @Override
     public int updateDept(Dept dept) {
         dept.setUpdateTime(LocalDate.now());

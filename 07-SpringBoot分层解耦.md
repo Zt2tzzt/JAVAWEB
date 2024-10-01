@@ -449,7 +449,7 @@ The injection point has the following annotations:
 
 ### 2.@SpringBootApplication 注解
 
-`@ComponentScan` 注解，虽然没有显式配置，但是已经包含在了引导类（` SpringbootWebQuickstartApplication`）声明注解 `@SpringBootApplication` 中；
+`@ComponentScan` 注解，虽然没有显式配置，但是已经包含在了引导类（`SpringbootWebQuickstartApplication`）声明注解 `@SpringBootApplication` 中；
 
 - 其中默认扫描的范围是 Spring Boot 启动类所在包，及其子包。
 

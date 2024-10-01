@@ -13,14 +13,29 @@ Lombok 是一个实用的 Java 类库，可以通过简单的注解，来简化�
 
 ## 一、Lombok 常用注解
 
-| 注解                  | 作用                                                         |
-| --------------------- | ------------------------------------------------------------ |
-| `@Getter`、`@Setter`  | 为所有的属性提供 `get`、`set` 方法                           |
-| `@ToString`           | 为类自动生成易阅读的 `toString` 方法                         |
-| `@EqualsAndHashCode`  | 根据类所拥有的非静态字段，自动重写 `equals` 方法和  `hashCode` 方法 |
-| `@Data`               | 提供了更综合的生成代码功能（`@Getter`  + `@Setter` + `@ToString` + `@EqualsAndHashCode`） |
-| `@NoArgsConstructor`  | 为实体类，生成无参的构造器方法                               |
-| `@AllArgsConstructor` | 为实体类，生成除了 static 修饰的字段之外，带有各参数的构造器方法。 |
+### 1.@Getter、@Setter 注解
+
+为所有的属性提供 `get`、`set` 方法
+
+### 2.@ToString 注解
+
+为类自动生成易阅读的 `toString` 方法
+
+### 3.@EqualsAndHashCode 注解
+
+根据类所拥有的非静态字段，自动重写 `equals` 方法和  `hashCode` 方法
+
+### 4.@Data 注解
+
+提供了更综合的生成代码功能（`@Getter`  + `@Setter` + `@ToString` + `@EqualsAndHashCode`）
+
+### 5.@NoArgsConstructor 注解
+
+为实体类，生成无参的构造器方法。
+
+### 6.@AllArgsConstructor 注解
+
+为实体类，生成除了 static 修饰的字段之外，带有各参数的构造器方法。
 
 ## 二、Lombok 的使用
 

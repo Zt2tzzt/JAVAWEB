@@ -2,6 +2,7 @@ package com.kkcf.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.kkcf.anno.Log;
 import com.kkcf.mapper.EmpMapper;
 import com.kkcf.pojo.Emp;
 import com.kkcf.pojo.EmpPageBean;
@@ -47,11 +48,13 @@ public class EmpServiceImpl implements EmpService {
         return new EmpPageBean(p.getTotal(), p.getResult());
     }
 
+    @Log
     @Override
     public int removeByIds(int[] ids) {
         return empMapper.deleteByIds(ids);
     }
 
+    @Log
     @Override
     public int addEmp(Emp emp) {
         // 补充基础属性
@@ -67,6 +70,7 @@ public class EmpServiceImpl implements EmpService {
         return empMapper.selectById(id);
     }
 
+    @Log
     @Override
     public int modifyEmp(Emp emp) {
         // 补充数据

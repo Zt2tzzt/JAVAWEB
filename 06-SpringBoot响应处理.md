@@ -142,7 +142,7 @@ hi!
 
 - 状态码信息：给页面的提示信息。
 
-- 返回的数据：给前端响应的数据（字符串、对象、集合）
+- 返回的数据：给前端响应的数据（比如：字符串、对象、集合、……）。
 
 Result 实体类：
 
@@ -258,15 +258,11 @@ public class ResponseController {
 demo-project/springboot-web-quickstart/pom.xml
 
 ```xml
-<dependencies>
-    <!-- …… -->
-
-    <dependency>
-        <groupId>org.dom4j</groupId>
-        <artifactId>dom4j</artifactId>
-        <version>2.1.3</version>
-    </dependency>
-</dependencies>
+<dependency>
+    <groupId>org.dom4j</groupId>
+    <artifactId>dom4j</artifactId>
+    <version>2.1.3</version>
+</dependency>
 ```
 
 - 在 IDEA 中，点击 `pom.xml` 配置文件中的刷新按钮，生效修改。
@@ -274,7 +270,7 @@ demo-project/springboot-web-quickstart/pom.xml
 步骤二：引入以下文件：
 
 - `XMLParserUtils` 工具类，用于解析 XML 文件中的数据。demo-project/springboot-web-quickstart/src/main/java/com/kkcf/utils/XmlParserUtils.java
-- `Emp` 实体类，用于封装员工（Employee）的信息。demo-project/springboot-web-quickstart/src/main/java/com/kkcf/pojo/Emp.java
+- `Emp` 实体（pojo）类，用于封装员工（Employee）的信息。demo-project/springboot-web-quickstart/src/main/java/com/kkcf/pojo/Emp.java
 - `emp.xml` 文件，用于存储员工信息。demo-project/springboot-web-quickstart/src/main/resources/emp.xml
 
 > 基于 Maven 的 Spring Boot 项目，静态资源文件，一般放在 `src/main/resources` 目录下。
