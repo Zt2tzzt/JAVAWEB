@@ -6,16 +6,23 @@ import com.kkcf.service.DeptService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Scope("prototype")
 @Slf4j
 @RestController
 @RequestMapping("/depts")
 public class DeptController {
     @Autowired
     private DeptService deptService;
+
+    public DeptController() {
+        System.out.println("创建了 DeptController");
+    }
 
     /**
      * 此方法用于：查询全部部门信息

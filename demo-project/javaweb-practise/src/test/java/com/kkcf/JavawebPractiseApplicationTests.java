@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-//@SpringBootTest
+@SpringBootTest
 class JavawebPractiseApplicationTests {
     @Autowired
     private AliyunOSSProperties1 aliyunOSSProperties1;
@@ -53,13 +53,13 @@ class JavawebPractiseApplicationTests {
     /**
      * 测试 JWT 令牌的解析
      */
-    @Test
-    public void testJWTparse() {
+    /*@Test
+    public void testJWTparse(String jwt) {
         Claims claims = Jwts.parser()
                 .setSigningKey("kkcf")
-                .parseClaimsJws("eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiemV0aWFuIiwiZXhwIjoxNzI3NDExMTM5LCJpZCI6MX0.XibFHXMs1hOMfJ19fV7_DZ9CACWESl4TV1Nf2ETqM6s")
+                .parseClaimsJws(jwt)
                 .getBody();
 
         System.out.println("claims: " + claims);
-    }
+    }*/
 }

@@ -12,8 +12,8 @@
 
 在 Web 项目开发中，可以将代码分为三层：
 
-- Controller 控制层：接收前端发送的请求，对请求进行处理，并响应数据。
-- Service 业务逻辑层：处理具体的业务逻辑。
+- Controller 控制层：负责接收前端发送的请求，对请求进行处理，并响应数据。
+- Service 业务逻辑层：负责处理具体的业务逻辑。
 - Dao（Data Access Object）数据访问层：也称为持久层。负责数据访问操作，包括数据的增、删、改、查。
 
 基于三层架构的程序执行流程：
@@ -193,13 +193,13 @@ public class EmpController {
 
 ![高内聚低耦合](NoteAssets/高内聚低耦合.png)
 
-在之前编写的代码中，
+上面编写的代码中，
 
-内聚体现在：
+内聚，体现在：
 
 - `EmpServiceA` 类中，只编写了和员工相关的逻辑处理代码。
 
-耦合体现在：
+耦合，体现在：
 
 - 如果把 Controller 层中要用到的业务类，变为 `EmpServiceB` 时，需要修改 Controller 层中的代码；
 - 也就是说：当 Service 层的实现类，变了之后， 我们还需要修改 Controller 层的代码，改变引入的 Service 层实例对象。
@@ -219,22 +219,29 @@ public class EmpController {
 
 不能 `new`，意味着没有业务层对象，程序运行就会报错：
 
-为解决这个问题，就要引入容器的概念。
+为解决这个问题，就要引入**容器**的概念。
 
 - 容器中存储一些对象（比如：`EmpService` 接口类型的对象)。
 - Controller 层会从容器中，获取这些对象。
 
-### 2.IOC 控制反转、DI 依赖注入、Bean 对象
+### 2.IOC 控制反转
 
-要想实现上述解耦操作，就涉及到 Spring 中的两个核心概念：
+要想实现上述解耦操作，就涉及到 Spring 中的核心概念：
 
-- **控制反转（IOC、Inversion Of Control）**：对象的创建控制权，由程序自身转移到外部容器。
-  - 这个容器称为：**IOC 容器**或 **Spring 容器**。
-- **依赖注入（DI、Dependency Injection）**：容器为应用程序提供运行时，所依赖的资源，称之为依赖注入。
-  - 程序运行时，需要某个资源，此时容器就为其提供这个资源。
-  - 比如：`EmpController` 程序运行时，需要 `EmpService` 对象，Spring 容器就为其提供并注入 `EmpService` 对象。
+**IOC（Inversion Of Control）控制反转**：对象的创建控制权，由程序自身转移到外部容器。
 
-- **Bean 对象**：指的是 IOC 容器中，创建、管理的对象。
+- 这个容器称为：**IOC 容器**或 **Spring 容器**。
+
+### 3.DI 依赖注入
+
+**DI（Dependency Injection）依赖注入**：容器为应用程序提供运行时，所依赖的资源，称之为依赖注入。
+
+- 程序运行时，需要某个资源，此时容器就为其提供这个资源。
+- 比如：`EmpController` 程序运行时，需要 `EmpService` 对象，Spring 容器就为其提供并注入 `EmpService` 对象。
+
+### 4.Bean 对象
+
+**Bean 对象**：指的是 IOC 容器中，创建、管理的对象。
 
 ## 三、Spring Boot IOC 控制反转
 
@@ -309,7 +316,7 @@ public class EmpController {
 
 ## 五、Spring Boot IOC 解耦合的体现
 
-再创建一个 `EmpServiceB` 实现类，作为 Service 层的 B 方案；
+在 Service 层，再创建一个 `EmpServiceB` 实现类，作为 B 方案；
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/service/impl/EmpServiceB.java
 
@@ -359,7 +366,8 @@ IOC 容器，创建的对象，称为 bean 对象。
 | `@Repository` | `@Component` 的衍生注解    | 标注在数据访问（Dao 层）类上（后续使用 Mybatis 框架后，用的很少） |
 
 - 因为 Controller 控制器类上，通常标注了 `@RestController` 注解。它是 `@Controller` + `@ResponseBody` 的组合注解，所以不用再标注 `@Controller` 注解。
-- 使用以上四个注解，都可以声明 Bean 对象，但是在 Spring Boot 框架中，声明控制器（Controller）Bean 只能用 `@Controller` 注解。
+- 使用以上四个注解，都可以声明 Bean 对象，
+- 但是在 Spring Boot 框架中，声明控制器（Controller）Bean 对象，只能用 `@Controller` 注解。
 
 使用这些注解，重构上方代码：
 
@@ -403,7 +411,7 @@ public class EmpDaoA implements EmpDao {
 }
 ```
 
-或者：
+或者，`value` 属性可省略不写。
 
 ```java
 @Repository("daoA")
@@ -412,15 +420,15 @@ public class EmpDaoA implements EmpDao {
 }
 ```
 
-- `value` 在括号中可省略不写。
-
 ## 七、Spring Boot Bean 组件扫描
 
 使用上面注解声明的 Bean 对象，想要生效，还需要被组件扫描：
 
 下面修改项目 dao 包的目录结构，来测试 Dao 层的 bean 对象是否生效：
 
-修改后的结构如下：demo-project/springboot-web-quickstart/src/main/java
+修改后的结构如下：
+
+demo-project/springboot-web-quickstart/src/main/java
 
 ├─📁 com/
 │ └─📁 kkcf/
@@ -445,11 +453,11 @@ The injection point has the following annotations:
 
 ### 1.@ComponentScan 注解
 
-没有找到 bean 对象，是因为 bean 对象没有被组件扫描注解 `@ComponentScan` 扫描到。
+没有找到 bean 对象，是因为 bean 对象没有被 Spring 的组件扫描注解 `@ComponentScan` 扫描到。
 
 ### 2.@SpringBootApplication 注解
 
-`@ComponentScan` 注解，虽然没有显式配置，但是已经包含在了引导类（`SpringbootWebQuickstartApplication`）声明注解 `@SpringBootApplication` 中；
+在 Spring Boot 项目中，虽然没有显式配置 `@ComponentScan` 注解，但是已经包含在了引导类（`SpringbootWebQuickstartApplication`）声明注解 `@SpringBootApplication` 中；
 
 - 其中默认扫描的范围是 Spring Boot 启动类所在包，及其子包。
 
@@ -468,7 +476,7 @@ The injection point has the following annotations:
 
 DI 依赖注入，是指 IOC 容器，要为应用程序去提供运行时所依赖的资源，这个资源就是 Bean 对象。
 
-在入门程序案例中，使用了 `@Autowired` 注解，完成了依赖注入的操作（Autowired 翻译过来：自动装配）。
+在入门程序案例中，使用了 `@Autowired` 注解，完成了依赖注入的操作（Autowired 自动装配的意思）。
 
 `@Autowired` 注解，默认是按照**类型**，进行自动装配的（去 IOC 容器中找某个类型的对象，然后完成注入操作）
 
@@ -486,7 +494,7 @@ public class EmpServiceA implements EmpService {
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/service/impl/EmpServiceB.java
 
 ```java
-@Service
+@Service // 将当前类，交给 IOC 容器管理，称为 IOC 容器中的 Bean
 public class EmpServiceB implements EmpService {
     // ……
 }
@@ -524,7 +532,9 @@ Field empService in com.kkcf.controller.EmpController required a single bean, bu
 
 ### 1.@Primary 注解
 
-当存在多个相同类型的 Bean 对象可供注入时，使用 `@Primary` 注解：来设置默认（优先级高）的 Bean 对象注入。
+当存在多个相同类型的 Bean 对象，可供注入时
+
+在 Bean 对象的类上，使用 `@Primary` 注解：来设置默认（优先级高）的 Bean 对象注入。
 
 比如：为 Service 层 `EmpServiceA` 类上，加上该注解，
 
@@ -540,7 +550,9 @@ public class EmpServiceA implements EmpService {
 
 ### 2.@Qualifier 注解
 
-当存在多个相同类型的 Bean 对象可供注入时，可以使用 `@Autowired` 结合 `@Qualifier` 注解
+当存在多个相同类型的 Bean 对象，可供注入时
+
+在要注入 Bean 对象的类中，使用 `@Autowired` 结合 `@Qualifier` 注解
 
 - `@Qualifier` 注解不能单独使用，必须配合 `@Autowired` 注解使用。
 - `@Qualifier` 注解，使用 `value` 属性。按照类型，进行 Bean 对象注入，
@@ -575,9 +587,11 @@ public class EmpController {
 
 ### 3.@Resource 注解
 
-当存在多个相同类型的 Bean 注入时，也可以使用 `@Resource` 注解。
+当存在多个相同类型的 Bean 注入时，可供注入时，
 
-- `@Resource` 注解，由 JDK 提供，而非 Spring 框架提供。
+在要注入 Bean 对象的类中，使用 `@Resource` 注解。
+
+- `@Resource` 注解，由 JDK 提供，而非 Spring 框架。
 - `@Resource` 注解，使用 `name` 属性。按照名称，进行 Bean 对象注入。
 
 比如：在 Controller 层中，为 Bean 对象注入指定一个对象：
