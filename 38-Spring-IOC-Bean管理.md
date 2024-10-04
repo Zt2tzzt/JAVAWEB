@@ -10,7 +10,7 @@ Spring Boot 项目启动时，会自动创建 IOC 容器（Spring 容器），�
 
 从 IOC 容器中，获取到 Bean 对象，要先拿到 `ApplicationContext` 类型的 IOC 容器对象，
 
-在 Spring 环菌中，可直接将 IOC 容器对象，注入到应用程序（类）中。
+在 Spring 环菌中，可直接将 `ApplicationContext` 类型的  IOC 容器对象，注入到应用程序（类）中。
 
 通过 IOC 容器对象，获取 Bean 对象，主要有三种方式：
 
@@ -77,11 +77,11 @@ com.kkcf.controller.DeptController@4d8f2cfd
 com.kkcf.controller.DeptController@4d8f2cfd
 ```
 
-发现：获取出的 Bean 对象，地址值一样，说明是同一个对象；
+发现：三次获取出的 Bean 对象，地址值一样，说明是同一个对象；
 
-IOC 容器中，Bean 对象默认是**单例**的（只有一个 Bean 对象）。
+IOC 容器（Spring 容器）中，Bean 对象默认是**单例**的（只有一个 Bean 对象）。
 
-> “Spring 项目启动时，会把 Bean 都创建好，放在 IOC 容器中”只针对默认的单例 Bean 对象；
+> “Spring 项目启动时，会把 Bean 都创建好，放在 IOC 容器中”，这只针对默认的单例 Bean 对象；
 >
 > 事实上，Bean 对象，还会受到作用域，和延迟初始化的影响；
 
@@ -136,26 +136,31 @@ public class BeanTest {
 执行测试方法：
 
 1. 在加载 Spring 环菌时，DeptController 的 Bean 对象，就创建了。
+
+   ```sh
+   创建了 DeptController
+   ```
+
 2. 测试方法执行，获取到了 10 个相同的 Bean 对象。
 
-```sh
-com.kkcf.controller.DeptController@77d95e5a
-com.kkcf.controller.DeptController@77d95e5a
-com.kkcf.controller.DeptController@77d95e5a
-com.kkcf.controller.DeptController@77d95e5a
-com.kkcf.controller.DeptController@77d95e5a
-com.kkcf.controller.DeptController@77d95e5a
-com.kkcf.controller.DeptController@77d95e5a
-com.kkcf.controller.DeptController@77d95e5a
-com.kkcf.controller.DeptController@77d95e5a
-com.kkcf.controller.DeptController@77d95e5a
-```
+    ```sh
+    com.kkcf.controller.DeptController@77d95e5a
+    com.kkcf.controller.DeptController@77d95e5a
+    com.kkcf.controller.DeptController@77d95e5a
+    com.kkcf.controller.DeptController@77d95e5a
+    com.kkcf.controller.DeptController@77d95e5a
+    com.kkcf.controller.DeptController@77d95e5a
+    com.kkcf.controller.DeptController@77d95e5a
+    com.kkcf.controller.DeptController@77d95e5a
+    com.kkcf.controller.DeptController@77d95e5a
+    com.kkcf.controller.DeptController@77d95e5a
+    ```
 
 ## 二、Bean 对象延迟加载
 
 默认的单例 Bean 对象，会在容器启动时被创建；
 
-可以使用 @Lazy 注解，来延迟默认单例 Bean 对象的初始化(，直到第一次使用时，再创建该对象。
+可以使用 @Lazy 注解，来延迟默认单例 Bean 对象的初始化(，直到第一次使用时，再创建该 Bean 对象。
 
 ### 1.@Lazy 注解
 
@@ -210,7 +215,8 @@ public class BeanTest {
 
 执行测试方法，发现：
 
-- 加载 Spring 环菌时，没有创建 DeptController 的 Bean 对象；而是在测试方法执行，获取 Bean 对象时，Bean 对象才被创建。
+- 加载 Spring 环菌时，没有创建 DeptController 的 Bean 对象；
+- 而是在测试方法执行，获取 Bean 对象时，Bean 对象才被创建。
 
 获取到了 10 次相同的 Bean 对象。
 
@@ -246,7 +252,7 @@ Spring 的 Bean 对象，支持五种作用域。如下表所示，后三种在 
 
 @Scope 注解，可以配置 Bean 的作用域。
 
-在 DeptController 类上，加上 @Scope 注解，并指定作用域为 prototype
+在 DeptController 类上，加上 @Scope 注解，并指定它作为 IOC 容器管理的 Bean 对象的生命周期作用域为 prototype
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/controller/DeptController.java
 
@@ -326,13 +332,11 @@ com.kkcf.controller.DeptController@63eea8c4
 
 ## 四、第三方 Bean 对象管理
 
-学习完bean的获取、bean的作用域之后，接下来我们再来学习第三方bean的配置。
-
 前面配置的 Bean 对象，都是项目中自定义的类。要声明这些 Bean，非常简单：
 
-- 只需要在类上加上 @Component 以及它的三个衍生注解（@Controller、@Service、@Repository），即可。
+- 只需要在类上标注 @Component 以及它的三个衍生注解（@Controller、@Service、@Repository），即可。
 
-然而，在项目开发中，用到的某个类，不是自己编写的，而是引入的第三方依赖提供的，这是就需要使用 @Bean 注解。
+然而，在项目开发中，用到的某个类，不是自己编写的，而是引入的第三方依赖提供的，这时就需要使用 @Bean 注解。
 
 ### 1.@Bean 注解
 
@@ -350,7 +354,7 @@ demo-project/javaweb-practise/pom.xml
 </dependency>
 ```
 
-解决方案一：在启动类（引导类）里，定义 @Bean 注解标注的方法。
+解决方案一：在启动类（引导类）里，定义 @Bean 注解标注的方法，用于 Spring 项目在启动时创建 Bean 对象，并让如 IOC 容器中管理。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/JavawebPractiseApplication.java
 
@@ -405,7 +409,7 @@ public class CommonCofig {
 }
 ```
 
-- 在方法上，使用 @Bean 注解，Spring 容器在启动的时候，它会自动的调用这个方法，并将方法的返回值声明为Spring容器当中的Bean对象。
+- 在方法上，使用 @Bean 注解，Spring 容器在启动时，会自动调用该方法，并将方法的返回值，声明为 Spring 容器中的 Bean 对象。
 
 xml 文件
 
@@ -461,7 +465,7 @@ tom:18
 
 如果第三方 Bean 对象，创建时需要依赖其它 Bean 对象，那么在 @Bean 注解标注的方法中，设置形参即可；
 
-IOC 容器会，根据类型自动装配（依赖注入）。
+IOC 容器会根据类型，自动装配（依赖注入）。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/config/CommonCofig.java
 
@@ -488,4 +492,4 @@ public class CommonCofig {
 ### 2.@Bean 与 @Component 选择
 
 - 自定义类，交给 IOC 容器管理，使用 @Component 以及它的衍生注解来声明。
-- 引入的第三方依赖中提供的类，交给 IOC 容器管理。那么要在配置类中定义一个方法，加上一个 @Bean注解，来声明第三方的 Bean 对象。
+- 引入的第三方依赖中提供的类，交给 IOC 容器管理。那么要在配置类中定义一个方法，加上一个 @Bean 注解，来声明第三方的 Bean 对象。

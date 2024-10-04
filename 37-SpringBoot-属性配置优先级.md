@@ -2,13 +2,13 @@
 
 ## 一、Spring Boot 三种配置文件
 
-前面已经介绍过，Spring Boot 项目，支持的三种配置文件格式，优先级排名：
+前面已经介绍过，Spring Boot 项目，支持的三种配置文件格式，优先级排名是（从高到低）：
 
 1. application.properties
 2. application.yml
 3. application.yaml
 
-在项目开发中，推荐只使用一个配置文件格式,，最为主流的是 yml 格式。
+在项目开发中，推荐只使用一个配置文件格式,，最为主流的就是 yml 格式。
 
 ## 二、Spring Boot 二种外部属性配置
 
@@ -83,7 +83,7 @@ IDEA 打包 Maven 项目
 java -Dserver.port=9000 -jar jar包名称 --server.port=10010
 ```
 
-六、Spring Boot 属性配置优先级总结
+## 六、Spring Boot 属性配置优先级总结
 
 在 Spring Boot 项目中，常见的属性配置方式有五种，
 
@@ -93,7 +93,7 @@ java -Dserver.port=9000 -jar jar包名称 --server.port=10010
 它们的优先级从高到低)：
 
 1. 命令行参数（--xxx=xxx）
-2. java系统属性（-Dxxx=xxx）
+2. java 系统属性（-Dxxx=xxx）
 3. application.properties、
 4. application.yml
-5. application.yaml（忽略）
+5. application.yaml
