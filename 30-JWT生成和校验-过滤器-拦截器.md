@@ -22,7 +22,7 @@ demo-project/javaweb-practise/pom.xml
 </dependency>
 ```
 
-在测试类中，测试 JWT 令牌的生成和解析：
+在测试类中，测试 JWT 令牌的生成：
 
 demo-project/javaweb-practise/src/test/java/com/kkcf/JavawebPractiseApplicationTests.java
 
@@ -54,7 +54,7 @@ class JavawebPractiseApplicationTests {
         ));
 
         String jwt = Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256, "kkcf") // 签名算法，加盐
+                .signWith(SignatureAlgorithm.HS256, "kkcf") // 签名算法，密钥
                 .setClaims(claims) // 存放的数据
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 设置有效期为 1 小时
                 .compact();
@@ -96,7 +96,8 @@ PAYLOAD:DATA
 }
 ```
 
-- 第二个部分（PAYLOAD）解析出来，可看到是自定义的 JSON 格式数据，还有一个 exp 表示设置的过期时间。
+- 第二个部分（PAYLOAD）解析出来，可看到是自定义的 JSON 格式数据，
+- 还有一个 `exp` 表示设置的过期时间。
 
 VERIFY SIGNATURE
 
@@ -137,7 +138,7 @@ class JavawebPractiseApplicationTests {
     @Test
     public void testJWTparse() {
         Claims claims = Jwts.parser()
-                .setSigningKey("kkcf") // 加盐
+                .setSigningKey("kkcf") // 密钥
                 .parseClaimsJws("eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiemV0aWFuIiwiZXhwIjoxNzI3MzE2NTQ5LCJpZCI6MX0.7514DsLRwRK3Fm6D7Tqn97qNWZi_T9WKS9r8NzJPYoU")
                 .getBody();
 

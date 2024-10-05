@@ -14,6 +14,6 @@ public class AutoConfigurationTest {
     @Test
     public void testGson() {
         String jsonStr = gson.toJson(Result.success("哈哈"));
-        System.out.println(jsonStr);
+        System.out.println(jsonStr); // {"code":1,"msg":"success","data":"哈哈"}
     }
 }

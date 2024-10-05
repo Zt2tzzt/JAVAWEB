@@ -31,6 +31,8 @@ public class AliyunOSSProperties1 {
 }
 ```
 
+- 使用 Lombok 的 @Data 注解，为类生成 getter、setter、toString、equals & hashCode 方法。
+
 在测试类中，获取配置文件中的属性值：
 
 demo-project/javaweb-practise/src/test/java/com/kkcf/JavawebPractiseApplicationTests.java
@@ -63,7 +65,8 @@ class JavawebPractiseApplicationTests {
 事实上，Spring Boot 项目可以使用多种配置文件：
 
 - application.properties
-- application.yml 或 application.yaml
+- application.yml
+- application.yaml
 
 它们格式的对比如下：
 
@@ -82,11 +85,13 @@ server:
   address: 127.0.0.1
 ```
 
-XML、properties、yml 等常见配置文件格式的对比，如下图所示：
+XML、properties、yml 等常见配置文件格式，对比如下图所示：
 
 ![常见配置文件格式对比](NoteAssets/常见配置文件格式对比.png)
 
-Spring Boot 中，仅支持 properties、yml 格式的配置文件；现代企业级开发中，基本都用 yml 格式进行配置。
+Spring Boot 中，仅支持 properties、yml 格式的配置文件；
+
+在企业级开发中，基本都用 yml 格式进行配置。
 
 可以看到，配置同样的数据信息，yml 格式有以下特点：
 
@@ -185,7 +190,7 @@ spring:
   servlet:
     multipart:
       max-file-size: 10MB
-      max-request-size: 10MB
+      max-request-size: 100MB
 
 # MyBatis 配置
 mybatis:
@@ -193,6 +198,7 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
 
+# 阿里云 oss 服务配置
 aliyun:
   oss:
     endpoint: https://oss-cn-shenzhen.aliyuncs.com
@@ -209,7 +215,7 @@ Spring 提供了一种简化方式，可以直接将配置文件中配置项的�
 
 1. 创建一个实现类，其中的属性名，与配置文件中键名一致。
 2. 实体类的属性，还需要提供 getter、setter 方法（可使用 Lombok 的 `@Data` 注解）。
-3. 实体类要交给 Spring 的 IOC 容器管理，成为 IOC 容器当中的 bean 对象。
+3. 实体类要交给 Spring IOC 容器管理，成为 IOC 容器当中的 bean 对象。
 4. 在实体类上添加 `@ConfigurationProperties` 注解，并通过 `prefix` 属性，来指定配置参数项的前缀。
 
 创建实体类 `AliyunOSSProperties2`。
@@ -261,7 +267,7 @@ class JavawebPractiseApplicationTests {
 
 为配合该实体类的属性，在 properties 或者 yml 配置文件中，提示应配置的属性；
 
-可在 pom.xml 文件中，引入依赖 spring-boot-configuration-processor：
+可在 Maven 项目的 pom.xml 文件中，引入 spring-boot-configuration-processor 依赖：
 
 这项依赖的作用，是自动识别 `@ConfigurationProperties` 注解标识的 bean 对象。
 
@@ -280,5 +286,5 @@ class JavawebPractiseApplicationTests {
 
 不同点：
 
-- `@Value` 注解，只能一个个的将外部属性注入到 Bean 对象。
-- `@ConfigurationProperties` 注解，可以批量的将外部的属性注入到 Bean 对象的属性中。
+- `@Value` 注解，只能一个个的将外部属性，注入到 Bean 对象中。
+- `@ConfigurationProperties` 注解，可以批量的将外部的属性，注入到 Bean 对象中。
