@@ -4,7 +4,7 @@
 
 Interceptor 拦截器，是一种动态拦截方法，调用的机制，类似于过滤器。
 
-Interceptor 拦截器，是 Spring 框架提供的，用来动态拦截控制器方法的执行。
+Interceptor 拦截器，是 Spring 框架提供的，用来动态拦截 Controller 控制器方法的执行。
 
 在拦截器中，通常也做一些通用性的操作，比如：
 
@@ -88,6 +88,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 - `postHandle` 方法：在目标资源方法执行后执行。
 - `afterCompletion` 方法：在视图渲染完毕后执行，最后执行。
 
+### 1.@Configuration 注解
+
 定义配置类 `WebConfig` 实现 `WebMvcConfigurer` 接口。
 
 - 在该类上方加上 `@Configuration` 注解，表示注册配置类。
@@ -128,9 +130,9 @@ public class WebConfig implements WebMvcConfigurer {
 
 | 拦截路径  | 含义                  | 举例                                                 |
 | --------- | --------------------- | ---------------------------------------------------- |
-| /*        | 一级路径              | 能匹配 /depts，/emps，/login；不能匹配 /depts/1      |
-| /**       | 任意级路径            | 能匹配 /depts，/depts/1，/depts/1/2                  |
-| /depts/*  | /depts 下的一级路径   | 能匹配 /depts/1；不能匹配 /depts/1/2，/depts         |
+| /*        | 一级路径              | 能匹配 /depts，/emps，/login，…；不能匹配 /depts/1   |
+| /**       | 任意级路径            | 能匹配 /depts，/depts/1，/depts/1/2，…               |
+| /depts/*  | /depts 下的一级路径   | 能匹配 /depts/1；不能匹配 /depts/1/2，/depts，…      |
 | /depts/** | /depts 下的任意级路径 | 能匹配 /depts，/depts/1，/depts/1/2；不能匹配/emps/1 |
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/config/WebConfig.java
@@ -164,27 +166,27 @@ public class WebConfig implements WebMvcConfigurer {
 
 ![过滤器-拦截器执行流程](NoteAssets/过滤器-拦截器执行流程.png)
 
-1. Filter 过滤器会先拦截到请求。然后执行放行前的逻辑，然后再执行放行操作；
-2. 当前是基于 Spring Boot 开发 Web 服务器，所以放行之后，进入到了 Spring 环境中，要来访问定义的 Controller 当中的方法。
-3. Tomcat 并不识别 Controller 程序，但它识别 Servlet 程序，所以在 Spring 的 Web 环境中，提供了一个非常核心的 Servlet：DispatcherServlet（前端控制器），所有请求都会经 `DispatcherServlet` 派发给 Controller。
-4. Interceptor 拦截器，会在执行 Controller 方法之前，拦截请求，执行 `preHandle()` 方法；该方法返回一个布尔类型的值：
+1. Filter 过滤器会先拦截到请求。执行放行前的逻辑，再执行放行操作；
+2. 当前是基于 Spring Boot 开发 Web 服务器，所以 Filter 过滤器放行之后，进入到了 Spring 环境中，准备访问 Controller 控制器中的方法。
+3. Tomcat 并不识别 Controller 程序，但它识别 Servlet 程序，所以在 Spring 的 Web 环境中，提供了一个非常核心的 DispatcherServlet（前端控制器），所有请求都会经 `DispatcherServlet` 派发给 Controller。
+4. Spring 的 Interceptor 拦截器，会在执行 Controller 方法之前，拦截请求，执行 `preHandle()` 方法；该方法返回一个布尔类型的值：
    - 返回 true 则放行；
    - 返回 false 则不会放行（controller 中的方法也不会执行）。
-5. Controller 中的方法，执行完毕后，再回过来执行 Interceptor 拦截器的 `postHandle()` 方法， `afterCompletion()` 方法；
+5. Controller 中的方法，执行完毕后，再回过来执行 Interceptor 拦截器的 `postHandle()`、`afterCompletion()` 方法；
 6. 然后再返回给 DispatcherServlet，
 7. 最终再来执行 Filter 过滤器当中放行后的逻辑。
 8. 执行完毕之后，最终给浏览器响应数据。
 
 过滤器与拦截器的区别，主要有两点：
 
-- 接口规范不同：Filter 过滤器，需要实现 `Filter` 接口；Interceptor 拦截器，需要实现 `HandlerInterceptor` 接口。
+- 接口规范不同：Filter 过滤器，需要实现 Servlet 规范的 `Filter` 接口；Interceptor 拦截器，需要实现 Spring 的 `HandlerInterceptor` 接口。
 - 拦截范围不同：Filter 过滤器，会拦截所有对资源的请求；Interceptor 拦截器只会拦截 Spring 环境中的资源请求。
 
 ## 五、Intercepter 拦截器登录校验实现
 
-登录校验的业务逻辑，与之前 Filter 过滤器当中的逻辑是完全一致的。
+登录校验的业务逻辑，与之前 Filter 过滤器中的逻辑是完全一致的。
 
-现在只需要把这个技术方案由原来的 Filter 过滤器，换成 interceptor 拦截器。
+现在只需要把这个技术方案，由原来的 Filter 过滤器，换成 interceptor 拦截器。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/interceptor/LoginInterceptor.java
 
@@ -293,7 +295,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 }
 ```
 
-注册配置拦截器：
+注册并配置拦截器：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/config/WebConfig.java
 

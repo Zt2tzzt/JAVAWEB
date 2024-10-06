@@ -43,7 +43,8 @@
 Spring Boot 全局异常处理器的使用：
 
 1. 定义一个类，在类上加上注解 `@RestControllerAdvice`，表示全局异常处理器。
-2. 在该处理器类中，定义一个方法来捕获异常，在该方法上，加上注解 `@ExceptionHandler`，并通过 `value` 属性，来指定要捕获的异常类型。
+2. 在该处理器类中，定义一个方法，来捕获异常；
+3. 在该方法上，加上注解 `@ExceptionHandler`，并通过 `value` 属性，来指定要捕获的异常类型。
 
 > @RestControllerAdvice = @ControllerAdvice + @ResponseBody
 >
@@ -65,7 +66,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(Exception.class)
     public Result<String> ex(Exception ex) {
         ex.printStackTrace();
@@ -74,7 +74,7 @@ public class GlobalExceptionHandler {
 }
 ```
 
-在接口测试工具中，发送请求新增一个已经存在的部门，响应结果如下：
+在接口测试工具中，发送请求，新增一个已经存在的部门来模拟异常，响应结果如下：
 
 ```json
 {

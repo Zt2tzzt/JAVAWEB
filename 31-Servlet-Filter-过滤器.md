@@ -25,6 +25,8 @@ Servlet 规范中的 Filter 过滤器，是 JavaWeb 三大组件（Servlet、Fil
 
 ## 二、Filter 过滤器的使用
 
+### 1.@WebFilter 注解
+
 过滤器的实现，分为两步：
 
 1. 定义 Filter，定义一个过滤器类，实现 `javax.servlet.Fileter` 接口。并重写其所有方法。
@@ -89,6 +91,8 @@ public class DemoFilter implements Filter {
 - `init`、`destroy` 方法一般有固定的逻辑，所以 `Filter` 接口中，提供了默认实现。
 - `doFilter`  方法，是每次拦截到请求后，都会调用的方法。
 
+### 2.@ServletComponentScan 注解
+
 在引导（启动）类，加上一个注解 `@ServletComponentScan`，来开启 Spring Boot 项目，对于 Servlet 组件的支持。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/JavawebPractiseApplication.java
@@ -103,7 +107,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @ServletComponentScan // 当前项目开启了对 JavaWeb（Servlet）组件的支持。
 @SpringBootApplication
 public class JavawebPractiseApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(JavawebPractiseApplication.class, args);
     }
@@ -154,14 +157,14 @@ Filter 过滤器的拦截路径，可根据需求，进行配置。
 
 ## 五、Filter 过滤器链
 
-过滤器链，指的是在一个 web 服务器中，可以配置多个过滤器，多个过滤器就形成了一个过滤器链。
+过滤器链，指的是在一个 web 服务器中，可以配置多个过滤器，它们形成了一个过滤器链。
 
-- 比如：在我们 web 服务器中，定义了两个过滤器，这两个过滤器就形成了过滤器链。
+- 比如：在我们 web 服务器中，定义了两个过滤器，它们就形成了过滤器链。
 
 这个链上的过滤器，在执行的时候，会一个一个的执行：
 
 1. 先执行第一个 Filter 过滤器，放行之后，再来执行第二个Filter 过滤器。
-2. 执行完最后一个过滤器放行之后，才会访问对应的 Web 资源。
+2. 执行完最后一个过滤器，并放行之后，才会访问对应的 Web 资源。
 3. 访问完 web 资源之后，按照过滤器的执行流程，还会回到过滤器当中，来执行过滤器放行后的逻辑；
    - 在执行放行后的逻辑的时候，顺序是反着的。
 
@@ -169,10 +172,10 @@ Filter 过滤器的拦截路径，可根据需求，进行配置。
 
 在案例中，使用过滤器进行 token 校验；实现步骤：
 
-1. 在 Filter 包下，再来新建一个 Filter 过滤器类 `AbcFilter`
-2. 在 `AbcFilter` 过滤器中，编写放行前和放行后逻辑
-3. 配置 `AbcFilter` 过滤器拦截请求路径为 `/*`
-4. 重启 Spring Boot 服务，查看 `DemoFilter`、`AbcFilter` 中的执行日志
+1. 在 Filter 包下，再来新建一个 Filter 过滤器类 `AbcFilter`；
+2. 在 `AbcFilter` 过滤器中，编写放行前和放行后逻辑；
+3. 配置 `AbcFilter` 过滤器拦截请求路径为 `/*`；
+4. 重启 Spring Boot 服务，查看 `DemoFilter`、`AbcFilter` 中的执行日志。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/filter/AbcFilter.java
 
@@ -281,6 +284,8 @@ public class CheckLoginFilter implements Filter {
     }
 }
 ```
+
+- `StringUtils` 是 Spring 框架提供的操作字符串的工具包类。
 
 > 过滤器被注释掉，表示让过滤器失效。
 

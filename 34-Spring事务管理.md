@@ -25,7 +25,9 @@
 1. 根据部门 ID 删除部门数据；
 2. 根据部门 ID 删除该部门下的员工。
 
-在 EmpMapper 接口中，新增 `deleteByDeptId` 方法，使用注解的方式，执行 SQL 语句。
+在 EmpMapper 接口中，新增 `deleteByDeptId` 方法，用于根据部门 ID 删除员工。
+
+使用注解的方式，执行 SQL 语句。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/mapper/EmpMapper.java
 
@@ -81,13 +83,13 @@ public class DeptServiceImpl implements DeptService {
 
 为了解决这个问题，需要在 Spring Boot 项目中，开启事务。
 
-## 三、Transactional 注解
+## 三、@Transactional 注解
 
-Spring 框架，已封装好了事务控制，只需通过一个注解 `@Transactional` 来开启，提交，回滚事务。
+Spring 框架，已封装好了事务控制，只需通过一个注解 @Transactional 来开启，提交，回滚事务。
 
-- 在逻辑执行开始之前开启事务；
-- 逻辑执行完毕之后提交事务；
-- 如果在这个逻辑执行的过程中出现了异常，就会进行事务的回滚操作。
+- 在逻辑执行开始之前，开启事务；
+- 逻辑执行完毕之后，提交事务；
+- 如果在这个逻辑执行的过程中，出现了异常，就会进行事务的回滚操作。
 
 @Transactional 注解，可在方法，类，接口上使用。用于
 
@@ -99,7 +101,7 @@ Spring 框架，已封装好了事务控制，只需通过一个注解 `@Transac
 
 - 因为在 Service（业务）层中，一个业务功能，可能会包含多个数据访问的操作（增、删、改）。
 
-案例理解：在 Service 层的 DeptServiceImpl 类中的 `removeById` 方法上，加上 `@Transactional` 注解。
+案例理解：在 Service 层的 DeptServiceImpl 类中的 `removeById` 方法上，加上 @Transactional 注解。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/impl/DeptServiceImpl.java
 
@@ -135,7 +137,9 @@ public class DeptServiceImpl implements DeptService {
 }
 ```
 
-在配置文件 application.yml 中，开启 Spring 事务管理的日志，即可在控制台看到和事务相关的日志信息。
+在配置文件 application.yml 中，开启 Spring 事务管理的日志；
+
+即可在控制台看到和事务相关的日志信息。
 
 demo-project/javaweb-practise/src/main/resources/application.yml
 
@@ -146,17 +150,17 @@ logging:
     org.springframework.jdbc.support.JdbcTransactionManager: debug
 ```
 
-使用接口测试工具，访问部门删除接口，发现部门和部门下的员工都未删除。说明事务回滚了
+使用接口测试工具，访问部门删除接口，发现部门和部门下的员工都未删除。说明事务回滚了。
 
 @Transactional 注解中，有两个常见的属性：
 
-### 1.rollbackFor 异常回滚的属性
+### 1.rollbackFor 属性，指定异常类型的回滚
 
-@Transactional 注解，在默认情况下，只会在运行时（RuntimeException）异常出现时，进行事务回滚。
+@Transactional 注解，在默认情况下，只会在**运行时（RuntimeException）异常**出现时，进行事务回滚。
 
 使用 `rollbackFor` 属性，进行配置：
 
-- `@Transactional(rollbackFor = Exception.class)`；指定所有异常类型都会进行回滚。
+- `@Transactional(rollbackFor = Exception.class)`；指定**所有异常类型**，都会进行回滚。
 
 在 DeptServiceImpl 类的 `removeById` 方法中，模拟编译时异常出现。
 
@@ -198,18 +202,19 @@ public class DeptServiceImpl implements DeptService {
 
 使用接口测试工具，访问部门删除接口，发现部门和部门下的员工都未删除。表示事务回滚了。
 
-### 2.propagation 事务传播行为
+### 2.propagation  属性，指定事务传播行为
 
 `propagation` 属性，用于配置事务的传播行为。
 
 事务的传播行为，指的是当一个事务方法，被另一个事务方法调用时，这个事务方法应该如何进行事务控制。
 
-比如：A 方法，B 方法。都添加了 @Transactional 注解，表示这两个方法都具有事务，而在 A 方法当中又去调用了 B 方法。
+比如：A 方法，B 方法。都添加了 @Transactional 注解，表示这两个方法都具有事务，而在 A 方法中又去调用了 B 方法。
 
 ![事务的传播行为](NoteAssets/事务的传播行为.png)
 
-- A 方法运行的时候，首先会开启一个事务，A 方法中调用了 B 方法；
-- B 方法自身也具有事务，那么 B 方法在运行的时候，到底是加入到 A 方法的事务中，还是新建一个事务？
+- A 方法运行的时候，首先会开启一个事务，
+- B 方法自身也具有事务；
+- A 方法中调用了 B 方法，那么 B 方法在运行时，到底是加入 A 方法的事务中，还是新建一个事务？
 - 这就涉及到了事务的传播行为。
 
 在 @Transactional 注解中，使用属性 `propagation`，来指定传播行为。
@@ -218,7 +223,7 @@ public class DeptServiceImpl implements DeptService {
 
 | 属性值               | 含义                                                         |
 | -------------------- | ------------------------------------------------------------ |
-| REQUIRED（常用）     | 默认值，需要事务，有则加入，无则创建新事务                   |
+| REQUIRED（默认）     | 默认值，需要事务，有则加入，无则创建新事务                   |
 | REQUIRES_NEW（常用） | 需要新事务，无论有无，总是创建新事务                         |
 | SUPPORTS             | 支持事务，有则加入，无则在无事务状态中运行                   |
 | NOT_SUPPORTED        | 不支持事务，在无事务状态下运行,如果当前存在已有事务,则挂起当前事务 |
@@ -287,7 +292,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface DeptLogMapper {
-    @Insert("INSERT INTO dept_log(create_time, description) VALUES (#{createTime}, #{description})")
+    @Insert("INSERT INTO dept_log (create_time, description) VALUES (#{createTime}, #{description})")
     int insert(DeptLog deptLog);
 }
 ```
