@@ -6,7 +6,9 @@ Spring 提供了 @Component 注解，以及它的三个衍生注解 @Controller�
 
 ## 一、IOC 容器获取 Bean 对象
 
-Spring Boot 项目启动时，会自动创建 IOC 容器（Spring 容器），并将创建 Bean 对象，存放在 IOC 容器当中。应用程序在运行时，需要依赖什么 Bean 对象，直接进行依赖注入即可。
+Spring Boot 项目启动时，会自动创建 IOC 容器（Spring 容器），并将创建 Bean 对象，存放在 IOC 容器当中。
+
+应用程序在运行时，需要依赖的 Bean 对象，直接进行依赖注入即可。
 
 从 IOC 容器中，获取到 Bean 对象，要先拿到 `ApplicationContext` 类型的 IOC 容器对象，
 
@@ -67,7 +69,7 @@ public class BeanTest {
 }
 ```
 
-- Bean 对象，在声明时，如果没有指定名称，那么它的名称默认就是类型首字母小写。
+- Bean 对象，在声明时，如果没有指定名称，那么默认就是类型首字母小写。
 
 执行测试方法，观察控制台输出：
 
@@ -160,9 +162,9 @@ public class BeanTest {
 
 默认的单例 Bean 对象，会在容器启动时被创建；
 
-可以使用 @Lazy 注解，来延迟默认单例 Bean 对象的初始化(，直到第一次使用时，再创建该 Bean 对象。
-
 ### 1.@Lazy 注解
+
+可以使用 @Lazy 注解，来延迟默认单例 Bean 对象的初始化，直到第一次使用时，再创建 Bean 对象。
 
 在 DeptController 类上，加上 @Lazy 注解。
 
@@ -215,8 +217,8 @@ public class BeanTest {
 
 执行测试方法，发现：
 
-- 加载 Spring 环菌时，没有创建 DeptController 的 Bean 对象；
-- 而是在测试方法执行，获取 Bean 对象时，Bean 对象才被创建。
+1. 加载 Spring 环菌时，没有创建 DeptController 的 Bean 对象；
+2. 而是在测试方法执行，获取 Bean 对象时，Bean 对象才被创建。
 
 获取到了 10 次相同的 Bean 对象。
 
@@ -326,9 +328,9 @@ com.kkcf.controller.DeptController@a7bbdbc
 com.kkcf.controller.DeptController@63eea8c4
 ```
 
-发现：每次获取 Bean 对象时，都会创建新的 Bean 对象。
+可见：每次获取 Bean 对象时，都会创建新的 Bean 对象。
 
-在实际开发当中，绝大部分的 Bean 是单例的，不需要配置作用域。
+在实际开发当中，绝大部分的 Bean 对象是单例的，不需要配置作用域。
 
 ## 四、第三方 Bean 对象管理
 
@@ -423,7 +425,7 @@ demo-project/javaweb-practise/src/main/resources/1.xml
 </emp>
 ```
 
-在测试类中，注入 SAXReader 的 Bean 对象。
+在测试类中，注入 SAXReader 的 Bean 对象，并使用。
 
 demo-project/javaweb-practise/src/test/java/com/kkcf/BeanTest.java
 
@@ -488,6 +490,10 @@ public class CommonCofig {
     }
 }
 ```
+
+> 使用 @Configuration 可声明配置类；
+>
+> @Configuration 注解底层，也是用了 @Component 注解，为配置类生成 Bean 对象，并进行管理。
 
 ### 2.@Bean 与 @Component 选择
 

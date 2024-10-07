@@ -2,7 +2,7 @@
 
 ## 一、AOP 通知执行顺序
 
-在项目开发中，定义了多个切面类，其中多个切入点都匹配到了同一个目标方法。
+在项目开发中，定义了多个切面类，其中多个切入点，都匹配到了同一个目标方法。
 
 此时当目标方法，在运行的时候，这多个切面类里的通知方法都会运行。
 
@@ -83,14 +83,14 @@ public class MyAspectB {
 2024-09-29T16:41:03.788+08:00  INFO 14000 --- [javaweb-practise] [nio-8080-exec-1] com.kkcf.aop.MyAspectB                   : MyAspectA.after……
 ```
 
-发现：切面类里的通知执行顺序，默认和类名的排序有关；
+可知：切面类里的通知执行顺序，默认和类名的排序有关；
 
 ### 2.@Order 注解指定执行顺序
 
 Spring 提供了 @Order 注解，来控制切面的执行顺序。
 
-- 对于原始方法运行前的通知，数字越小，优先级越高；
-- 对于原始方法运行后的通知，数字越小，优先级越低。
+- 对于原始方法运行前的通知，传入的数字越小，优先级越高；
+- 对于原始方法运行后的通知，传入的数字越小，优先级越低。
 
 在切面类 MyAspectA 使用 @Order 注解
 
@@ -212,31 +212,31 @@ execution 切入点表达式，一般用法：
 省略方法的修饰符号
 
 ```java
-execution(void com.kkcf.service.impl.DeptServiceImpl.delete(java.lang.Integer))
+execution(void com.kkcf.service.impl.DeptServiceImpl.removeById(java.lang.Integer))
 ```
 
 使用 `*` 代替返回值类型
 
 ```java
-execution(* com.kkcf.service.impl.DeptServiceImpl.delete(java.lang.Integer))
+execution(* com.kkcf.service.impl.DeptServiceImpl.removeById(java.lang.Integer))
 ```
 
 使用 `*` 代替包名（一层包使用一个 `*`）
 
 ```java
-execution(* com.kkcf.*.*.DeptServiceImpl.delete(java.lang.Integer))
+execution(* com.kkcf.*.*.DeptServiceImpl.removeById(java.lang.Integer))
 ```
 
-使用 `..` 省略包名（表示此包以及此包下的所有子包；）
+使用 `..` 省略包名（表示此包以及此包下的所有子包）
 
 ```java
-execution(* com..DeptServiceImpl.delete(java.lang.Integer))
+execution(* com..DeptServiceImpl.removeById(java.lang.Integer))
 ```
 
 使用 `*` 代替类名（表示任意类）
 
 ```java
-execution(* com..*.delete(java.lang.Integer))
+execution(* com..*.removeById(java.lang.Integer))
 ```
 
 使用 `*` 代替方法名（表示任意方法）
@@ -248,7 +248,7 @@ execution(* com..*.*(java.lang.Integer))
 使用 `*` 代替参数（表示一个任意类型的参数）
 
 ```java
-execution(* com.kkcf.service.impl.DeptServiceImpl.delete(*))
+execution(* com.kkcf.service.impl.DeptServiceImpl.removeById(*))
 ```
 
 使用 `..` 省略参数（表示任意类型，任意个数的参数）
@@ -262,7 +262,7 @@ execution(* com..*.*(..))
 - 比如：匹配两个完全不相同的方法，使用 `||` 逻辑运算符进行连接。
 
 ```jav
-execution(* com.kkcf.service.DeptService.list(..)) || execution(* com.kkcf.service.DeptService.delete(..)))
+execution(* com.kkcf.service.DeptService.list(..)) || execution(* com.kkcf.service.DeptService.removeById(..)))
 ```
 
 在项目中，建议使用规范的业务方法命名，方便切入点表达式快速匹配。
@@ -438,7 +438,7 @@ execution 切入点表达式：
 
 前面介绍 AOP 核心概念时，提到连接点；可以简单理解为被 AOP 控制的方法。
 
-在目标对象当中，所有的方法都是可以被 AOP 控制的方法。
+在目标对象当中，所有的方法，都是可以被 AOP 控制的方法。
 
 在 Spring AOP 中，连接点又特指方法的执行。
 
@@ -446,9 +446,9 @@ Spring 用 JoinPoint API 抽象了连接点，用它可获取方法执行时的�
 
 - 比如：目标类名、方法名、方法参数……。
 
-对于 @Around 通知，获取连接点信息，只能使用 ProceedingJoinPoint 类型；
+对于 @Around 通知，获取连接点信息，只能使用 `ProceedingJoinPoint` 类型；
 
-对于其它四种通知，获取连接点信息，只能使用 JoinPoint 类型，它是 ProceedingJoinPoint 的父类型。
+对于其它四种通知，获取连接点信息，只能使用 `JoinPoint` 类型，它是 `ProceedingJoinPoint` 的父类型。
 
 案例理解：在切面类 MyAspect 中的 before、around 方法中，获取连接点相关的信息
 
@@ -500,7 +500,7 @@ public class MyAspect {
     @Before("pt()")
     public void before(JoinPoint jp) {
         log.info(" AOP ADVICE before...");
-        String className = jp.getTarget().getClass().getName(); // 获取目标类名
+        String className = jp.getTarget().getClass().getName(); // 获取目标对象类名
         log.info(" className: {}", className);
 
         Signature signature = jp.getSignature(); // 获取目标方法签名
@@ -515,8 +515,8 @@ public class MyAspect {
 }
 ```
 
-- JoinPoint 是 org.aspectj.lang 包下的；
-- proceed 方法，调用有参的方法时，要先获取参数，再将参数传递进去。
+- `JoinPoint` 类是 org.aspectj.lang 包下的；
+- `proceed` 方法，调用有参的方法时，要先获取参数，再将参数传递进去。
 - 在 AOP 中，可对连接点对象的返回值，进行篡改。
 
 使用接口测试工具，访问根据 Id 查询部门接口，观察控制台日志输出：
@@ -537,7 +537,7 @@ public class MyAspect {
 
 ## 四、AOP 案例练习
 
-在案例中，当访问部门管理、员工管理中的增、删、改相关功能接口时，将详细的操作日志，并保存在数据表中，便于后期数据追踪。
+在案例中，当访问部门管理、员工管理中的增、删、改相关功能接口时，记录详细的操作日志，并保存在数据库中，便于后期数据追踪。
 
 日志信息包含：操作人、操作时间、执行方法的全类名、执行方法名、方法运行时参数、返回值、方法执行时长；
 

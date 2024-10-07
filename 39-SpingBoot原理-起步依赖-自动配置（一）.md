@@ -4,7 +4,7 @@ Spring 是目前最流行的 Java 框架，它可以快速、方便的来构建 
 
 在 Spring 家族中，有很多优秀的框架，它们都基于一个基础框架 Spring Framework（即 Spring 框架）。
 
-开发者直接基于 Spring FrameWork 框架，进行开发， 会比较繁琐，主要体现在：
+开发者直接基于 Spring Framework 框架，进行开发， 会比较繁琐，主要体现在：
 
 - pom.xml 的依赖配置，比较繁琐，需要自行找到所需依赖，还要找到它配套的依赖，以及对应的版本，否则会出现版本冲突问题。
 - 配置文件（比如 application.yml）中，要做大量的配置，造成 Spring 框架入门难度较大，学习成本较高。
@@ -17,8 +17,8 @@ Spring Boot 框架简化（非替代）了 Spring 框架的开发。直接基于
 
 Spring Boot 框架，之所以简单、快捷，是因为底层提供了两个重要的机制：
 
-- 起步依赖；简化 pom.xml 文件中依赖的配置。从而解决 Spring 框架中依赖配置繁琐的问题。
-- 自动配置。简化 Spring 容器中 Bean 的声明、配置，只需引入起步依赖，常用的配置都已完成，直接使用即可。
+- 起步依赖；用于简化 pom.xml 文件中依赖的配置。从而解决 Spring 框架中依赖配置繁琐的问题。
+- 自动配置。用于简化 Spring 容器中 Bean 的声明、配置，只需引入起步依赖，常用的配置都已完成，直接使用即可。
 
 Spring Boot 框架的原理，就是它的**起步依赖**、**自动配置**的原理。
 
@@ -45,11 +45,11 @@ Spring Boot 框架的原理，就是它的**起步依赖**、**自动配置**的
 
 ![SpringBootWeb开发依赖](NoteAssets/SpringBootWeb开发依赖.png)
 
-Spring Boot 框架，提供项目开发所需[常见起步依赖](https://docs.spring.io/spring-boot/docs/2.7.7/reference/htmlsingle/#using.build-systems.starters)；比如：
+Spring Boot 框架，提供项目开发所需[常见起步依赖](https://docs.spring.io/spring-boot/docs/2.7.7/reference/htmlsingle/#using.build-systems.starters)；比如：springboot-starter-web：
 
-- springboot-starter-web，是 Spring Boot 结合 Web 开发的起步依赖，
-- 其中集成了 Web 开发常见的依赖：json、web、webmvc、tomcat……。
-- 引入这一个起步依赖，其他的依赖，都会自动的通过 Maven 的依赖传递引入。
+- 它是 Spring Boot 结合 Web 开发的起步依赖，
+- 其中集成了 Web 开发常见的依赖：json、web、webmvc、tomcat…。
+- 引入这个起步依赖，其他的依赖，都会自动的通过 Maven 的依赖传递引入。
 
 结论：起步依赖的原理就是 Maven 的依赖传递。
 
@@ -73,7 +73,7 @@ Spring 项目启动后，一些**配置类**，**Bean 对象**，就自动存入
 
 比如：在其中可以看到 gsonAutoConfig 中，管理了 gson 的 Bean 对象
 
-> gson 是 Google 提供的，用于将 Java 对象转为 Json 对象的包
+> gson 是 Google 提供的，用于将 Java 对象转为 Json 对象的包。
 
 在测试类中，要使用 gson Bean 对象，可以使用 @Autowired 注解进行依赖注入。
 
@@ -101,6 +101,8 @@ public class AutoConfigurationTest {
 }
 ```
 
-Spring Boot 自动配置，就是当 Spring Boot 项目启动时，通过自动配置，将配置类，和它管理的 Bean 对象，自动存入到 IOC 容器中；不需要手动去声明，从而简化了开发，省去了繁琐的配置操作；
+Spring Boot 自动配置，就是当 Spring Boot 项目启动时，通过自动配置，将配置类，和它管理的 Bean 对象，自动存入到 IOC 容器中；
 
-分析自动配置原理，就是解析在 Spring Boot 项目中，引入依赖之后，是如何将依赖的 jar 包中，所定义的配置类，以及 Bean 对象，加载到 Spring IOC 容器中的。
+不需要手动去声明，从而简化了开发，省去了繁琐的配置操作；
+
+分析 Spring Boot 的自动配置原理，就是解析在 Spring Boot 项目中，引入依赖之后，是如何将依赖的 jar 包中，所定义的配置类，以及 Bean 对象，加载到 Spring IOC 容器中的。

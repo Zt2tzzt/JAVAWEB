@@ -67,7 +67,7 @@ demo-project/javaweb-practise/pom.xml
 </build>
 ```
 
-IDEA 打包 Maven 项目
+IDEA 打包 Maven 项目：
 
 - 在 IDEA Maven 面板中，找到当前项目：Lifecycle -> 双击 package
 
@@ -88,7 +88,7 @@ java -Dserver.port=9000 -jar jar包名称 --server.port=10010
 在 Spring Boot 项目中，常见的属性配置方式有五种，
 
 - 三种配置文件；
-- 二种外部属性的配置（Java 系统属性、命令行参数)）
+- 二种外部属性的配置（Java 系统属性、命令行参数)。
 
 它们的优先级从高到低)：
 
