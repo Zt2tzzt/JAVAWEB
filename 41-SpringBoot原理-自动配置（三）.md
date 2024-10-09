@@ -43,11 +43,11 @@ public class GsonAutoConfiguration {
   - 当用在类上时，整个类的 Bean 定义，是否加载到 Spring 容器中，取决于给定的条件；
   - 当用在方法上时，会根据条件决定是否执行该方法来生成对应的 Bean。
 
-@Condition 本身是一个注解，它派生出了大量子注解，常见的有以下三个：
+@Condition 本身是一个注解，它派生出了大量的注解，常见的有以下三个：
 
 ### 1.@ConditionalOnClass 注解
 
-@ConditionalOnClass：判断环境中是否有对应字节码文件，是，则注册 Bean 到 IOC容器。
+@ConditionalOnClass 注解：判断环境中是否有对应字节码文件，是，则注册 Bean 到 IOC 容器。
 
 判断的方式有两种：
 
@@ -56,7 +56,7 @@ public class GsonAutoConfiguration {
 
 在第三方依赖的 HeaderConfig 配置类中，声明 Bean 对象的 `headerParser` 方法上，加上 @ConditionalOnClass 注解；
 
-- 指定环境中存在 `io.jsonwebtoken.Jwts`类时，才会将该 Bean 加入 IOC 容器；
+- 指定环境中存在 `io.jsonwebtoken.Jwts` 类时，才会将该 Bean 加入 IOC 容器；
 
 com/example/HeaderConfig.java
 
@@ -264,9 +264,9 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying b
 
 说明 IOC 容器中没有加载 Bean 对象 headerParser；
 
-- HeaderConfig 类上有 @Configuration 注解，其中中包含了 @Component；
+- HeaderConfig 类上有 @Configuration 注解，其中包含了 @Component 注解；
 - 所以 Spring Boot 项目在启动时，会创建 HeaderConfig 类对象，并注册到 IOC 容器中。
-- 当 IOC 容器中，有 HeaderConfig 类型的 Bean 对象存在，九不会把 HeaderParser 类型的对象注册到 IOC 容器中了。
+- 当 IOC 容器中，有 HeaderConfig 类型的 Bean 对象存在，就不会把 HeaderParser 类型的对象注册到 IOC 容器中了。
 
 ### 3.@ConditionalOnProperty 注解
 

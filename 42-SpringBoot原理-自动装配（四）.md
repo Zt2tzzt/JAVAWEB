@@ -2,13 +2,15 @@
 
 ## 一、Spring Boot starter 是什么
 
-starter 就是 Spring Boot 的起步依赖。在 Spring Boot 中，已经给我们提供了很多起步依赖；
+starter 就是 Spring Boot 的起步依赖。
+
+Spring Boot 官方，提供了很多起步依赖；
 
 然而，在实际的项目开发中，可能会用到很多第三方的技术（比如 MyBatis、PageHelper）；
 
 并非所有第三方的技术，都给提供与 Spring Boot 整合的 starter 起步依赖，但是这些技术又非常的通用，在很多项目中都在使用。
 
-所以在 Spring Boot 项目中，一般会将这些公共组件封装为 Spring Boot 的 starter。
+所以一般会将这些公共组件封装为 Spring Boot 的 starter 起步依赖。
 
 ## 二、Spring Boot starter 命名规范
 
@@ -52,34 +54,125 @@ Mybatis 依赖，提供了配置类，并且也提供了 Spring Boot 项目启�
 
 接下来完成一个自定义 starter 案例。
 
-需求：自定义 aliyun-oss-spring-boot-starter，完成阿里云 OSS 操作工具类 AliyunOSSUtils 的自动配置。
+需求：自定义 aliyun-oss-spring-boot-starte 依赖r，完成阿里云 OSS 操作工具类 AliyunOSSUtils 的自动配置。
 
-目标：引入 aliyun-oss-spring-boot-starter 起步依赖后，注入 AliyunOSSUtils 的 Bean 对象直接使用阿里云 OSS SDK 功能。
+目标：引入 aliyun-oss-spring-boot-starter 起步依赖后，直接注入 AliyunOSSUtils 的 Bean 对象就可使用阿里云 OSS SDK 功能。
+
+### 1.阿里云 OSS 在原项目使用
 
 原项目中，阿里云 OSS 的使用。
 
+#### 1.原项目配置文件
 
+demo-project/javaweb-practise/src/main/resources/application.yml
 
-要自定义 starter，主要做两件事；
+```yaml
+aliyun:
+  oss:
+    endpoint: https://oss-cn-shenzhen.aliyuncs.com
+    accessKeyId: xxxxxx
+    accessKeySecret: xxxxxx
+    bucketName: zetian-bucket
+```
 
-- 自动配置依赖 autoconfigure，定义要加载的配置类、 Bean 对象
-- 在 starter 中，引入依赖。再引入 autoconfigure；
+#### 2.原项目 AliyunOSSProperties2 类
 
+AliyunOSSProperties2 类，用于从配置文件中，加载配置的属性：
 
+demo-project/javaweb-practise/src/main/java/com/kkcf/utils/AliyunOSSProperties2.java
 
-需求：自定义 aliyun-oss-spring-boot-starter，完成阿里云 OSS 操作工具类 AliyunOSSUtils 的自动配置。
+```java
+package com.kkcf.utils;
 
-目标；引入自定义的起步依赖后，要想使用阿里云 OSS，只需注入 AliyunOSSUtils 的 Bean 对象，直接使用即可。
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-实现步骤：
+@Data
+@Component
+@ConfigurationProperties(prefix = "aliyun.oss")
+public class AliyunOSSProperties2 {
+    private String endpoint;
+    private String accessKeyId;
+    private String accessKeySecret;
+    private String bucketName;
+}
+```
 
-1. 创建 aliyun-oss-spring-boot-starter 模块；
-2. 创建 aliyun-oss-spring-boot-autoconfigure 模块，在 starter 中引入该模块。
-3. 在 aliyun-oss-spring-boot-autoconfigure 模块中的定义自动配置的功能。并定义自动配置文件 META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+#### 3.原项目 AliyunOSSUtil2 类
 
+AliyunOSSUtil2 工具类
 
+demo-project/javaweb-practise/src/main/java/com/kkcf/utils/AliyunOSSUtil2.java
 
-在 IDEA 中，创建第一个 Maven 模块。
+```java
+package com.kkcf.utils;
+
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.UUID;
+
+@Component
+public class AliyunOSSUtil2 {
+    @Autowired
+    private AliyunOSSProperties2 aliOSSProperties;
+
+    /**
+     * 实现上传图片到OSS
+     */
+    public String upload(MultipartFile multipartFile) throws IOException {
+        // 获取上传的文件的输入流
+        InputStream inputStream = multipartFile.getInputStream();
+
+        // 避免文件覆盖
+        String originalFilename = multipartFile.getOriginalFilename();
+        String fileName = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
+
+        // 上传文件到 OSS
+        OSS ossClient = new OSSClientBuilder().build(aliOSSProperties.getEndpoint(),
+                aliOSSProperties.getAccessKeyId(), aliOSSProperties.getAccessKeySecret());
+        ossClient.putObject(aliOSSProperties.getBucketName(), fileName, inputStream);
+
+        // 文件访问路径
+        String url = aliOSSProperties.getEndpoint().split("//")[0] + "//" + aliOSSProperties.getBucketName() + "." + aliOSSProperties.getEndpoint().split("//")[1] + "/" + fileName;
+
+        // 关闭ossClient
+        ossClient.shutdown();
+        return url;// 把上传到oss的路径返回
+    }
+}
+```
+
+在项目当中，要使用阿里云 OSS，就可以注入 AliyunOSSUtil2 工具类的 Bean 对象，来进行文件上传。但这种方式其实是比较繁琐的。
+
+现在使用阿里云 OSS，姑且需要做这么几步，那么在开发其它项目时，也要做这几步；团队中其它成员使用阿里云 OSS，步骤也是一样的。
+
+所以，可以制作一个公共组件（自定义 starter）；将来要使用阿里云 OSS 进行文件上传，只需要将起步依赖引入进来之后，就可以直接注入 AliyunOSSUtil2 的 Bean 对象使用了。
+
+### 2.阿里云 OSS 自定义 starter
+
+具体的实现步骤：
+
+1. 创建自定义 starter 模块（进行依赖管理）；
+   - 把阿里云 OSS 所有的依赖，统一管理起来。
+2. 创建 autoconfigure 模块；
+   - 在 starter 模块中引入 autoconfigure模块；
+   - 别的项目使用时，只需要引入 starter 起步依赖即可。
+3. 在 autoconfigure 中，完成自动配置；
+   1. 定义一个自动配置类，在自动配置类中将所要配置的 Bean 都提前配置好；
+   2. 定义配置文件，把自动配置类的全类名，定义在配置文件中。
+
+下面按照步骤，来实现自定义 starter。
+
+#### 1.starter 模块创建
+
+在 IDEA 中，创建一个 Maven 模块（Module）。
 
 - Project Structure -> Modules -> + 号 -> New Module
 - Group 设为 com.aliyun.oss
@@ -87,16 +180,18 @@ Mybatis 依赖，提供了配置类，并且也提供了 Spring Boot 项目启�
 - Package Name 设为 com.aliyun.oss
 - location 设为 D:\Workshop\tutorial\JAVAWEB\demo-project
 
-创建项目；
+点击 create，创建项目；在创建的模块中，删除掉一些多余的配置：
 
-在 pom.xml 文件中，删除掉描述信息：
+在 pom.xml 文件中：
+
+删除以下掉描述信息：
 
 ```xml
 <name>aliyun-oss-spring-boot-starter</name>
 <description>aliyun-oss-spring-boot-starter</description>
 ```
 
-删除掉单元测试依赖
+删除掉以下单元测试依赖
 
 ```xml
 <dependency>
@@ -106,7 +201,7 @@ Mybatis 依赖，提供了配置类，并且也提供了 Spring Boot 项目启�
 </dependency>
 ```
 
-删除掉 maven 插件。
+删除掉以下 maven 插件。
 
 ```xml
 <build>
@@ -119,15 +214,63 @@ Mybatis 依赖，提供了配置类，并且也提供了 Spring Boot 项目启�
 </build>
 ```
 
-starter 项目，仅进行依赖管理，所以将项目下的所有内容都删掉，只保留 pom.xml、aliyun-oss-spring-boot-starter.iml 两个文件
+删除多余内容后，pom.xml 文件如下：
 
-> 如果没有 aliyun-oss-spring-boot-starter.iml 文件，在项目根目录下，使用命令生成：
+demo-project/aliyun-oss-spring-boot-starter/pom.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.aliyun.oss</groupId>
+    <artifactId>aliyun-oss-spring-boot-starter</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <url/>
+    <licenses>
+        <license/>
+    </licenses>
+    <developers>
+        <developer/>
+    </developers>
+    <scm>
+        <connection/>
+        <developerConnection/>
+        <tag/>
+        <url/>
+    </scm>
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+</project>
+```
+
+starter 项目，仅进行依赖管理，所以将项目下的所有内容都删掉；
+
+只保留 pom.xml、aliyun-oss-spring-boot-starter.iml 两个文件
+
+> IDEA 2023 及以上版本不需要生成 aliyun-oss-spring-boot-starter.iml  文件。
+>
+> 如果没有该文件，在项目根目录下，使用命令生成：
 >
 > ```shell
 > mvn idea:module
 > ```
 
-
+#### 2.autoconfigure 模块创建
 
 在 IDEA 中，创建第二个 Maven 模块：
 
@@ -137,9 +280,11 @@ starter 项目，仅进行依赖管理，所以将项目下的所有内容都删
 - Package Name 设为 com.aliyun.oss
 - location 设为 D:\Workshop\tutorial\JAVAWEB\demo-project
 
-创建项目
+点击 create 创建项目，在创建的模块中，删除掉一些多余的配置：
 
-在 pom.xml 文件中，删除掉描述信息：
+在 pom.xml 文件中：
+
+删除掉描述信息：
 
 ```xml
 <name>aliyun-oss-spring-boot-autoconfigure</name>
@@ -169,11 +314,54 @@ starter 项目，仅进行依赖管理，所以将项目下的所有内容都删
 </build>
 ```
 
+删除多余内容后，pom.xml 文件如下：
+
+demo-project/aliyun-oss-spring-boot-autoconfigure/pom.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.aliyun.oss</groupId>
+    <artifactId>aliyun-oss-spring-boot-autoconfigure</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <url/>
+    <licenses>
+        <license/>
+    </licenses>
+    <developers>
+        <developer/>
+    </developers>
+    <scm>
+        <connection/>
+        <developerConnection/>
+        <tag/>
+        <url/>
+    </scm>
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+</project>
+```
+
 将项目下的所有内容都删掉，只保留 pom.xml、aliyun-oss-spring-boot-autoconfigure.iml 两个文件和 src 目录。
 
 在 src 目录中，删除启动类，和测试类。
 
-
+#### 3.starter 模块引入 autoconfigure 模块
 
 在 aliyun-oss-spring-boot-starter 项目的 pom.xml 文件中，引入 aliyun-oss-spring-boot-autoconfigure 的依赖
 
@@ -187,7 +375,19 @@ demo-project/aliyun-oss-spring-boot-starter/pom.xml
 </dependency>
 ```
 
+#### 4.autoconfigure 模块自动配置
+
+##### 1.AliyunOSSProperties2 类添加并修改
+
 将 AliyunOSSProperties2 类，复制到 aliyun-oss-spring-boot-autoconfigure 的 com.aliyun.oss 包中，解决其中的报错：
+
+- 因为该模块中，没有引入 Lombok 依赖，所以要删除类上的 `@Data` 注解；并为类中的属性添加 getter、setter 方法。
+
+AliyunOSSProperties2 类上删掉 @Component 注解。
+
+- 因为该依赖引入到的 Spring Boot 项目中，不会去扫描 com.aliyun.oss 这个包，所以这个包里类上的 @Component 及其衍生注解也就失去了意义。
+
+AliyunOSSProperties2 类上 `@ConfigurationProperties(prefix = "aliyun.oss")` 注解报红色错误，暂时先不管（后续定义 AliOSSAutoConfiguration 类，为它加上 `@EnableConfigurationProperties(AliyunOSSProperties2.class)` 注解，可消除错误）。
 
 demo-project/aliyun-oss-spring-boot-autoconfigure/src/main/java/com/aliyun/oss/AliyunOSSProperties2.java
 
@@ -195,9 +395,7 @@ demo-project/aliyun-oss-spring-boot-autoconfigure/src/main/java/com/aliyun/oss/A
 package com.aliyun.oss;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
-@Component
 @ConfigurationProperties(prefix = "aliyun.oss")
 public class AliyunOSSProperties2 {
     private String endpoint;
@@ -239,13 +437,69 @@ public class AliyunOSSProperties2 {
 }
 ```
 
-将 AliyunOSSUtil 类，复制到 aliyun-oss-spring-boot-autoconfigure 的 com.aliyun.oss 包中，解决其中的报错
+##### 2.AliyunOSSUtil2 类添加并修改
 
-demo-project/aliyun-oss-spring-boot-autoconfigure/src/main/java/com/aliyun/oss/AliyunOSSUtil.java
+将 AliyunOSSUtil2 类，复制到 aliyun-oss-spring-boot-autoconfigure 的 com.aliyun.oss 包中
 
+AliyunOSSUtil2 类上删掉 @Component 注解。
 
+- 因为该依赖引入到的 Spring Boot 项目中，不会去扫描 com.aliyun.oss 这个包，所以这个包里类上的 @Component 及其衍生注解也就失去了意义。
 
-在 pom.xml 文件中，引入 spring boot 开发的 web 依赖，以及阿里云 OSS 的相关依赖。
+AliyunOSSUtil2 类中，用于依赖注入的 @Autowired 注解，也删掉。
+
+- @Autowired 注解标注了 `private AliyunOSSProperties2 aliOSSProperties;` 属性，该注解删掉后，要为该属性生成 getter、setter 方法，以便后续通过方法设值。
+
+demo-project/aliyun-oss-spring-boot-autoconfigure/src/main/java/com/aliyun/oss/AliyunOSSUtil2.java
+
+```java
+package com.aliyun.oss;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.UUID;
+
+public class AliyunOSSUtil2 {
+    private AliyunOSSProperties2 aliOSSProperties;
+
+    public AliyunOSSProperties2 getAliOSSProperties() {
+        return aliOSSProperties;
+    }
+
+    public void setAliOSSProperties(AliyunOSSProperties2 aliOSSProperties) {
+        this.aliOSSProperties = aliOSSProperties;
+    }
+
+    /**
+     * 实现上传图片到OSS
+     */
+    public String upload(MultipartFile multipartFile) throws IOException {
+        // 获取上传的文件的输入流
+        InputStream inputStream = multipartFile.getInputStream();
+
+        // 避免文件覆盖
+        String originalFilename = multipartFile.getOriginalFilename();
+        String fileName = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
+
+        // 上传文件到 OSS
+        OSS ossClient = new OSSClientBuilder().build(aliOSSProperties.getEndpoint(),
+                aliOSSProperties.getAccessKeyId(), aliOSSProperties.getAccessKeySecret());
+        ossClient.putObject(aliOSSProperties.getBucketName(), fileName, inputStream);
+
+        // 文件访问路径
+        String url = aliOSSProperties.getEndpoint().split("//")[0] + "//" + aliOSSProperties.getBucketName() + "." + aliOSSProperties.getEndpoint().split("//")[1] + "/" + fileName;
+
+        // 关闭ossClient
+        ossClient.shutdown();
+        return url;// 把上传到oss的路径返回
+    }
+}
+```
+
+因为 AliyunOSSUtil2 类中，用到了 spring boot web 开发，以及阿里云 OSS SDK 中相关的 API
+
+所以在 pom.xml 文件中，引入 spring boot web 开发依赖，以及阿里云 OSS 的相关依赖。
 
 demo-project/aliyun-oss-spring-boot-autoconfigure/pom.xml
 
@@ -273,17 +527,99 @@ demo-project/aliyun-oss-spring-boot-autoconfigure/pom.xml
 </dependency>
 ```
 
+##### 3.AliOSSAutoConfiguration 类添加
 
+下面定义一个自动配置类 `AliOSSAutoConfiguration`，在自动配置类中，来声明 AliyunOSSUtil2 的 Bean 对象。
 
-删掉 AliyunOSSUtil 、AliyunOSSProperties2 类上的 @Component 注解。因为该依赖中不会再用 Spring 组件扫描。
+demo-project/aliyun-oss-spring-boot-autoconfigure/src/main/java/com/aliyun/oss/AliOSSAutoConfiguration.java
 
-AliyunOSSUtil  类中，@Autowired 注解的依赖注入，也删掉
+```java
+package com.aliyun.oss;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration // 声明当前类为 Spring 的配置类
+@EnableConfigurationProperties(AliyunOSSProperties2.class) // 导入 AliyunOSSProperties2 类的 Bean 对象，并交给 Spring IOC 容器管理
+public class AliOSSAutoConfiguration {
+    @Bean
+    public AliyunOSSUtil2 aliyunOSSUtil2(AliyunOSSProperties2 aliyunOSSProperties2) {
+        AliyunOSSUtil2 aliyunOSSUtil2 = new AliyunOSSUtil2();
+        aliyunOSSUtil2.setAliOSSProperties(aliyunOSSProperties2);
+        return aliyunOSSUtil2;
+    }
+}
+```
 
-定义一个自动配置类。
+##### 4.自动配置文件
 
-AliyunOSSProperties2 类上 @ConfigurationProperties 注解，用于自动注入 application.yml 配置文件中的属性。
+在 aliyun-oss-spring-boot-autoconfigure 模块中的 resources 目录下，新建自动配置文件：
 
-在 AliyunOSSUtil 中，可使用 @EnableConfigurationProperties 注解，注入。
+demo-project/aliyun-oss-spring-boot-autoconfigure/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
 
+```imports
+com.aliyun.oss.AliOSSAutoConfiguration
+```
+
+### 3.阿里云 OSS 自定义 starter 使用
+
+阿里云 OSS 的 starter 已经定义好了，接下来做一个测试。
+
+在 IDEA 中，导入自定义 starter 测试工程 springboot-autoconfiguration-test。
+
+在该测试工程的 pom.xml 文件中，引入自定义 starter 依赖：
+
+demo-project/springboot-autoconfiguration-test/pom.xml
+
+```xml
+<!-- 自定义 starter-->
+<dependency>
+    <groupId>com.aliyun.oss</groupId>
+    <artifactId>aliyun-oss-spring-boot-starter</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+</dependency>
+```
+
+在测试工程中的 application.yml 配置文件中，配置阿里云 OSS 参数信息：
+
+demo-project/springboot-autoconfiguration-test/src/main/resources/application.yml
+
+```yaml
+aliyun:
+  oss:
+    endpoint: https://oss-cn-shenzhen.aliyuncs.com
+    accessKeyId: xxxxxx
+    accessKeySecret: xxxxxx
+    bucketName: zetian-bucket
+```
+
+在测试工程中的 UploadController 类，编写代码：
+
+demo-project/springboot-autoconfiguration-test/src/main/java/com/itheima/controller/UploadController.java
+
+```java
+package com.itheima.controller;
+
+import com.aliyun.oss.AliyunOSSUtil2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+@RestController
+public class UploadController {
+    @Autowired
+    private AliyunOSSUtil2 aliyunOSSUtil2;
+
+    @PostMapping("/upload")
+    public String upload(MultipartFile image) throws Exception {
+        //上传文件到阿里云 OSS
+        return aliyunOSSUtil2.upload(image);
+    }
+}
+```
+
+启动 Spring Boot 测试工程：自动配置会把 AliyunOSSUtil2 的 Bean 对象装配到 IOC 容器中。
+
+用接口测试工具，进行文件上传：
