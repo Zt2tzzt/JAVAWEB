@@ -138,7 +138,7 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying b
 
 @ConditionalOnMissingBean 注解应用场景：通常是用来设置默认的 Bean 对象。
 
-@ConditionalOnMissingBean：判断环境中没有对应的 Bean（类型或名称），才注册 Bean 到 IOC 容器。
+@ConditionalOnMissingBean 用于根据类型或名称，来判断 IOC 容器环境中没有对应的 Bean 对象；没有才注册 Bean 到 IOC 容器。
 
 判断的方式有三种：
 
@@ -146,7 +146,7 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying b
 - name 属性，指定字节码文件的全类名。
 - value 属性（可省略），指定字节码文件对象。
 
-在第三方依赖的 HeaderConfig 配置类中，声明 Bean 对象的 `headerParser` 方法上，加上 @ConditionalOnMissingBean 注解。
+在第三方依赖的 `HeaderConfig` 配置类中，声明 Bean 对象的 `headerParser` 方法上，加上 `@ConditionalOnMissingBean` 注解。
 
 com/example/HeaderConfig.java
 
@@ -198,12 +198,12 @@ public class AutoConfigurationTest {
 com.example.HeaderParser@212c0aff
 ```
 
-说明 IOC 容器中已加载 Bean 对象 headerParser；
+说明 IOC 容器中已加载 Bean 对象 `headerParser`；
 
-- 因为 Spring Boot 在调用 @Bean 标识的 headerParser() 前，IOC 容器中是没有 HeaderParser 类型的 Bean 对象；
-- 所以 headerParser 对象正常创建，并注册到 IOC 容器中。
+- 因为 Spring Boot 在调用 @Bean 标识的 `headerParser` 方法前，IOC 容器中是没有 `HeaderParser` 类型的 Bean 对象；
+- 所以 `headerParser` 对象正常创建，并注册到 IOC 容器中。
 
-在第三方依赖的 HeaderConfig 配置类中，修改 @ConditionalOnMissingBean 注解的使用：
+在第三方依赖的 `HeaderConfig` 配置类中，修改 `@ConditionalOnMissingBean` 注解的使用：
 
 com/example/HeaderConfig.java
 
@@ -230,12 +230,12 @@ public class HeaderConfig {
 com.example.HeaderParser@7f5ecada
 ```
 
-说明 IOC 容器中已加载 Bean 对象 headerParser；
+说明 IOC 容器中已加载 Bean 对象 `headerParser`；
 
-- 因为 Spring Boot 在调用 @Bean 标识的 headerParser() 前，IOC 容器中是没有名称为 deptController2 的 Bean 对象；
-- 所以 headerParser 对象正常创建，并注册到 IOC 容器中。
+- 因为 Spring Boot 在调用配置类中 @Bean 标识的 `headerParser` 方法前，IOC 容器里没有名称为 `deptController2` 的 Bean 对象；
+- 所以 Bean 对象 `headerParser` 正常创建，并注册到 IOC 容器中。
 
-在第三方依赖的 HeaderConfig 配置类中，再次修改 @ConditionalOnMissingBean 注解的使用：
+在第三方依赖的 `HeaderConfig` 配置类中，再次修改 `@ConditionalOnMissingBean` 注解的使用：
 
 com/example/HeaderConfig.java
 
@@ -262,17 +262,17 @@ public class HeaderConfig {
 org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.example.HeaderParser' available
 ```
 
-说明 IOC 容器中没有加载 Bean 对象 headerParser；
+说明 IOC 容器中没有加载 Bean 对象 `headerParser`；
 
-- HeaderConfig 类上有 @Configuration 注解，其中包含了 @Component 注解；
-- 所以 Spring Boot 项目在启动时，会创建 HeaderConfig 类对象，并注册到 IOC 容器中。
-- 当 IOC 容器中，有 HeaderConfig 类型的 Bean 对象存在，就不会把 HeaderParser 类型的对象注册到 IOC 容器中了。
+- 因为 `HeaderConfig` 类上有 `@Configuration` 注解，其中包含了 `@Component` 注解；
+- 所以 Spring Boot 项目在启动时，会创建 `HeaderConfig` 类对象，并注册到 IOC 容器中。
+- 当 IOC 容器中，有 `HeaderConfig` 类型的 Bean 对象存在，就不会把 `HeaderParser` 类型的对象注册到 IOC 容器中了。
 
 ### 3.@ConditionalOnProperty 注解
 
-@ConditionalOnProperty 注解， 应用场景，使用 Spring Boot 整合第三方依赖时。
+`@ConditionalOnProperty` 注解， 应用场景，使用 Spring Boot 整合第三方依赖时。
 
-@ConditionalOnProperty 注解：判断配置文件中有对应属性和值，才注册 Bean 到 IOC 容器中。
+`@ConditionalOnProperty` 注解：判断配置文件中有对应属性和值，才注册 Bean 到 IOC 容器中。
 
 先在 application.yml 配置文件中添加如下的键值对：
 
@@ -280,7 +280,10 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying b
 name: zzt
 ```
 
-在第三方依赖的 HeaderConfig 配置类中，在声明 Bean 时，使用 @ConditionalOnProperty 注解可以指定一个条件。
+在第三方依赖的 `HeaderConfig` 配置类中，声明 Bean 时，使用 @ConditionalOnProperty 注解，指定一个条件。
+
+- `name` 属性，用于指定配置文件中的属性名；
+- `havingValue` 属性，用于指定配置文件中的属性值。
 
 com/example/HeaderConfig.java
 
@@ -307,7 +310,9 @@ public class HeaderConfig {
 com.example.HeaderParser@74cd8c55
 ```
 
-在第三方依赖的 HeaderConfig 配置类中，修改 @ConditionalOnProperty 注解，havingValue 属性的值改为 "zzt2"；
+在第三方依赖的 `HeaderConfig` 配置类中，修改 `@ConditionalOnProperty` 注解：
+
+- `havingValue` 属性的值改为 `"zzt2"`；
 
 com/example/HeaderConfig.java
 

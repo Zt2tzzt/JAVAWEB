@@ -8,7 +8,7 @@ Spring Boot 官方，提供了很多起步依赖；
 
 然而，在实际的项目开发中，可能会用到很多第三方的技术（比如 MyBatis、PageHelper）；
 
-并非所有第三方的技术，都给提供与 Spring Boot 整合的 starter 起步依赖，但是这些技术又非常的通用，在很多项目中都在使用。
+并非所有第三方的技术，都提供与 Spring Boot 整合的 starter 起步依赖，但是这些技术又非常的通用，在很多项目中都在使用。
 
 所以一般会将这些公共组件封装为 Spring Boot 的 starter 起步依赖。
 
@@ -18,16 +18,16 @@ Spring 的起步依赖，规范如下：
 
 - Spring Boot 官方提供的起步依赖，都以 spring-boot-starter-xxx 命名；
 - Spring Boot 非官方提供的起步依赖，都以 xxx-spring-boot-starter；
-  - 比如：mybatis-spring-boot-starter、pageHelper-spring-boot-starter。
+  - 比如：mybatis-spring-boot-starter、pageHelper-spring-boot-starter……
 
-## 三、Spring Boot Starter 业务场景
+## 三、Spring Boot starter 业务场景
 
-前面使用的阿里云 OSS 对象存储服务，没有提供与 Spring Boot 整合的起步依赖，使用起来就比较繁琐，
+前面使用的阿里云 OSS 对象存储服务，没有提供与 Spring Boot 整合的起步依赖，使用起来有如下几步，比较繁琐，
 
-- 需要引入对应的依赖；
-- 还需要在配置文件当中进行配置，
-- 还需要基于官方 SDK 示例，来改造对应的工具类；
-- 在项目当中才可以正常使用。
+1. 引入对应的依赖；
+2. 在配置文件当中进行配置，
+3. 基于官方 SDK 示例，来改造对应的工具类；
+4. 在项目中正常使用。
 
 可以自定义一些公共组件，提前把需要的 Bean 自动配置好。在项目中，将组件对应的坐标引入进来就可直接使用。
 
@@ -37,11 +37,11 @@ Spring Boot starter 起步依赖中，通常依赖了 autoconfigure 自动配置
 
 ![自定义starter起步依赖](NoteAssets/自定义starter起步依赖.png)
 
-Mybatis 依赖，提供了配置类，并且也提供了 Spring Boot 项目启动时，会自动读取的配置文件 `META-INF.spring.org.springframework.boot.autoconfigure.AutoConfiguration.imports` 其中声明了配置类的全限定名，用于生成相关 Bean 对象，并注册到 IOC 容器中。
+Mybatis 依赖，提供了配置类，并且也提供了 Spring Boot 项目启动时，会自动读取到配置文件 `META-INF.spring.org.springframework.boot.autoconfigure.AutoConfiguration.imports`，其中声明了配置类的全限定名，用于生成相关 Bean 对象，并注册到 IOC 容器中。
 
 开发者可以直接在 Spring Boot 程序中，使用 Mybatis 自动配置的 Bean 对象。
 
-## 四、Spring Boot Starter 模块规范
+## 四、Spring Boot starter 模块规范
 
 在自定义一个起步依赖 starter 的时候，按照规范，需要定义两个模块（Module）：
 
@@ -54,9 +54,9 @@ Mybatis 依赖，提供了配置类，并且也提供了 Spring Boot 项目启�
 
 接下来完成一个自定义 starter 案例。
 
-需求：自定义 aliyun-oss-spring-boot-starte 依赖r，完成阿里云 OSS 操作工具类 AliyunOSSUtils 的自动配置。
+需求：自定义 aliyun-oss-spring-boot-starte 依赖，完成阿里云 OSS 操作工具类 AliyunOSSUtils 的自动配置。
 
-目标：引入 aliyun-oss-spring-boot-starter 起步依赖后，直接注入 AliyunOSSUtils 的 Bean 对象就可使用阿里云 OSS SDK 功能。
+目标：引入 aliyun-oss-spring-boot-starter 起步依赖后，直接注入 AliyunOSSUtils 的 Bean 对象，就可使用阿里云 OSS SDK 功能。
 
 ### 1.阿里云 OSS 在原项目使用
 
@@ -180,11 +180,11 @@ public class AliyunOSSUtil2 {
 - Package Name 设为 com.aliyun.oss
 - location 设为 D:\Workshop\tutorial\JAVAWEB\demo-project
 
-点击 create，创建项目；在创建的模块中，删除掉一些多余的配置：
+点击“create”，创建项目；在创建的模块中，删除掉一些多余的配置：
 
 在 pom.xml 文件中：
 
-删除以下掉描述信息：
+删除掉以下描述信息：
 
 ```xml
 <name>aliyun-oss-spring-boot-starter</name>
@@ -258,11 +258,11 @@ demo-project/aliyun-oss-spring-boot-starter/pom.xml
 </project>
 ```
 
-starter 项目，仅进行依赖管理，所以将项目下的所有内容都删掉；
+starter 项目，仅进行依赖管理，所以将项目下的所有内容，都删掉；
 
 只保留 pom.xml、aliyun-oss-spring-boot-starter.iml 两个文件
 
-> IDEA 2023 及以上版本不需要生成 aliyun-oss-spring-boot-starter.iml  文件。
+> IDEA 2023 及以上版本，不需要生成 aliyun-oss-spring-boot-starter.iml  文件。
 >
 > 如果没有该文件，在项目根目录下，使用命令生成：
 >
@@ -280,7 +280,7 @@ starter 项目，仅进行依赖管理，所以将项目下的所有内容都删
 - Package Name 设为 com.aliyun.oss
 - location 设为 D:\Workshop\tutorial\JAVAWEB\demo-project
 
-点击 create 创建项目，在创建的模块中，删除掉一些多余的配置：
+点击“create”创建项目，在创建的模块中，删除掉一些多余的配置：
 
 在 pom.xml 文件中：
 
@@ -357,7 +357,7 @@ demo-project/aliyun-oss-spring-boot-autoconfigure/pom.xml
 </project>
 ```
 
-将项目下的所有内容都删掉，只保留 pom.xml、aliyun-oss-spring-boot-autoconfigure.iml 两个文件和 src 目录。
+将项目下的所有内容都删掉，只保留 pom.xml、aliyun-oss-spring-boot-autoconfigure.iml 两个文件，和 src 目录。
 
 在 src 目录中，删除启动类，和测试类。
 
@@ -379,15 +379,20 @@ demo-project/aliyun-oss-spring-boot-starter/pom.xml
 
 ##### 1.AliyunOSSProperties2 类添加并修改
 
+AliyunOSSProperties2 类，用于加载配置文件中的属性。
+
 将 AliyunOSSProperties2 类，复制到 aliyun-oss-spring-boot-autoconfigure 的 com.aliyun.oss 包中，解决其中的报错：
 
 - 因为该模块中，没有引入 Lombok 依赖，所以要删除类上的 `@Data` 注解；并为类中的属性添加 getter、setter 方法。
 
-AliyunOSSProperties2 类上删掉 @Component 注解。
+AliyunOSSProperties2 类上删掉 `@Component` 注解。
 
-- 因为该依赖引入到的 Spring Boot 项目中，不会去扫描 com.aliyun.oss 这个包，所以这个包里类上的 @Component 及其衍生注解也就失去了意义。
+- 因为该依赖引入到的 Spring Boot 项目中，不会去扫描 com.aliyun.oss 这个包；
+- 所以这个包里类上的 @Component 及其衍生注解也就失去了意义。
 
-AliyunOSSProperties2 类上 `@ConfigurationProperties(prefix = "aliyun.oss")` 注解报红色错误，暂时先不管（后续定义 AliOSSAutoConfiguration 类，为它加上 `@EnableConfigurationProperties(AliyunOSSProperties2.class)` 注解，可消除错误）。
+AliyunOSSProperties2 类上 `@ConfigurationProperties(prefix = "aliyun.oss")` 注解，报红色错误，暂时先不管
+
+- 后续定义 AliOSSAutoConfiguration 自动配置类，为它加上 `@EnableConfigurationProperties(AliyunOSSProperties2.class)` 注解，可消除错误。
 
 demo-project/aliyun-oss-spring-boot-autoconfigure/src/main/java/com/aliyun/oss/AliyunOSSProperties2.java
 
@@ -441,13 +446,13 @@ public class AliyunOSSProperties2 {
 
 将 AliyunOSSUtil2 类，复制到 aliyun-oss-spring-boot-autoconfigure 的 com.aliyun.oss 包中
 
-AliyunOSSUtil2 类上删掉 @Component 注解。
+AliyunOSSUtil2 类上删掉 `@Component` 注解。
 
-- 因为该依赖引入到的 Spring Boot 项目中，不会去扫描 com.aliyun.oss 这个包，所以这个包里类上的 @Component 及其衍生注解也就失去了意义。
+- 因为该依赖引入到的 Spring Boot 项目中，不会去扫描 com.aliyun.oss 这个包，所以这个包里所有类上的 `@Component` 及其衍生注解，也就失去了意义。
 
-AliyunOSSUtil2 类中，用于依赖注入的 @Autowired 注解，也删掉。
+AliyunOSSUtil2 类中，用于依赖注入的 `@Autowired` 注解，也删掉。
 
-- @Autowired 注解标注了 `private AliyunOSSProperties2 aliOSSProperties;` 属性，该注解删掉后，要为该属性生成 getter、setter 方法，以便后续通过方法设值。
+- `@Autowired` 注解标注了 `private AliyunOSSProperties2 aliOSSProperties;` 属性，该注解删掉后，要为该属性生成 getter、setter 方法，以便后续通过方法设值。
 
 demo-project/aliyun-oss-spring-boot-autoconfigure/src/main/java/com/aliyun/oss/AliyunOSSUtil2.java
 
@@ -529,7 +534,7 @@ demo-project/aliyun-oss-spring-boot-autoconfigure/pom.xml
 
 ##### 3.AliOSSAutoConfiguration 类添加
 
-下面定义一个自动配置类 `AliOSSAutoConfiguration`，在自动配置类中，来声明 AliyunOSSUtil2 的 Bean 对象。
+下面定义一个自动配置类 `AliOSSAutoConfiguration`，在自动配置类中，来声明 `AliyunOSSUtil2` 类的 Bean 对象。
 
 demo-project/aliyun-oss-spring-boot-autoconfigure/src/main/java/com/aliyun/oss/AliOSSAutoConfiguration.java
 
@@ -620,6 +625,6 @@ public class UploadController {
 }
 ```
 
-启动 Spring Boot 测试工程：自动配置会把 AliyunOSSUtil2 的 Bean 对象装配到 IOC 容器中。
+启动 Spring Boot 测试工程：自动配置会把 `AliyunOSSUtil2` 类的 Bean 对象，注册到 IOC 容器中。
 
 用接口测试工具，进行文件上传：

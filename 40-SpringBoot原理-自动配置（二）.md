@@ -23,7 +23,7 @@ demo-project/javaweb-practise/pom.xml
 </dependency>
 ```
 
-该依赖中，定义了一个类，并声明了 @Component 注解，将它交给 IOC 容器管理。
+该依赖中，定义了一个类 TokenParser，并声明了 @Component 注解，将它交给 IOC 容器管理。
 
 com/example/TokenParser.java
 
@@ -92,7 +92,7 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying b
 
 - 在之前介绍 IOC 的时候有提到过，在类上添加 @Component 注解来声明 Bean 对象，还需要保证 @Component 注解能被 Spring 的扫描到。
 - Spring Boot 项目中，引导（启动）类上的 `@SpringBootApplication` 注解，具有组件扫描的作用，但是它只会扫描启动类所在的包及其子包。
-- 第三方依赖中提供的包，比如：com.example（扫描不到）。
+- 第三方依赖中提供的包（比如 com.example）扫描不到。
 
 ## 二、Spring Boot 项目扫描第三方依赖 Bean 对象
 
@@ -145,7 +145,9 @@ com.example.TokenParser@6cd6698b
 
 ### 2.@Import 注解
 
-方案2：@Import 注解，导入的类会作为 Bean 对象被 Spring 加载到 IOC 容器中。导入形式，主要有以下几种：
+方案2：@Import 注解，导入的类会作为 Bean 对象被 Spring 加载到 IOC 容器中。
+
+导入形式，主要有以下几种：
 
 - 导入普通类；
 - 导入配置类；
@@ -184,7 +186,9 @@ com.example.TokenParser@65c689e7
 
 #### 2.导入配置类
 
-使用 @Import 导入第三方依赖中的配置类 `HeaderConfig`：
+第三方依赖中，有配置类 `HeaderConfig`：
+
+- 其中配置了 `headerParser` 和 `headerGenerator` 两个 Bean 对象。
 
 com/example/HeaderConfig.java
 
@@ -262,7 +266,7 @@ public class AutoConfigurationTest {
 com.example.HeaderParser@2a0ce342
 ```
 
-说明 HeaderConfig 配置类中，配置的 HeaderParser 的 Bean 对象，已经在 IOC 容器中管理，并且可以注入使用了。
+说明 HeaderConfig 配置类中，配置的 `headerParser` 的 Bean 对象，已经在 IOC 容器中管理，并且可以注入使用了。
 
 #### 3.导入 ImportSelector 接口的实现类
 
@@ -290,7 +294,7 @@ public interface ImportSelector {
 }
 ```
 
-- `String[] selectImports` 方法，用于封装哪些类需要导入到 Spring 容器中。
+- `String[] selectImports` 方法，用于封装哪些类需要生成 Bean 对象导入到 Spring 容器中。
 
 在第三方依赖中， 有实现了 ImportSelector 接口的实现类 `MyImportSelector`
 
@@ -344,9 +348,11 @@ com.example.HeaderParser@5d04fbb7
 
 这对开发者很不友好，非常繁琐；
 
-#### 3.@EnableXxxx 注解
+### 3.@EnableXxxx 注解
 
-第三方依赖，最清楚有哪些配置类、Bean 对象、ImportSelector 实现类；所以不用开发者自行指定，而是让第三方依赖来指定。
+第三方依赖，最清楚有哪些配置类、Bean 对象、ImportSelector 实现类需要被导入；
+
+所以不用开发者自行指定，而是让第三方依赖来指定。
 
 - 比较常见的方案，就是第三方依赖中，提供一个 @EnableXxxx 注解，注解中封装的就是 @Import 注解
 
@@ -401,9 +407,9 @@ com.example.HeaderParser@68543a35
 
 ## 三、Spring Boot 自动配置原理分析
 
-上文介绍了在项目当中引入第三方依赖后，加载第三方依赖中定义好的 Bean 对象、配置类；从而完成手动配置操作。
+上文介绍了在项目中，引入第三方依赖后，加载其中定义好的 Bean 对象、配置类；从而完成手动配置操作。
 
-下面通过源码跟踪，来剖析下 Spring Boot 底层，是如何基于以上操作，完成自动配置的。
+下面通过源码跟踪，来剖析下 Spring Boot 底层，是如何基于以上手动配置操作，完成自动配置的。
 
 > 源码跟踪技巧：在跟踪框架源码时，不要逐行去看代码，逐个研究方法，而是要抓住关键点，找到核心流程；
 >
@@ -437,7 +443,7 @@ public @interface SpringBootApplication {……}
 - `@Target`、`@Retention`、`@Documented`、`@Inherited` 这样的修饰注解的注解，称为元注解；
 - `@SpringBootConfiguration` 注解中，封装了 `@Configuration` 注解，用于声明配置类；表示启动类就是一个配置类。
   - 所以可以直接在启动类中，使用 `@Bean` 注解声明 Bean 对象。
-  - 其中封装的 `@Indexed` 注解，是用来加速应用启动的（不用关心）。
+  - 该注解中封装的 `@Indexed` 注解，是用来加速应用启动的（不用关心）。
 - `@ComponentScan` 注解，用于启动类所在包及其子包的组件扫描，扫描 @Component 注解及其衍生注解声明的类`。
 - `@EnableAutoConfiguration` 注解，**自动配置的核心注解**，其中封装了 `@Import` 注解，来导入指定的配置类或者 Bean 对象。
 
