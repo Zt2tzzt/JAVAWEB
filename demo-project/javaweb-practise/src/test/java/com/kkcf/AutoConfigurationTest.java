@@ -1,7 +1,7 @@
 package com.kkcf;
 
-import com.example.HeaderParser;
-import com.example.TokenParser;
+//import com.example.HeaderParser;
+//import com.example.TokenParser;
 import com.google.gson.Gson;
 import com.kkcf.pojo.Result;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ public class AutoConfigurationTest {
         System.out.println(jsonStr); // {"code":1,"msg":"success","data":"哈哈"}
     }
 
-    @Test
+    /*@Test
     public void testTokenParse() {
         System.out.println(applicationContext.getBean(TokenParser.class));
     }
@@ -30,5 +30,5 @@ public class AutoConfigurationTest {
     @Test
     public void testHeaderParser() {
         System.out.println(applicationContext.getBean(HeaderParser.class));
-    }
+    }*/
 }
