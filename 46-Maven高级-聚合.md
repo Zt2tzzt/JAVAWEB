@@ -10,7 +10,7 @@
 将 Maven 项目 javaweb-practise 打包时，执行 Maven 生命周期 package
 
 - 打包失败，因为在 Maven 本地仓库中，没有 javaweb-pojo、javaweb-utils 两个依赖。和 javaweb-parent 父工程的依赖。
-- Maven 会在本地仓库查找这些依赖。
+- 打包时 Maven 会在本地仓库查找这些依赖。
 
 在 Maven 项目 javaweb-parent、javaweb-pojo、javaweb-utils 中，分别执行生命周期 install，将三个依赖安装到本地仓库。
 
@@ -24,7 +24,7 @@
 
 Maven 聚合，就是将多个模块，组织成一个整体，一键进行项目的构建。
 
-聚合工程：一个不局有业务功能的“空”工程，有且仅有一个 pom.xml 文件；
+聚合工程：是一个没有业务功能的“空”工程，有且仅有一个 pom.xml 文件；
 
 - 一般来说，继承关系中的父工程，与聚合关系中的聚合工程是同一个。
 
@@ -47,7 +47,7 @@ demo-project/javaweb-parent/pom.xml
 </modules>
 ```
 
-现在，进行编译、打包、安装操作，就无需在每一个模块上操作了。只需要在聚合工程上，统一进行操作就可以了。
+现在，进行编译、打包、安装操作，就无需在每一个模块上操作了。只需要在聚合工程上，统一进行操作即可。
 
 在 javaweb-parent 工程的 Maven 生命周期中，执行 clean 指令。
 
@@ -55,7 +55,7 @@ demo-project/javaweb-parent/pom.xml
 
 在 javaweb-parent 工程的 Maven 生命周期中，执行 package 指令。
 
-- 发现 javaweb-practise、javaweb-pojo、javaweb-utils 模块都都进行了打包，并在 target 目录下生成了 jar 包。
+- 发现 javaweb-practise、javaweb-pojo、javaweb-utils 模块都都进行了 package 操作，并在 target 目录下生成了 jar 包。
 
 ## 四、Maven 继承与聚合总结
 

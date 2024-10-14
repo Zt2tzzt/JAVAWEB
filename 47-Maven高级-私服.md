@@ -19,7 +19,7 @@ Maven 私服，就是架设在局域网内的一台服务器，是一种特殊�
 
 项目中需要使用第三方依赖，本地仓库没有，会自动连接私服下载，私服没有，会自动连接中央仓库下载；
 
-然后将下载的依赖存储在私服仓库及本地仓库中。
+然后将下载的依赖，存储在私服仓库，及本地仓库中。
 
 ## 三、Maven 私服中的仓库
 
@@ -92,9 +92,9 @@ Maven 模块默认是 snapshot 版本。只要不是 snapshot 版本，都会上
 <profiles>
   <profile>
       <id>allow-snapshots</id>
-          <activation>
-            <activeByDefault>true</activeByDefault>
-          </activation>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <repositories>
           <repository>
               <id>maven-public</id>
@@ -115,19 +115,19 @@ Maven 模块默认是 snapshot 版本。只要不是 snapshot 版本，都会上
 
 ### 3.项目的 pom.xml 文件中，配置上传资源的 url 地址
 
-2.在 Maven 工程的 pom.xml 配置文件中，配置工程打包后的 jar 包，要往私服的哪个仓库中上传；配置两个。
+在 Maven 工程的 pom.xml 配置文件中，配置工程打包后的 jar 包，要往私服的哪个仓库中上传；配置两个。
 
 demo-project/javaweb-parent/pom.xml
 
 ```xml
 <distributionManagement>
-    <!-- release版本的发布地址 -->
+    <!-- RELEASE 版本的发布地址 -->
     <repository>
         <id>maven-releases</id>
         <url>http://192.168.150.101:8081/repository/maven-releases/</url>
     </repository>
 
-    <!-- snapshot版本的发布地址 -->
+    <!-- SNAPSHOT 版本的发布地址 -->
     <snapshotRepository>
         <id>maven-snapshots</id>
         <url>http://192.168.150.101:8081/repository/maven-snapshots/</url>
@@ -135,8 +135,9 @@ demo-project/javaweb-parent/pom.xml
 </distributionManagement>
 ```
 
-配置完成之后，就可以在 javaweb-parent 中执行 Maven 的 `deploy` 生命周期，将项目发布到私服仓库中。
+配置完成之后，就可以在 javaweb-parent 中执行 Maven 的 `deploy` 生命周期，将项目打包后生成的 jar 包发布到私服仓库中。
 
 - 如果项目是 SNAPSHOT 版本，jar 包会上传到 SNAPSHOT 仓库中；
+- 否则上传到 RELEASE 仓库中。
 
 其他项目组的，就可以直接通过依赖的坐标引入对应的依赖，本地仓库没有，就会自动从私服仓库中下载。
