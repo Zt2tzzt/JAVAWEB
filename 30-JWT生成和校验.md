@@ -109,13 +109,15 @@ HMACSHA256(
 ) secret base64 encoded
 ```
 
-由于前两个部分是 Base64 编码，所以是可以直接解码出来。
+由于前两个部分是 Base64 编码，所以可以直接解码出来。
 
 但最后一个部分并不是 Base64 编码，而是经过签名算法计算出来的，所以最后一个部分不会解析。
 
 ## 二、JWT 解析
 
 基于 Java 代码，来解析 JWT 令牌：
+
+demo-project/javaweb-practise/src/test/java/com/kkcf/JavawebPractiseApplicationTests.java
 
 ```java
 package com.kkcf;

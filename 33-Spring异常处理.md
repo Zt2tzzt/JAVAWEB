@@ -44,9 +44,9 @@ Spring Boot 全局异常处理器的使用：
 
 1. 定义一个类，在类上加上注解 `@RestControllerAdvice`，表示全局异常处理器。
 2. 在该处理器类中，定义一个方法，来捕获异常；
-3. 在该方法上，加上注解 `@ExceptionHandler`，并通过 `value` 属性，来指定要捕获的异常类型。
+3. 在该方法上，加上注解 `@ExceptionHandler`，并通过 `value` 属性（可省略），来指定要捕获的异常类型。
 
-> @RestControllerAdvice = @ControllerAdvice + @ResponseBody
+> @RestControllerAdvice 也是一个复合注解 = @ControllerAdvice + @ResponseBody
 >
 > 所以，处理异常的方法，返回值会转换为 JSON 格式后再响应给客户端。
 
