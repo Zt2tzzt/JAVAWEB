@@ -37,7 +37,7 @@ AOP 面向方法编程，在不修改源代码的基础上，对已有方法，�
 - 所谓模板方法，就是代理对象中所定义的方法；
 - 当运行原始业务方法时，就会运行代理对象中的方法。
 
-AOP 面向切面编程，与 OOP 面向对象编程一样，是一种编程思想；
+AOP 面向切面编程，与 OOP 面向对象编程一样，是一种**编程思想**；
 
 - 动态代理技术，是这种思想最主流的实现方式。
 
@@ -198,7 +198,7 @@ Target 目标对象，表示 Advice 通知应用的对象，
 
 Spring 的 AOP 底层，是基于**动态代理**技术实现的；
 
-在程序运行的时候，会自动的基于动态代理技术，为目标对象，生成一个对应的代理对象。
+在程序运行的时候，会自动的基于动态代理技术，为目标对象 Target，生成一个对应的代理对象 Proxy。
 
 在代理对象中，就会对目标对象当中的原始方法，进行功能的增强。
 
@@ -289,22 +289,22 @@ public class MyAspect {
 2024-09-30T10:15:03.767+08:00  INFO 25116 --- [javaweb-practise] [nio-8080-exec-5] com.kkcf.aop.MyAspect                    :  AOP ADVICE around after...
 ```
 
-@AfterThrowing 异常后通知，与 @AfterRunning 返回后通知，是互斥的。
+`@AfterThrowing` 异常后通知与 `@AfterRunning` 返回后通知，是互斥的。
 
 当连接点执行出现异常后：
 
-- @AfterReturning 标识的通知方法不会执行，@AfterThrowing 标识的通知方法执行了；
-- @Around 环绕通知，环绕后的代码逻辑，也不会再执行了 ，因为原始方法调用已经出异常了。
+- `@AfterReturning` 标识的通知方法，不会执行，`@AfterThrowing` 标识的通知方法，执行了；
+- `@Around` 环绕通知，环绕后的代码逻辑，也不会再执行了 ，因为原始方法调用已经出异常了。
 
 使用通知类型，注意事项：
 
-- @Around 环绕通知，需要手动调用 `ProceedingJoinPoint.proceed()` 方法，让原始方法执行；
+- `@Around` 环绕通知，需要手动调用 `ProceedingJoinPoint.proceed()` 方法，让原始方法执行；
 - 其他通知不需要手动调用目标方法。
-- @Around 环绕通知，方法的返回值，必须指定为 `Object` 类型，否则原始方法执行完毕，是获取不到返回值的。
+- `@Around` 环绕通知，方法的返回值，必须指定为 `Object` 类型，否则原始方法执行完毕，是获取不到返回值的。
 
-## 八、@PointCut 注解-切入点表达式抽取
+## 八、@PointCut 注解抽取切入点表达式
 
-使用 @PointCut 注解，将切入点表达式抽取出来：
+使用 `@PointCut` 注解，将切入点表达式抽取出来：
 
 - 可以在本类，或其它类中，使用抽取出来的切入点表达式。
 
@@ -361,7 +361,7 @@ public class MyAspect {
 
 - 注意：当切入点方法使用 `private` 修饰时，仅能在当前切面类中，引用该表达式；
 
-在同一个包下的切面类 MyAspectA 中，引用抽取的切入点表达式：
+在同一个包下的切面类 `MyAspectA` 中，引用抽取的切入点表达式：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/aop/MyAspectA.java
 

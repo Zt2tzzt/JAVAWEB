@@ -39,13 +39,13 @@ Spring Boot 框架的原理，就是它的**起步依赖**、**自动配置**的
 
 当使用 Spring Boot 框架，进行 Web 项目开发时，就不需要像上面这么繁琐的引入依赖了。
 
-只需要引入一个 Web 开发的**起步依赖**：springboot-starter-web 即可。
+只需要引入一个 Web 开发的**起步依赖**：`springboot-starter-web` 即可。
 
 它会利用 **Maven 的依赖传递**特性，将相关的依赖（以及对应的版本号）全部引入进来。
 
 ![SpringBootWeb开发依赖](NoteAssets/SpringBootWeb开发依赖.png)
 
-Spring Boot 框架，提供项目开发所需[常见起步依赖](https://docs.spring.io/spring-boot/docs/2.7.7/reference/htmlsingle/#using.build-systems.starters)；比如：springboot-starter-web：
+Spring Boot 框架，提供项目开发所需[常见起步依赖](https://docs.spring.io/spring-boot/docs/2.7.7/reference/htmlsingle/#using.build-systems.starters)；比如：`springboot-starter-web`：
 
 - 它是 Spring Boot 结合 Web 开发的起步依赖，
 - 其中集成了 Web 开发常见的依赖：json、web、webmvc、tomcat…。
@@ -63,10 +63,10 @@ Spring 项目启动后，一些**配置类**，**Bean 对象**，就自动存入
 
 - Run -> Actuato -> Bean
 
-比如：在其中可以看到，有两个CommonConfig，
+比如：在其中可以看到，有两个 CommonConfig，
 
 - 在第一个 CommonConfig 类中，定义了一个 Bean 对象，名字就叫 saxReader（即前面自定义配置类中管理的 Bean 对象，属于 dom4j 包，用于 xml 的解析）。
-- 在第二个 CommonConfig 类中，它的 Bean 对象名字叫 commonConfig，因为 CommonConfig 配置类上添加了一个注解 @Configuration，该注解底层封装了 @Component 注解。
+- 在第二个 CommonConfig 类中，它的 Bean 对象名字叫 commonConfig，因为 CommonConfig 配置类上添加了一个注解 `@Configuration`，该注解底层封装了 `@Component` 注解。
 - 所以，配置类，最终也是 Spring IOC 容器中的一个 Bean 对象。
 
 在 IOC 容器中，除了开发者自行用配置类定义的 Bean 以外，还有很多 Spring Boot 项目在启动时，加载进来的配置类。它们也会生成很多的 Bean 对象。
@@ -75,7 +75,7 @@ Spring 项目启动后，一些**配置类**，**Bean 对象**，就自动存入
 
 > gson 是 Google 提供的，用于将 Java 对象转为 Json 对象的包。
 
-在测试类中，要使用 gson Bean 对象，可以使用 @Autowired 注解进行依赖注入。
+在测试类中，要使用 gson Bean 对象，可以使用 `@Autowired` 注解进行依赖注入。
 
 demo-project/javaweb-practise/src/test/java/com/kkcf/AutoConfigurationTest.java
 

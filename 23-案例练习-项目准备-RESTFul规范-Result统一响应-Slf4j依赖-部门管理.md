@@ -223,7 +223,7 @@ public class Result<T> {
 
 ## 四、slf4j 依赖
 
-使用 Logback 记录日志，引入 Slf4j 依赖。
+使用 Logback 依赖记录日志，引入 Slf4j 依赖。
 
 demo-project/javaweb-practise/pom.xml
 
@@ -234,7 +234,7 @@ demo-project/javaweb-practise/pom.xml
 </dependency>
 ```
 
-Lombok 提供了注解 `@Slf4j`，在类上方使用，用于在类中定义日志记录静态常量。
+Lombok 提供了注解 `@Slf4j`，在类上方使用，用于在类中定义日志记的录静态常量对象。
 
 ```java
 public static final Logger log = LoggerFactory.getLogger(DeptController.class);
@@ -305,7 +305,7 @@ log.info("查询结果：{}", result);
 
 #### 4.部门列表查询接口开发
 
-创建 DeptMapper 接口，在其中添加 `selectDepts` 方法：
+创建 `DeptMapper` 接口，在其中添加 `selectDepts` 方法：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/mapper/DeptMapper.java
 
@@ -325,7 +325,7 @@ public interface DeptMapper {
 }
 ```
 
-创建 Service 层接口 DeptService：在其中添加 `list` 方法。
+创建 Service 层接口 `DeptService`：在其中添加 `list` 方法。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/impl/DeptServiceImpl.java
 
@@ -341,7 +341,7 @@ public interface DeptService {
 }
 ```
 
-创建 Service 层实现类 DeptServiceImpl；在其中实现 `list` 方法。
+创建 Service 层实现类 `DeptServiceImpl`；在其中实现 `list` 方法。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/impl/DeptServiceImpl.java
 
@@ -368,7 +368,7 @@ public class DeptServiceImpl implements DeptService {
 }
 ```
 
-创建 Controller 层控制器类 DeptController；在其中定义 `list` 方法。
+创建 Controller 层控制器类 `DeptController`；在其中定义 `list` 方法。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/controller/DeptController.java
 
@@ -419,9 +419,9 @@ public class DeptController {
 
 参数说明：
 
-| 参数名 | 类型   | 是否必须 | 备注   |
-| ------ | ------ | -------- | ------ |
-| id     | number | 必须     | 部门ID |
+| 参数名 | 类型   | 是否必须 | 备注    |
+| ------ | ------ | -------- | ------- |
+| id     | number | 必须     | 部门 ID |
 
 请求参数样例：
 
@@ -453,7 +453,7 @@ public class DeptController {
 
 #### 4.删除部门接口开发
 
-在 DeptMapper 接口中，定义 `deleteDeptById` 方法：
+在 `DeptMapper` 接口中，定义 `deleteDeptById` 方法：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/mapper/DeptMapper.java
 
@@ -473,7 +473,7 @@ public interface DeptMapper {
 }
 ```
 
-在 DeptService 接口中，定义 `removeById` 方法：
+在 `DeptService` 接口中，定义 `removeById` 方法：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/DeptService.java
 
@@ -491,7 +491,7 @@ public interface DeptService {
 }
 ```
 
-在 DeptServiceImpl 实现类中，实现 `removeById` 方法：
+在 `DeptServiceImpl` 实现类中，实现 `removeById` 方法：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/impl/DeptServiceImpl.java
 
@@ -518,7 +518,7 @@ public class DeptServiceImpl implements DeptService {
 }
 ```
 
-在控制器类 DeptController 中，定义 `removeById` 方法：
+在控制器类 `DeptController` 中，定义 `removeById` 方法：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/controller/DeptController.java
 
@@ -611,7 +611,7 @@ public class DeptController {
 
 #### 4.添加部门接口开发
 
-在 DeptMapper 接口中，定义 `insertDept` 方法：
+在 `DeptMapper` 接口中，定义 `insertDept` 方法：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/mapper/DeptMapper.java
 
@@ -676,7 +676,7 @@ public class DeptServiceImpl implements DeptService {
 }
 ```
 
-在 Controller 层的 DeptController 类中，定义方法 `addDept`
+在 Controller 层的 `DeptController` 类中，定义方法 `addDept`
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/controller/DeptController.java
 
@@ -733,9 +733,9 @@ public class DeptController {
 
 参数说明：
 
-| 参数名 | 类型   | 是否必须 | 备注   |
-| ------ | ------ | -------- | ------ |
-| id     | number | 必须     | 部门ID |
+| 参数名 | 类型   | 是否必须 | 备注    |
+| ------ | ------ | -------- | ------- |
+| id     | number | 必须     | 部门 ID |
 
 请求参数样例：
 
@@ -776,7 +776,7 @@ public class DeptController {
 
 #### 4.根据 ID 查询接口开发
 
-在 DeptMapper 接口中，定义 `selectDeptById` 方法：
+在 `DeptMapper` 接口中，定义 `selectDeptById` 方法：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/mapper/DeptMapper.java
 
@@ -793,7 +793,7 @@ public interface DeptMapper {
 }
 ```
 
-在 Service 层接口 DeptService 中，定义 `getById` 方法
+在 Service 层接口 `DeptService` 中，定义 `getById` 方法
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/DeptService.java
 
@@ -809,7 +809,7 @@ public interface DeptService {
 }
 ```
 
-在 Service 层实现类 DeptServiceImpl 中，实现 `getById` 方法：
+在 Service 层实现类 `DeptServiceImpl` 中，实现 `getById` 方法：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/impl/DeptServiceImpl.java
 
@@ -837,7 +837,7 @@ public class DeptServiceImpl implements DeptService {
 }
 ```
 
-在 Controller 层的 DeptController 类中，定义处理方法 `getById`:
+在 Controller 层的 `DeptController` 类中，定义处理方法 `getById`:
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/controller/DeptController.java
 
@@ -931,7 +931,7 @@ public class DeptController {
 }
 ```
 
-在 DeptMapper 接口中，定义方法 `updateDept`。
+在 `DeptMapper` 接口中，定义方法 `updateDept`。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/mapper/DeptMapper.java
 
@@ -948,7 +948,7 @@ public interface DeptMapper {
 }
 ```
 
-在 Service 层的 DeptService 接口中，定义方法 `updateDept`：
+在 Service 层的 `DeptService` 接口中，定义方法 `updateDept`：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/DeptService.java
 
@@ -964,7 +964,7 @@ public interface DeptService {
 }
 ```
 
-在 Service 层的 DeptServiceImpl 实现类中，实现方法 `updateDept`。
+在 Service 层的 `DeptServiceImpl` 实现类中，实现方法 `updateDept`。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/impl/DeptServiceImpl.java
 
@@ -993,7 +993,7 @@ public class DeptServiceImpl implements DeptService {
 }
 ```
 
-在 Controller 层的控制器类 DeptController 中，定义方法 `updateDept`。
+在 Controller 层的控制器类 `DeptController` 中，定义方法 `updateDept`。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/controller/DeptController.java
 

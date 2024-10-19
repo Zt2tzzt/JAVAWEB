@@ -12,9 +12,9 @@
 
 定义两种类型的通知，进行测试；
 
-- 一种是 @Before 前置通知，一种是 @After 后置通知。
+- 一种是 `@Before` 前置通知，一种是 `@After` 后置通知。
 
-定义切面类 MyAspectA
+定义切面类 `MyAspectA`
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/aop/MyAspectA.java
 
@@ -44,7 +44,7 @@ public class MyAspectA {
 }
 ```
 
-定义切面类 MyAspectB
+定义切面类 `MyAspectB`
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/aop/MyAspectB.java
 
@@ -87,12 +87,12 @@ public class MyAspectB {
 
 ### 2.@Order 注解指定执行顺序
 
-Spring 提供了 @Order 注解，来控制切面的执行顺序。
+Spring 提供了 `@Order` 注解，来控制切面的执行顺序。
 
 - 对于原始方法运行前的通知，传入的数字越小，优先级越高；
 - 对于原始方法运行后的通知，传入的数字越小，优先级越低。
 
-在切面类 MyAspectA 使用 @Order 注解
+在切面类 `MyAspectA` 使用 `@Order` 注解
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/aop/MyAspectA.java
 
@@ -123,7 +123,7 @@ public class MyAspectA {
 }
 ```
 
-在切面类 MyAspectB 使用 @Order 注解
+在切面类 `MyAspectB` 使用 `@Order` 注解
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/aop/MyAspectB.java
 
@@ -205,7 +205,7 @@ execution 切入点表达式，可以基于**接口**进行匹配。
 execution 切入点表达式，可用通配符有两个：
 
 - `*` ：单个独立的任意符号，可以通配任意返回值、包名、类名、方法名、任意类型的一个参数，也可以通配包、类、方法名的一部分。
-- `..` ：多个连续的任意符号，可以通配任意层级的包，或任意类型、任意个数的参数
+- `..` ：多个连续的任意符号，可以通配任意层级的包，或任意类型、任意个数的参数。
 
 execution 切入点表达式，一般用法：
 
@@ -269,7 +269,7 @@ execution(* com.kkcf.service.DeptService.list(..)) || execution(* com.kkcf.servi
 
 - 比如：查询类方法都是 "find" 开头，更新类方法都是 "update" 开头
 
-匹配 DeptServiceImpl 类中以 find 开头的方法
+匹配 `DeptServiceImpl` 类中以 find 开头的方法
 
 ```java
 execution(* com.kkcf.service.impl.DeptServiceImpl.find*(..)))
@@ -299,15 +299,15 @@ execution(* com.kkcf.*.*.DeptServiceImpl.find*(..)))
 
 因为要将两个 execution 切入点表达式，使用 `||` 组合在一起；
 
-事实上，可以借助于 @annotation 切入点表达式，来描述这一类的切入点，简化切入点表达式的书写。
+事实上，可以借助于 `@annotation` 切入点表达式，来描述这一类的切入点，简化切入点表达式的书写。
 
-@annoation 切入点表达式实现步骤：
+`@annoation` 切入点表达式实现步骤：
 
 1. 编写自定义注解；
 
 2. 在业务类要做为连接点的方法上，添加自定义注解。
 
-创建一个包 anno，在其中创建自定义注解 @MyLog：
+创建一个包 anno，在其中创建自定义注解 `@MyLog`：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/anno/MyLog.java
 
@@ -325,7 +325,7 @@ public @interface MyLog {
 }
 ```
 
-在 Service 层的 `DeptServiceImpl` 类中的 `list()` 和 `removeById()` 方法上，使用自定义注解 @MyLog
+在 Service 层的 `DeptServiceImpl` 类中的 `list()` 和 `removeById()` 方法上，使用自定义注解 `@MyLog`
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/impl/DeptServiceImpl.java
 
@@ -386,7 +386,7 @@ public class DeptServiceImpl implements DeptService {
 }
 ```
 
-在 aop 包下，创建切面类 MyAspect1
+在 aop 包下，创建切面类 `MyAspect1`
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/aop/MyAspect1.java
 
@@ -446,11 +446,11 @@ Spring 用 JoinPoint API 抽象了连接点，用它可获取方法执行时的�
 
 - 比如：目标类名、方法名、方法参数……。
 
-对于 @Around 通知，获取连接点信息，只能使用 `ProceedingJoinPoint` 类型；
+对于 `@Around` 通知，获取连接点信息，只能使用 `ProceedingJoinPoint` 类型；
 
 对于其它四种通知，获取连接点信息，只能使用 `JoinPoint` 类型，它是 `ProceedingJoinPoint` 的父类型。
 
-案例理解：在切面类 MyAspect 中的 before、around 方法中，获取连接点相关的信息
+案例理解：在切面类 `MyAspect` 中的 `before`、`around` 方法中，获取连接点相关的信息
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/aop/MyAspect.java
 
@@ -476,41 +476,42 @@ public class MyAspect {
 
     @Around("pt()")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
-        log.info(" AOP ADVICE around before...");
+        log.info("AOP ADVICE around before...");
 
         String className = pjp.getTarget().getClass().getName(); // 获取目标类名
-        log.info(" className: {}", className);
+        log.info("className: {}", className);
 
         Signature signature = pjp.getSignature(); // 获取目标方法签名
-        log.info(" signature: {}", signature);
+        log.info("signature: {}", signature);
 
         String methhodName = pjp.getSignature().getName(); // 获取目标方法名
-        log.info(" methhodName: {}", methhodName);
+        log.info("methhodName: {}", methhodName);
 
         Object[] args = pjp.getArgs(); // 获取目标方法运行参数
-        log.info(" args: {}", Arrays.toString(args));
+        log.info("args: {}", Arrays.toString(args));
 
         Object result = pjp.proceed(args); // 执行原始方法，获取返回值。
 
-        log.info(" AOP ADVICE around after...");
+        log.info("AOP ADVICE around after...");
 
         return result;
     }
 
     @Before("pt()")
     public void before(JoinPoint jp) {
-        log.info(" AOP ADVICE before...");
+        log.info("AOP ADVICE before...");
+
         String className = jp.getTarget().getClass().getName(); // 获取目标对象类名
-        log.info(" className: {}", className);
+        log.info("className: {}", className);
 
         Signature signature = jp.getSignature(); // 获取目标方法签名
-        log.info(" signature: {}", signature);
+        log.info("signature: {}", signature);
 
         String methodName = jp.getSignature().getName(); // 获取目标方法名
-        log.info(" methodName: {}", methodName);
+        log.info("methodName: {}", methodName);
 
         Object[] args = jp.getArgs(); // 获取目标方法运行参数
-        log.info(" args: {}", Arrays.toString(args));
+        log.info("args: {}", Arrays.toString(args));
     }
 }
 ```
@@ -550,8 +551,8 @@ public class MyAspect {
 
 - 记录操作日志的逻辑是通用的、将它抽取出来定义在一个通知方法当中；
 - 技术方案选择：通过 AOP 面向切面编程的方式，在不改动原始方法的基础上，对原始的功能进行增强。
-- 通知类型选择：操作日志中，涉及到返回值和方法执行时长，所以要使用 AOP 的 @Around 环绕通知。
-- 切入点描述选择：由于增、删、改方法名没有规律，所以使用 @annotation 切入点表达式，来描述切入点。
+- 通知类型选择：操作日志中，涉及到返回值和方法执行时长，所以要使用 AOP 的 `@Around` 环绕通知。
+- 切入点描述选择：由于增、删、改方法名没有规律，所以使用 `@annotation` 切入点表达式，来描述切入点。
 
 ### 3.AOP 案例准备工作
 
@@ -585,7 +586,7 @@ CREATE TABLE IF NOT EXISTS operate_log
 ) COMMENT '操作日志表';
 ```
 
-准备与表结构对应的实体（pojo）类 OperateLog：
+准备与表结构对应的实体（pojo）类 `OperateLog`：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/pojo/OperateLog.java
 
@@ -615,7 +616,7 @@ public class OperateLog {
 
 ### 4.AOP 案例开发
 
-定义 OperatorLogMapper 接口，在其中定义 insert 方法。
+定义 `OperatorLogMapper` 接口，在其中定义 `insert` 方法。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/mapper/OperatorLogMapper.java
 
@@ -633,7 +634,7 @@ public interface OperatorLogMapper {
 }
 ```
 
-在 anno 包下，自定义注解 @Log
+在 anno 包下，自定义注解 `@Log`
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/anno/Log.java
 
@@ -651,9 +652,9 @@ public @interface Log {
 }
 ```
 
-在 Service 层的业务实现类 DeptServiceImpl 和 EmpServiceImpl 里的增、删、改方法上，加上 @Log 注解。
+在 Service 层的业务实现类 `DeptServiceImpl` 和 `EmpServiceImpl` 里的增、删、改方法上，加上 `@Log` 注解。
 
-DeptServiceImpl  业务实现类：
+`DeptServiceImpl ` 业务实现类：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/impl/DeptServiceImpl.java
 
@@ -720,6 +721,7 @@ public class DeptServiceImpl implements DeptService {
     public int addDept(Dept dept) {
         dept.setCreateTime(LocalDate.now());
         dept.setUpdateTime(LocalDate.now());
+
         return deptMapper.insertDept(dept);
     }
 
@@ -732,12 +734,13 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public int updateDept(Dept dept) {
         dept.setUpdateTime(LocalDate.now());
+
         return deptMapper.updateDept(dept);
     }
 }
 ```
 
-EmpServiceImpl 业务实现类：
+`EmpServiceImpl` 业务实现类：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/impl/EmpServiceImpl.java
 
@@ -819,7 +822,7 @@ public class EmpServiceImpl implements EmpService {
 }
 ```
 
-在 asp 包下，定义切面类 LogAspect，完成记录日志的逻辑：
+在 asp 包下，定义切面类 `LogAspect`，完成记录日志的逻辑：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/aop/LogAspect.java
 

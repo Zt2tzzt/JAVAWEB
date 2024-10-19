@@ -2,8 +2,9 @@
 
 客户端登录后，收到服务器发放的 token 令牌：
 
-- 客户端后续的请求，都会在请求头中携带 JWT 令牌到服务端，
-- 而服务端需要统一拦截所有的请求，来判断是否携带了合法的 JWT 令牌。
+客户端后续的请求，都会在请求头中携带 JWT 令牌到服务端，
+
+而服务端需要统一拦截所有的请求，来判断是否携带了合法的 JWT 令牌。
 
 在 Spring Boot 项目中，统一拦截所有请求，有两种解决方案：
 
@@ -25,13 +26,13 @@ Servlet 规范中的 Filter 过滤器，是 JavaWeb 三大组件（Servlet、Fil
 
 ## 二、Filter 过滤器的使用
 
-### 1.@WebFilter 注解
+### 1.@WebFilter 注解与过滤器类
 
 过滤器的实现，分为两步：
 
 1. 定义 Filter，定义一个过滤器类，实现 `javax.servlet.Fileter` 接口。并重写其所有方法。
 2. 配置 Filter，
-   1. 在过滤器类上加 `@WebFilter` 注解。指定属性 `urlPatterns` 配置拦截资源的路径。
+   1. 在过滤器类上加 `@WebFilter` 注解。使用属性 `urlPatterns` 指定拦截资源的路径。
       - `/*` 表示拦截浏览器的所有请求；
       - 注释掉 `@WebFilter` 注解，Filter 也就失效了。
    2. 再在引导类（启动类）加上 `@ServletComponentScan` 注解
@@ -91,7 +92,7 @@ public class DemoFilter implements Filter {
 - `init`、`destroy` 方法一般有固定的逻辑，所以 `Filter` 接口中，提供了默认实现。
 - `doFilter`  方法，是每次拦截到请求后，都会调用的方法。
 
-### 2.@ServletComponentScan 注解
+### 2.@ServletComponentScan 注解与启动类
 
 在引导（启动）类，加上一个注解 `@ServletComponentScan`，来开启 Spring Boot 项目，对于 Servlet 组件的支持。
 
@@ -136,10 +137,10 @@ destroy 销毁方法执行了
 
 过滤器拦截到请求后，要让请求继续访问后面的 web 资源，就要执行放行操作；
 
-放行就是调用 `FilterChain` 对象的 `doFilter()` 方法：
+放行就是调用 `filterChain` 对象的 `doFilter` 方法：
 
-- 在调用该方法前，编写的代码属于放行之前的逻辑。
-- 在调用该方法后，编写的代码属于放行之后的逻辑（访问完 Web 资源后，还会回到过滤器中执行的逻辑）。
+- 调用该方法前编写的代码，属于放行之前的逻辑。
+- 调用该方法后编写的代码，属于放行之后的逻辑（访问完 Web 资源后，还会回到过滤器中执行的逻辑）。
 
 ![Filter拦截器执行流程](NoteAssets/Filter拦截器执行流程.png)
 
@@ -209,7 +210,7 @@ public class AbcFilter implements Filter {
 
 在案例中，Web 服务器的所有请求，都要被 Filter 过滤器拦截，登录请求列外。
 
-拦截到请求后，有令牌，且令牌校验通过（合法）；否则都返回未登录错误结果。
+拦截到请求后，有令牌，且令牌校验通过（合法），则放行请求；否则返回未登录错误结果。
 
 流程如下图所示：
 

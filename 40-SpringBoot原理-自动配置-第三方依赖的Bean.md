@@ -23,7 +23,7 @@ demo-project/javaweb-practise/pom.xml
 </dependency>
 ```
 
-该依赖中，定义了一个类 TokenParser，并声明了 @Component 注解，将它交给 IOC 容器管理。
+该依赖中，定义了一个类 `TokenParser`，并声明了 `@Component` 注解，将它交给 IOC 容器管理。
 
 com/example/TokenParser.java
 
@@ -43,7 +43,7 @@ public class TokenParser {
 
 在当前项目测试类中，添加测试方法 `testTokenParse`：
 
-- 在其中获取第三方依赖提供的 `TokenParser` 类型的 Bean‘ 对象。
+- 在其中获取第三方依赖提供的 `TokenParser` 类型的 Bean 对象。
 
 demo-project/javaweb-practise/src/test/java/com/kkcf/AutoConfigurationTest.java
 
@@ -90,7 +90,7 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying b
 
 引入的第三方依赖中，Bean 对象、配置类，为什么没有生效？原因：
 
-- 在之前介绍 IOC 的时候有提到过，在类上添加 @Component 注解来声明 Bean 对象，还需要保证 @Component 注解能被 Spring 的扫描到。
+- 在之前介绍 IOC 的时候有提到过，在类上添加 `@Component` 注解来声明 Bean 对象，还需要保证 `@Component` 注解能被当前项目的 Spring 框架扫描到。
 - Spring Boot 项目中，引导（启动）类上的 `@SpringBootApplication` 注解，具有组件扫描的作用，但是它只会扫描启动类所在的包及其子包。
 - 第三方依赖中提供的包（比如 com.example）扫描不到。
 
@@ -145,7 +145,7 @@ com.example.TokenParser@6cd6698b
 
 ### 2.@Import 注解
 
-方案2：@Import 注解，导入的类会作为 Bean 对象被 Spring 加载到 IOC 容器中。
+方案2：`@Import` 注解，导入的类会作为 Bean 对象被 Spring 加载到 IOC 容器中。
 
 导入形式，主要有以下几种：
 
@@ -153,9 +153,9 @@ com.example.TokenParser@6cd6698b
 - 导入配置类；
 - 导入 `ImportSelector` 接口的实现类。
 
-#### 1.导入普通来
+#### 1.导入普通类
 
-在引导（启动）类上，加上 @Import 注解，并指定要导入的类。
+在引导（启动）类上，加上 `@Import` 注解，并指定要导入的类。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/JavawebPractiseApplication.java
 
@@ -182,7 +182,7 @@ public class JavawebPractiseApplication {
 com.example.TokenParser@65c689e7
 ```
 
-说明，TokenParser 的 Bean 对象，已经在 IOC 容器中管理，并且可以注入使用了。
+说明，`TokenParser` 的 Bean 对象，已经在 IOC 容器中管理，并且可以注入使用了。
 
 #### 2.导入配置类
 
@@ -212,7 +212,7 @@ public class HeaderConfig {
 }
 ```
 
-在项目引导（启动）类上，使用 @Import 注解，导入该配置类：
+在项目引导（启动）类上，使用 `@Import` 注解，导入该配置类：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/JavawebPractiseApplication.java
 
@@ -266,11 +266,11 @@ public class AutoConfigurationTest {
 com.example.HeaderParser@2a0ce342
 ```
 
-说明 HeaderConfig 配置类中，配置的 `headerParser` 的 Bean 对象，已经在 IOC 容器中管理，并且可以注入使用了。
+说明 `HeaderConfig` 配置类中，配置的 `headerParser` 的 Bean 对象，已经在 IOC 容器中管理，并且可以注入使用了。
 
 #### 3.导入 ImportSelector 接口的实现类
 
-ImportSeiector 接口，源码如下：
+`ImportSeiector` 接口，源码如下：
 
 ```java
 //
@@ -296,7 +296,7 @@ public interface ImportSelector {
 
 - `String[] selectImports` 方法，用于封装哪些类需要生成 Bean 对象导入到 Spring 容器中。
 
-在第三方依赖中， 有实现了 ImportSelector 接口的实现类 `MyImportSelector`
+在第三方依赖中， 有实现了 `ImportSelector` 接口的实现类 `MyImportSelector`
 
 com/example/HeaderConfig.java
 
@@ -313,7 +313,7 @@ public class MyImportSelector implements ImportSelector {
 }
 ```
 
-在项目引导（启动）类上，使用 @Import 注解，导入该实现类：
+在项目引导（启动）类上，使用 `@Import` 注解，导入该实现类：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/JavawebPractiseApplication.java
 
@@ -342,21 +342,21 @@ public class JavawebPractiseApplication {
 com.example.HeaderParser@5d04fbb7
 ```
 
-说明 MyImportSelector 实现类的 selectImports 方法中，声明的 HeaderConfig 配置类所配置的 HeaderParser 的 Bean 对象，已经在 IOC 容器中管理，并且可以注入使用了。
+说明 `MyImportSelector` 实现类的 `selectImports` 方法中，声明的 `HeaderConfig` 配置类所配置的 `HeaderParser` 的 Bean 对象，已经在 IOC 容器中管理，并且可以注入使用了。
 
-基于以上方式，当要引入一个第三方依赖时，开发者要实现自动配置，还要知道第三方依赖中有哪些配置类、Bean 对象、ImportSelector 实现类；
+基于以上方式，当要引入一个第三方依赖时，开发者要实现自动配置，还要知道第三方依赖中有哪些配置类、Bean 对象、`ImportSelector` 实现类需要被导入；
 
 这对开发者很不友好，非常繁琐；
 
 ### 3.@EnableXxxx 注解
 
-第三方依赖，最清楚有哪些配置类、Bean 对象、ImportSelector 实现类需要被导入；
+第三方依赖，最清楚自己有哪些配置类、Bean 对象、`ImportSelector` 实现类需要被导入；
 
 所以不用开发者自行指定，而是让第三方依赖来指定。
 
-- 比较常见的方案，就是第三方依赖中，提供一个 @EnableXxxx 注解，注解中封装的就是 @Import 注解
+- 比较常见的方案，就是第三方依赖中，提供一个 @EnableXxxx 注解，注解中封装的就是 `@Import` 注解
 
-在第三方依赖中，有一个注解 `@EnableHeaderConfig`，其中使用了 @Import 注解。
+在第三方依赖中，有一个注解 `@EnableHeaderConfig`，其中使用了 `@Import` 注解。
 
 com/example/EnableHeaderConfig.java
 
@@ -442,14 +442,14 @@ public @interface SpringBootApplication {……}
 
 - `@Target`、`@Retention`、`@Documented`、`@Inherited` 这样的修饰注解的注解，称为元注解；
 - `@SpringBootConfiguration` 注解中，封装了 `@Configuration` 注解，用于声明配置类；表示启动类就是一个配置类。
-  - 所以可以直接在启动类中，使用 `@Bean` 注解声明 Bean 对象。
+  - 所以可以在启动类中，使用 `@Bean` 注解声明 Bean 对象。
   - 该注解中封装的 `@Indexed` 注解，是用来加速应用启动的（不用关心）。
-- `@ComponentScan` 注解，用于启动类所在包及其子包的组件扫描，扫描 @Component 注解及其衍生注解声明的类`。
+- `@ComponentScan` 注解，用于启动类所在包及其子包的组件扫描，扫描 `@Component` 注解及其衍生注解声明的类。
 - `@EnableAutoConfiguration` 注解，**自动配置的核心注解**，其中封装了 `@Import` 注解，来导入指定的配置类或者 Bean 对象。
 
 ### 2.@EnableAutoConfiguration  注解
 
-@EnableAutoConfiguration  注解源码如下：
+`@EnableAutoConfiguration ` 注解源码如下：
 
 ```java
 //
@@ -485,7 +485,7 @@ public @interface EnableAutoConfiguration {
 - `@Import` 注解中，导入的是 `AutoConfigurationImportSelector.class` 类。
 - `AutoConfigurationImportSelector` 事实上是 `ImportSelector` 接口的实现类。
 
-AutoConfigurationImportSelector 源码如下：
+`AutoConfigurationImportSelector` 源码如下：
 
 ```java
 import ……
@@ -493,9 +493,9 @@ import ……
 public class AutoConfigurationImportSelector implements DeferredImportSelector, BeanClassLoaderAware, ResourceLoaderAware, BeanFactoryAware, EnvironmentAware, Ordered {……}
 ```
 
-- 可见 AutoConfigurationImportSelector 类实现了 DeferredImportSelector 接口；
+- 可见 `AutoConfigurationImportSelector` 类实现了 `DeferredImportSelector` 接口；
 
-DeferredImportSelector 接口源码如下，它继承自  ImportSelector 接口：
+`DeferredImportSelector` 接口源码如下，它继承自  `ImportSelector` 接口：
 
 ```java
 import ……
@@ -505,7 +505,7 @@ public interface DeferredImportSelector extends ImportSelector {……}
 
 ### 3.AutoConfigurationImportSelector 类
 
-AutoConfigurationImportSelector 类源码如下，它的 selectImports 实现方法如下：
+`AutoConfigurationImportSelector` 类源码如下，它的 `selectImports` 实现方法如下：
 
 ```java
 public class AutoConfigurationImportSelector implements DeferredImportSelector, BeanClassLoaderAware, ResourceLoaderAware, BeanFactoryAware, EnvironmentAware, Ordered {
@@ -568,7 +568,7 @@ Spring Boot 项目，通常在引入的起步依赖中，都包含这个文件�
 
 ![SpringBoot自动配置文件](NoteAssets/SpringBoot自动配置文件.jpg)
 
-> Spring 3.x 之前，还有 `META-INF/spring.factories` 文件。
+> Spring 3.x 之前，还会在 `META-INF/spring.factories` 文件中加载自动配置。
 
 通常在引入的起步依赖中，都有包含这个文件，比如 Spring Boot Web 的起步依赖。
 
@@ -584,7 +584,7 @@ org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration
 ……
 ```
 
-查看 gson 依赖中的 GsonAutoConfiguration 配置类：
+查看 gson 依赖中的 `GsonAutoConfiguration` 配置类：
 
 - 可以看到使用的 `@AutoConfiguration` 注解（它其中封装了 `@Configuration` 注解）标注，说明这是个配置类。
 
@@ -603,10 +603,10 @@ public class GsonAutoConfiguration {……}
 
 - `@SpringBootConfiguration`，声明当前类是一个配置类；
 - `@ComponentScan`，进行组件扫描（默认扫描启动类所在包及其子包）；
-- `@EnableAutoConfiguration`，封装了 `@Import` 注解，其中指定了一个 ImportSelector 接口的实现类；
-  - 在实现类重写的 `selectImports()` 方法，读取当前项目下所有依赖 jar 包中 `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` 文件里面定义的配置类，配置类中定义了 @Bean 注解标识的方法。
+- `@EnableAutoConfiguration`，封装了 `@Import` 注解，其中指定了一个 `ImportSelector` 接口的实现类 `AutoConfigurationImportSelector`；
+  - 在实现类重写的 `selectImports()` 方法，读取当前项目下所有依赖 jar 包中 `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` 文件里面定义的配置类中 `@Bean` 注解标识的方法。
   - Spring Boot 项目启动时，就会加载配置文件中定义的配置类，并将这些类的全限定名，封装到 String 类型的数组中；
-  - 最终通过 @Import 注解，将这些配置类全部加载到 IOC 容器中进行管理。
+  - 最终通过 `@Import` 注解，将这些配置类全部加载到 IOC 容器中进行管理。
 
 `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` 文件中，定义的配置类非常多，而每个配置类中又可以定义很多的 Bean 对象；
 

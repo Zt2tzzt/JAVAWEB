@@ -1,6 +1,6 @@
 # Spring Boot 配置文件
 
-Spring Boot 项目的默认配置文件是 application.properties。当程序在启动时，会读取默认配置文件。
+Spring Boot 项目的默认配置文件是 `application.properties`。当程序在启动时，会读取默认配置文件。
 
 ## 一、@Value 注解
 
@@ -31,7 +31,7 @@ public class AliyunOSSProperties1 {
 }
 ```
 
-- 使用 Lombok 的 @Data 注解，为类生成 getter、setter、toString、equals & hashCode 方法。
+- 使用 Lombok 的 @Data 注解，为类中的属性生成 getter、setter、toString、equals & hashCode 方法。
 
 在测试类中，获取配置文件中的属性值：
 
@@ -62,7 +62,7 @@ class JavawebPractiseApplicationTests {
 
 ## 二、yml 配置文件
 
-事实上，Spring Boot 项目可以使用多种配置文件：
+事实上，Spring Boot 项目可以使用以下三种配置文件：
 
 - application.properties
 - application.yml
@@ -91,9 +91,7 @@ XML、properties、yml 等常见配置文件格式，对比如下图所示：
 
 Spring Boot 中，仅支持 properties、yml 格式的配置文件；
 
-在企业级开发中，基本都用 yml 格式进行配置。
-
-可以看到，配置同样的数据信息，yml 格式有以下特点：
+在企业级开发中，基本都用 yml 格式进行配置，它有以下优点：
 
 - 容易阅读；
 - 容易与脚本语言交互；
@@ -107,7 +105,7 @@ yml 配置文件，基本语法有如下几点：
 - 值前面必须有空格，作为分隔符；
 - 缩进表示层级关系，不允许使用 Tab，只能用空格（IDEA 会自动将 Tab 转为空格）。
 - 缩进的空格数，不影响层级关系，只要相同层级的元素左侧对齐即可。
-- `#` 表示注释，从该字符一直到行尾，都会被解析器忽略
+- `#` 号表示注释，从该字符一直到行尾，都会被解析器忽略
 
 ## 四、 yml 数据格式
 
@@ -162,7 +160,7 @@ spring.servlet.multipart.max-file-size=10MB
 # 单个请求中上传的最大值为 100MB（一个请求中可能包含多个文件）
 spring.servlet.multipart.max-request-size=100MB
 
-# 阿里云你 OSS 服务配置
+# 阿里云 OSS 服务配置
 aliyun.oss.endpoint=https://oss-cn-shenzhen.aliyuncs.com
 aliyun.oss.accessKeyId=xxxxxxx
 aliyun.oss.accessKeySecret=xxxxxx

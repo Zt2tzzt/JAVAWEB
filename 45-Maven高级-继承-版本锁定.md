@@ -2,13 +2,11 @@
 
 ## 一、Maven 继承是什么
 
-案例分模块设计之后，发现 javaweb-pojo、javaweb-utils、javaweb-practise 中，都引入了 lombok 的依赖。
+案例分模块设计之后，发现 javaweb-pojo、javaweb-utils、javaweb-practise 三个 Maven 模块中，都引入了 lombok 的依赖。
 
-如果是做一个大型项目，各个模块中重复的依赖，可能会很多很多。
+如果是做一个大型项目，各个模块中重复的依赖，可能会很多。在每一个 Maven 模块里，都配置一次，是比较繁琐的。
 
-在每一个 Maven 模块里，都配置一次，是比较繁琐的。
-
-可以再创建一个父工程 javaweb-parent：
+为解决这个问题，可以再创建一个父工程 javaweb-parent：
 
 1. 让三个模块 javaweb-pojo、javaweb-utils、javaweb-practise 继承这个父工程 。；
 2. 将各个模块中共有的依赖，提取到父工程 javaweb-parent 中；
@@ -16,7 +14,7 @@
 
 Maven 工程继承：
 
-- 概念：继承描述的是两个工程间的父子关系，与 java 中类继承相似，子工程可以继承父工程中的配置信息，
+- 概念：两个工程间的父子关系，与 java 中类继承相似，子工程可以继承父工程中的配置信息，
 - 作用：简化依赖配置、统一管理依赖。
 
 Maven 工程的继承，在子工程的 pom.xml 文件中使用 `<parent>` 标签配置：
@@ -147,7 +145,7 @@ demo-project/javaweb-practise/pom.xml
 
 ### 4.父工程中配置共有依赖
 
-在父工程 javaweb-parent 的 pom.xml 中配置各个工程共有的依赖（子工程会自动继承父工程的依赖），以及共有的父工程 spring-boot-starter-parent 依赖。
+在父工程 javaweb-parent 的 pom.xml 中，配置各个工程共有的依赖（子工程会自动继承父工程的依赖），以及共有的父工程 spring-boot-starter-parent 依赖。
 
 demo-project/javaweb-parent/pom.xml
 
@@ -188,13 +186,13 @@ demo-project/javaweb-parent/pom.xml
 在项目开发中，有一部分依赖，并不是各个模块都共有的。比如：
 
 - 在三个子工程中，都使用到了 jwt 依赖。 但在其它两个子工程中并不需要这个依赖，
-- 那么这个依赖，不应配置在父工程中，而是哪个模块需要，就在哪个模块中配置。
+- 那么这个依赖，不应配置在父工程中，而是在需要的模块中配置。
 
 由于是一个项目，那它的多个模块中，要依赖的版本要一致，这样便于项目依赖的统一管理。比如：
 
 - jwt 依赖，都使用的是 0.9.1 这个版本。
 
-如果项目要升级，要使用 jwt 最新版本中的一个新功能，需要将依赖的版本升级到，应怎么做呢？
+如果项目要升级，要使用 jwt 最新版本中的一个新功能，需要将依赖的版本升级，应怎么做呢？
 
 1. 找到项目中查找哪些模块用到了 jwt 的依赖。
 2. 找到这个依赖之后，将其版本 version，更换为 0.9.2。
@@ -219,7 +217,7 @@ demo-project/javaweb-parent/pom.xml
 </dependencyManagement>
 ```
 
-子工程：
+在子工程中，只需引入依赖，无需指定版本号。
 
 ```xml
 <dependencies>
@@ -231,9 +229,9 @@ demo-project/javaweb-parent/pom.xml
 </dependencies>
 ```
 
-在父工程中，所配置的 `<dependencyManagement>` 只能统一管理依赖版本，并不会将这个依赖直接引入进来。 这点和 `<dependencies>` 是不同的。
+在父工程中，所配置的 `<dependencyManagement>` 标签只能统一管理依赖版本，并不会将这个依赖直接引入进来。 这点和 `<dependencies>` 标签是不同的。
 
-子工程要使用这个依赖，还是需要引入的，只是无需指定 `<version>` 版本号了，父工程统一管理。变更依赖版本。只需在父工程中统一变更。
+子工程要使用这个依赖，还是需要引入的，只是无需使用 `<version>` 标签指定版本号了，父工程统一管理。变更依赖版本。只需在父工程中统一变更。
 
 ## 四、Maven 版本锁定案例理解
 
@@ -280,7 +278,7 @@ demo-project/javaweb-parent/pom.xml
 
 很多时候，在 Spring Boot 项目中，引入依赖坐标，不需要指定依赖的版本 `<version>` ；
 
-是因为在父工程 spring-boot-starter-parent 中，已经通过 `<dependencyManagement>` 标签，对依赖的版本进行了统一的管理维护。
+就是因为在父工程 spring-boot-starter-parent 中，已经通过 `<dependencyManagement>` 标签，对依赖的版本进行了统一的管理维护。
 
 ### 1.pom.xml 属性配置
 
@@ -358,4 +356,3 @@ demo-project/javaweb-parent/pom.xml
 
 - `<dependencies>` 是直接依赖，在父工程配置了依赖，子工程会直接继承下来。
 - `<dependencyManagement>` 是统一管理依赖版本，子工程不会直接继承，还需要引入依赖，但无需指定版本。
-

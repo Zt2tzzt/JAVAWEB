@@ -1,4 +1,4 @@
-# Cookie、Session、JWT令牌
+# Cookie、Session、JWT 令牌
 
 ## 一、Cookie 客户端会话跟踪技术
 
@@ -7,28 +7,26 @@ Cookie 是客户端会话跟踪技术，它是存储在客户端（浏览器）�
 客户端（浏览器）第一次发起请求后，在服务器端，设置一个 Cookie 返回给客户端（浏览器）。比如：
 
 - 第一次请求了登录接口，服务器就可以设置一个 Cookie 并返回给客户端（浏览器）；
-- 在其中，存储用户相关的一些数据信息。比如用户名，用户的 ID……。
+- 在其中，存储用户相关的一些数据信息。比如用户名，用户 ID……。
 
 ### 1.Http 协议与 Cookie
 
-Cookie 是 HTTP 协议支持的技术。
-
-各大浏览器厂商都支持了这一标准，主流 Web 服务器（比如 Tomcat、express）也支持这一标准。
+Cookie 是 HTTP 协议支持的技术。各大浏览器厂商都支持了这一标准，主流 Web 服务器（比如 Tomcat、express）也支持这一标准。
 
 主要体现在：
 
 1. 服务器端，在给客户端响应数据的时，可**自动**将 Cookie 响应给浏览器；
-2. 客户端（浏览器）接收到响应回来的 cookie 之后，会**自动**的将 Cookie 的值存储在浏览器本地；
+2. 客户端（浏览器）接收到响应回来的 Cookie 之后，会**自动**的将 Cookie 的值存储在浏览器本地；
 3. 客户端（浏览器）后续的每一次请求当中，都会将浏览器本地所存储的 Cookie **自动**地携带到服务端。
 
 HTTP 协议，提供了一个标准：
 
-- 响应头 Set-Cookie ：用于在响应中设置 Cookie 数据；
+- 响应头 `Set-Cookie`：用于在响应中设置 Cookie 数据；
   - Web 服务器（Tomcat），提供了设置 Cookie 的 API；
 
   - 客户端（浏览器）会自动解析响应中的 Cookie，并存储在本地。
 
-- 请求头 Cookie：用于在请求中携带 Cookie 数据，
+- 请求头 `Cookie`：用于在请求中携带 Cookie 数据，
   - 客户端（浏览器）会自动携带 Cookie 发送请求给服务器；
   - 服务器端要解析。
 
@@ -58,7 +56,7 @@ public class CookieController {
      * 此方法用于：服务器端设置 Cookie
      *
      * @param res 响应
-     * @return Result<Null 》
+     * @return Result<Null>
      */
     @GetMapping("/c1")
     public Result<Null> cookie1(HttpServletResponse res) {
@@ -70,11 +68,12 @@ public class CookieController {
      * 此方法用于，服务器端解析 Cookie
      *
      * @param req 请求
-     * @return Result<Null 》
+     * @return Result<Null>
      */
     @GetMapping("/c2")
     public Result<Null> cookie2(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
+
         for (Cookie cookie : cookies) {
             if ("username".equals(cookie.getName())) {
                 log.info("username: {}", cookie.getValue());
@@ -87,9 +86,9 @@ public class CookieController {
 ```
 
 1. 使用浏览器，访问 `http://localhost:8080/c1`，打开浏览器开发者工具：
-   - 观察服务器端返回的响应标头中 `Set-Cookie` 属性（服务器设置的 Cookie 返回给浏览器）
-2. 在浏览器访问 `http://localhost:8080/c2`，打开开发者工具，
-   - 观察浏览器发送的请求标头中的 `Cookie` 属性（浏览器携带的 Cookie）
+   - 观察服务器端返回的响应标头中 `Set-Cookie` 属性（服务器设置的 Cookie 返回给浏览器）。
+2. 在浏览器访问 `http://localhost:8080/c2`，打开开发者工具；
+   - 观察浏览器发送的请求标头中的 `Cookie` 属性（浏览器携带的 Cookie）。
 
 ![Cookie会话跟踪技术](NoteAssets/Cookie会话跟踪技术.png)
 
@@ -117,12 +116,11 @@ Session 的底层，是基于 Cookie 来实现的。
 基于 Session 来进行会话跟踪，实现步骤如下：
 
 1. 客户端（浏览器）在第一次请求服务器时，获取到f服务器响应的会话对象 Session。
-   - 第一次请求 Session ，会话对象是不存在的，这时服务器会自动的创建一个会话对象 Session；
-   - 每一个会话对象 Session，都有一个 ID（下图中 JSESSIONID 后面括号中的 1，就表示  ID）。
+   - 第一次请求，会话对象 Session 是不存在的，这时服务器会自动创建一个会话对象 Session；
+   - 每一个会话对象 Session，都有一个 ID（下图中 `JSESSIONID` 后面括号中的 1，就表示  ID）。
 2. 服务器端在给浏览器响应数据时，会将 Session 的 ID 通过 Cookie 响应给浏览器。
-   - 即在响应头当中，增加了一个 Set-Cookie 响应头。
-   - 这个 Cookie 的名字，是固定的 `JSESSIONID`，代表服务器端 Session 会话对象的 ID。
-   - 浏览器会识别这个  Set-Cookie 响应头，然后自动将 Cookie 存储在浏览器本地。
+   - 即在响应头中，增加了一个 `Set-Cookie` 响应头。浏览器会识别这个  `Set-Cookie` 响应头，然后自动将 Cookie 存储在浏览器本地。
+   - 这个 Cookie 的名字，是固定的 `JSESSIONID`，代表服务器端会话对象 Session 的 ID。
 3. 后续浏览器的每一次请求中，都会将 Cookie 的数据，携带到服务端。
 4. 服务器拿到 `JSESSIONID` 这个 Cookie 的值，也就是 Session 的 ID。再从众多的 Session 当中，找到当前请求对应的会话对象 Session。
 
@@ -214,8 +212,8 @@ Cookie: JSESSIONID=4848BA0F0BB2CA6F50D9A1CDD34D494D
 2024-09-25T13:48:25.142+08:00  INFO 31428 --- [javaweb-practise] [nio-8080-exec-7] com.kkcf.controller.SessionController    : loginUser: tom
 ```
 
-- 发现两次请求，获取到的 Session 会话对象的 hashcode 是一样的，就说明是同一个 Session 会话对象。
-- 第一次请求时，服务器往 Session 会话对象中存储的值，在第二次请求时，也获取到了。 说明可以通过 Session 会话对象，在同一个会话的多次请求之间来进行数据共享了。
+- 发现两次请求，获取到的会话对象 Session  的 hashcode 是一样的，说明是同一个会话对象 Session 。
+- 第一次请求时，服务器往会话对象 Session  中存储的值，在第二次请求时，也获取到了。 说明可以通过 Session 会话对象，在同一个会话的多次请求之间来进行数据共享了。
 
 ### 2.Session 的优缺点
 
@@ -256,7 +254,7 @@ JWT 令牌，由三个部分组成，三个部分之间使用英文的点来分�
 
 - 第一部分：**Header（头）**，记录令牌类型、签名算法等。比如：{"alg":"HS256", "type":"JWT"}；
 
-- 第二部分：**Payload（有效载荷）**，携带一些自定义信息、默认信息等。 比如：{"id":"1", "username":"Tom"}
+- 第二部分：**Payload（有效载荷）**，携带一些自定义信息和默认信息。 比如：{"id":"1", "username":"Tom","exp":1727411139}
 
 - 第三部分：**Signature（签名）**，防止 Token 被篡改、确保安全性。将 header、payload，**指定秘钥**，通过签名算法计算得到。
   - 签名的目的，就是为了防止 jwt 令牌被篡改；

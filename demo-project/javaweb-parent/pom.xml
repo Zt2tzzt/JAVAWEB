@@ -82,4 +82,18 @@
         </dependencies>
     </dependencyManagement>
 
+    <!--<distributionManagement>
+        &lt;!&ndash; release版本的发布地址 &ndash;&gt;
+        <repository>
+            <id>maven-releases</id>
+            <url>http://192.168.150.101:8081/repository/maven-releases/</url>
+        </repository>
+
+        &lt;!&ndash; snapshot版本的发布地址 &ndash;&gt;
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <url>http://192.168.150.101:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>-->
+
 </project>
