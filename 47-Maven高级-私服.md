@@ -1,6 +1,6 @@
 # Maven 高级之私服
 
-前面介绍分模块设计时，提到拆分的模块，是可以在同一个公司各个项目组之间进行共享的。
+前面介绍分模块设计时，提到拆分的模块，是可以在同一个公司各个项目组之，间进行共享的。
 
 这个模块的资源共享，就需要通过 Maven 私服来实现。
 
@@ -34,21 +34,23 @@ Maven 私服提供三种仓库：
 > - RELEASE（发行）版本：功能趋于稳定、当前更新停止，可以用于发行的版本，存储在私服中的 RELEASE 仓库中。
 > - SNAPSHOT（快照）版本：功能不稳定、尚处于开发中的版本，即快照版本，存储在私服的 SNAPSHOT 仓库中。
 
-Maven 模块默认是 snapshot 版本。只要不是 snapshot 版本，都会上传到 release 仓库。
+Maven 模块默认是 snapshot 版本；
+
+Maven 私服只要不是 snapshot 版本，都会上传到 release 仓库。
 
 ## 四、Maven 私服上传和下载
 
 资源上传与下载，我们需要做三步配置，执行一条指令。
 
-1. 在 Maven 配置文件中，配置访问私服的用户名、密码。
-2. 在 Maven 配置文件中，配置连接私服的 url 地址。
+1. 在本地 Maven 配置文件中，配置访问私服的用户名、密码。
+2. 在本地 Maven 配置文件中，配置连接私服的 url 地址。
 3. 在项目的 pom.xml 文件中，配置上传资源的 url 地址。
 
-配置好了上述三步后，要上传资源到私服仓库，就执行 Maven 生命周期 `deploy`。
+配置好了上述三步后，要上传资源到私服仓库，就执行 Maven 生命周期 `deploy` 指令。
 
 ![Maven私服的上传和下载](NoteAssets/Maven私服的上传和下载.png)
 
-为模拟企业开发，假设在服务器（192.168.150.101）上搭建了 Maven 私服，并在 8081 端口上开发服务；
+为模拟企业开发，假设在服务器（192.168.150.101）上搭建了 Maven 私服，并在 8081 端口上开放服务；
 
 - 可以访问私服测试：`http://192.168.150.101:8081`
 
@@ -111,7 +113,7 @@ Maven 模块默认是 snapshot 版本。只要不是 snapshot 版本，都会上
 </profiles>
 ```
 
-- 默认 SHAPSHOT 版本依赖不会下载，要配置 `<enable>` 标签。
+- 默认 SHAPSHOT 版本依赖不会下载，要配置 `<enabled>` 标签为 `true`。
 
 ### 3.项目的 pom.xml 文件中，配置上传资源的 url 地址
 
@@ -135,7 +137,7 @@ demo-project/javaweb-parent/pom.xml
 </distributionManagement>
 ```
 
-配置完成之后，就可以在 javaweb-parent 中执行 Maven 的 `deploy` 生命周期，将项目打包后生成的 jar 包发布到私服仓库中。
+配置完成之后，就可以在 javaweb-parent 中执行 Maven 的生命周期 `deploy` 指令，将项目打包后生成的 jar 包，发布到私服仓库中。
 
 - 如果项目是 SNAPSHOT 版本，jar 包会上传到 SNAPSHOT 仓库中；
 - 否则上传到 RELEASE 仓库中。
