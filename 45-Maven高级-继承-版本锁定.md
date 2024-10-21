@@ -57,7 +57,7 @@ A[spring-boot-starter-parent] --> B[javaweb-parent]
 3. 填写 Maven 模块名称，坐标信息。
    1. 在右侧打开 Advanced Setting；
    2. GroupId 设为 `com.kkcf`；表示组织名。
-   3. ArtifactId 设为 ` javaweb-parent`；表示模块名。
+   3. ArtifactId 设为 `javaweb-parent`；表示模块名。
    4. Version 会被 IDEA 自动生成，无需手动指定，表示版本号。
 
 4. 点击 Create 创建项目，
