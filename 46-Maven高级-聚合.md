@@ -4,15 +4,15 @@
 
 经过上文分模块设计和继承后，现在 javaweb-practise 模块
 
-- 该模块父工程是 javaweb-parent 模块，
-- 该模块又依赖了 javaweb-pojo、javaweb-utils 模块。
+- 父工程是 javaweb-parent 模块，
+- 又依赖了 javaweb-pojo、javaweb-utils 模块。
 
-将 Maven 项目 javaweb-practise 打包时，执行 Maven 生命周期 package
+将 Maven 项目 javaweb-practise 打包时，执行 Maven 生命周期 `package` 指令。
 
 - 打包失败，因为在 Maven 本地仓库中，没有 javaweb-pojo、javaweb-utils 两个依赖。和 javaweb-parent 父工程的依赖。
 - 打包时 Maven 会在本地仓库查找这些依赖。
 
-在 Maven 项目 javaweb-parent、javaweb-pojo、javaweb-utils 中，分别执行生命周期 install，将三个依赖安装到本地仓库。
+在 Maven 项目 javaweb-parent、javaweb-pojo、javaweb-utils 中，分别执行生命周期 `install` 指令，将三个依赖安装到本地仓库。
 
 再次打包 javaweb-practise 项目，打包成功了。
 
@@ -49,13 +49,13 @@ demo-project/javaweb-parent/pom.xml
 
 现在，进行编译、打包、安装操作，就无需在每一个模块上操作了。只需要在聚合工程上，统一进行操作即可。
 
-在 javaweb-parent 工程的 Maven 生命周期中，执行 clean 指令。
+在 javaweb-parent 工程的 Maven 生命周期中，执行 `clean` 指令。
 
-- 发现 javaweb-practise、javaweb-pojo、javaweb-utils 模块都执行了 clean 操作。
+- 发现 javaweb-practise、javaweb-pojo、javaweb-utils 模块都执行了 `clean` 操作。
 
-在 javaweb-parent 工程的 Maven 生命周期中，执行 package 指令。
+在 javaweb-parent 工程的 Maven 生命周期中，执行 `package` 指令。
 
-- 发现 javaweb-practise、javaweb-pojo、javaweb-utils 模块都都进行了 package 操作，并在 target 目录下生成了 jar 包。
+- 发现 javaweb-practise、javaweb-pojo、javaweb-utils 模块都都进行了 `package` 操作，并在 target 目录下生成了 jar 包。
 
 ## 四、Maven 继承与聚合总结
 
