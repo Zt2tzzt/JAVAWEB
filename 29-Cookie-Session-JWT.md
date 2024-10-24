@@ -115,11 +115,11 @@ Session 的底层，是基于 Cookie 来实现的。
 
 基于 Session 来进行会话跟踪，实现步骤如下：
 
-1. 客户端（浏览器）在第一次请求服务器时，获取到f服务器响应的会话对象 Session。
+1. 客户端（浏览器）在第一次请求服务器时，获取到服务器响应的会话对象 Session。
    - 第一次请求，会话对象 Session 是不存在的，这时服务器会自动创建一个会话对象 Session；
    - 每一个会话对象 Session，都有一个 ID（下图中 `JSESSIONID` 后面括号中的 1，就表示  ID）。
 2. 服务器端在给浏览器响应数据时，会将 Session 的 ID 通过 Cookie 响应给浏览器。
-   - 即在响应头中，增加了一个 `Set-Cookie` 响应头。浏览器会识别这个  `Set-Cookie` 响应头，然后自动将 Cookie 存储在浏览器本地。
+   - 即在响应头中，增加了一个 `Set-Cookie` 响应头。浏览器会识别这个 `Set-Cookie` 响应头，然后自动将 Cookie 存储在浏览器本地。
    - 这个 Cookie 的名字，是固定的 `JSESSIONID`，代表服务器端会话对象 Session 的 ID。
 3. 后续浏览器的每一次请求中，都会将 Cookie 的数据，携带到服务端。
 4. 服务器拿到 `JSESSIONID` 这个 Cookie 的值，也就是 Session 的 ID。再从众多的 Session 当中，找到当前请求对应的会话对象 Session。
@@ -238,7 +238,7 @@ Session 底层基于 Cookie 实现，如果 Cookie 不可用，则该方案也�
 
 ### 1.JWT 令牌是什么
 
-[JWT（JSON Web Token）](https://jwt.io/)定义了一种简洁的、自包含的格式，用于以 **json 格式**在通信双方之间，安全的传输信息。
+[JWT（JSON Web Token）](https://jwt.io/)定义了一种简洁的、自包含的格式，用于以 **json 格式**，在通信双方之间，安全的传输信息。
 
 - 简洁：指 jwt 是一个简单的字符串。可以在请求参数，或者是请求头当中直接传递。
 - 自包含：指的是 jwt 令牌，看似是一个随机的字符串，但是可以根据需求在其中存储自定义的数据内容；

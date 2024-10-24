@@ -33,6 +33,6 @@ public class LoginController {
                 "name", res.getName()
         )));
 
-        return res != null ? Result.success(jwt) : Result.error("登录失败");
+        return Result.success(jwt);
     }
 }
