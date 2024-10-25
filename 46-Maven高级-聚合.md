@@ -55,7 +55,7 @@ demo-project/javaweb-parent/pom.xml
 
 在 javaweb-parent 工程的 Maven 生命周期中，执行 `package` 指令。
 
-- 发现 javaweb-practise、javaweb-pojo、javaweb-utils 模块都都进行了 `package` 操作，并在 target 目录下生成了 jar 包。
+- 发现 javaweb-practise、javaweb-pojo、javaweb-utils 模块都进行了 `package` 操作，并在 target 目录下生成了 jar 包。
 
 ## 四、Maven 继承与聚合总结
 
