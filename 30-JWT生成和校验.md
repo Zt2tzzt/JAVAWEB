@@ -211,7 +211,6 @@ public class JwtUtil {
      * @return Claims
      */
     public static Claims parseToken(String jwt) {
-
         return Jwts.parser()
                 .setSigningKey(sigkey)
                 .parseClaimsJws(jwt)

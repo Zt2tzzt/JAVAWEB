@@ -25,7 +25,7 @@ Spring 的起步依赖，规范如下：
 前面使用的阿里云 OSS 对象存储服务，没有提供与 Spring Boot 整合的起步依赖，使用起来有如下几步，比较繁琐，
 
 1. 引入对应的依赖；
-2. 在配置文件当中进行配置，
+2. 在配置文件当中进行配置；
 3. 基于官方 SDK 示例，来改造对应的工具类；
 4. 在项目中正常使用。
 
@@ -35,13 +35,17 @@ Spring 的起步依赖，规范如下：
 
 在项目中，将组件对应的坐标，引入进来就可直接使用。
 
-Spring Boot starter 起步依赖中，通常依赖了 autoconfigure 自动配置依赖。用于注入依赖中的 Bean 对象。它们的关系如下：
+Spring Boot starter 起步依赖中，通常依赖了 autoconfigure 自动配置依赖。用于注入依赖中的 Bean 对象。
+
+它们的关系如下：
 
 ![自定义starter起步依赖](NoteAssets/自定义starter起步依赖.png)
 
-Mybatis 依赖，提供了配置类，并且也提供了 Spring Boot 项目启动时，会自动读取到配置文件 `META-INF.spring.org.springframework.boot.autoconfigure.AutoConfiguration.imports`，其中声明了配置类的全限定名，用于生成相关 Bean 对象，并注册到 IOC 容器中。
+Mybatis 依赖，提供了配置类，并且也提供了 Spring Boot 项目启动时，会自动读取到配置文件 `META-INF.spring.org.springframework.boot.autoconfigure.AutoConfiguration.imports`，
 
-开发者可以直接在 Spring Boot 程序中，使用 Mybatis 自动配置的 Bean 对象。
+其中声明了配置类的全限定名，用于生成相关 Bean 对象，并注册到 IOC 容器中。
+
+开发者可以直接在 Spring Boot 程序中，使用 MyBatis 自动配置的 Bean 对象。
 
 ## 四、Spring Boot starter 模块规范
 
@@ -168,7 +172,7 @@ public class AliyunOSSUtil2 {
    - 别的项目使用时，只需要引入 starter 起步依赖即可。
 3. 在 autoconfigure 中，完成自动配置；
    1. 定义一个自动配置类，在自动配置类中将所要配置的 Bean 都提前配置好；
-   2. 定义配置文件，把自动配置类的全类名，定义在配置文件中。
+   2. 定义配置文件  `META-INF.spring.org.springframework.boot.autoconfigure.AutoConfiguration.imports`，把自动配置类的全类名，定义在配置文件中。
 
 下面按照步骤，来实现自定义 starter。
 
@@ -394,7 +398,7 @@ demo-project/aliyun-oss-spring-boot-starter/pom.xml
 
 此时 `AliyunOSSProperties2` 类上 `@ConfigurationProperties(prefix = "aliyun.oss")` 注解，报红色错误，暂时先不管；
 
-- 后续定义 `AliOSSAutoConfiguration` 自动配置类，为它加上 `@EnableConfigurationProperties(AliyunOSSProperties2.class)` 注解，可消除错误。
+- 后续定义的 `AliOSSAutoConfiguration` 自动配置类，为它加上 `@EnableConfigurationProperties(AliyunOSSProperties2.class)` 注解，可消除错误。
 
 demo-project/aliyun-oss-spring-boot-autoconfigure/src/main/java/com/aliyun/oss/AliyunOSSProperties2.java
 
@@ -448,7 +452,7 @@ public class AliyunOSSProperties2 {
 
 将 `AliyunOSSUtil2` 类，复制到 aliyun-oss-spring-boot-autoconfigure 的 com.aliyun.oss 包中
 
-`AliyunOSSUtil2` 类上删掉 `@Component` 注解。
+`AliyunOSSUtil2` 类上，删掉 `@Component` 注解。
 
 - 因为该依赖引入到的 Spring Boot 项目中，不会去扫描 com.aliyun.oss 这个包，所以这个包里所有类上的 `@Component` 及其衍生注解，也就失去了意义。
 

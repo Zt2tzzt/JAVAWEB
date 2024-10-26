@@ -203,6 +203,8 @@ demo-project/javaweb-parent/pom.xml
 
 在 Maven 父工程的 pom.xml 文件中，通过 `<dependencyManagement>` 来统一管理依赖版本。
 
+demo-project/javaweb-parent/pom.xml
+
 ```xml
 <!--统一管理依赖版本-->
 <dependencyManagement>
@@ -218,6 +220,8 @@ demo-project/javaweb-parent/pom.xml
 ```
 
 在子工程中，只需引入依赖，无需指定版本号。
+
+demo-project/javaweb-practise/pom.xml
 
 ```xml
 <dependencies>
