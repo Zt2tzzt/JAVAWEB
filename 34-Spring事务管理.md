@@ -50,6 +50,8 @@ public interface EmpMapper {
 
 - 在逻辑中，模拟一个算数运算（运行时）异常 `int i = 1/0`。
 
+demo-project/javaweb-practise/src/main/java/com/kkcf/service/impl/DeptServiceImpl.java
+
 ```java
 package com.kkcf.service.impl;
 
@@ -81,7 +83,7 @@ public class DeptServiceImpl implements DeptService {
 }
 ```
 
-重启服务，使用接口测试工具，访问删除部门的接口；发现部门删除了，但员工未删除。造成了数据的不一致
+重启服务，使用接口测试工具，访问删除部门的接口；发现部门删除了，但员工未删除。造成了数据的不一致。
 
 为了解决这个问题，需要在 Spring Boot 项目中，开启事务。
 
@@ -93,11 +95,11 @@ Spring 框架，已封装好了事务控制，只需通过一个注解 `@Transac
 - 逻辑执行完毕之后，提交事务；
 - 如果在这个逻辑执行的过程中，出现了异常，就会进行事务的回滚操作。
 
-`@Transactional` 注解，可在方法，类，接口上使用。用于
+`@Transactional` 注解，可以在：
 
-- 方法：当前方法交给 Spring 进行事务管理；
-- 类：当前类中所有的方法，都交给 Spring 进行事务管理；
-- 接口：接口下所有的实现类中所有的方法，都交给 Spring 进行事务管理。
+- 方法上使用：当前方法交给 Spring 进行事务管理；
+- 类上使用：当前类中所有的方法，都交给 Spring 进行事务管理；
+- 接口上使用：接口下所有的实现类中所有的方法，都交给 Spring 进行事务管理。
 
 `@Transactional` 注解：一般用在 Service（业务）层方法上，来控制事务。
 
