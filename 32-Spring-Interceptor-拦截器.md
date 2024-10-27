@@ -37,7 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
     /**
-     * 此方法用于：在目标资源方法前运行，返回 true 则放行，返回 false 则拦截，不放行
+     * 此方法用于：在目标资源方法前运行，返回 true 则放行，返回 false 则不放行
      *
      * @param request
      * @param response
@@ -155,7 +155,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         WebMvcConfigurer.super.addInterceptors(registry);
         // 配置拦截器拦截的资源
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/login");
+        registry.addInterceptor(loginInterceptor)
+          .addPathPatterns("/**")
+          .excludePathPatterns("/login");
     }
 }
 ```
@@ -188,7 +190,6 @@ Filter 过滤器与 Interceptor 拦截器的区别，主要有两点：
 - 拦截范围不同：
   - Filter 过滤器，会拦截所有对资源的请求；
   - Interceptor 拦截器，只会拦截 Spring 环境中的资源请求。
-
 
 ## 五、Intercepter 拦截器登录校验实现
 

@@ -63,7 +63,6 @@ Maven 构建项目，生命周期的各个阶段，如下图所示：
   - 编译阶段会有 .class 字节码文件产生；
   - 打包阶段会有 jar 包产生。
 
-
 ![maven生命周期](NoteAssets/Maven生命周期.png)
 
 ## 三、Maven 仓库
