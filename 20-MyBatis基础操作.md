@@ -409,6 +409,14 @@ public interface EmpMapper {
 
 - 将插入记录的主键（Id）值，放入 emp 对象的 id 属性中。
 
+在 XML 映射文件中的写法：
+
+```xml
+<insert id="insert" useGeneratedKeys="true", keyProperty="id">
+    ……
+</insert>
+```
+
 单元测试：
 
 demo-project/springbot-mybatis-quickstart/src/test/java/com/kkcf/SpringbotMybatisQuickstartApplicationTests.java
