@@ -27,11 +27,11 @@
 
 ![SpringBoot异常处理](NoteAssets/SpringBoot异常处理.png)
 
-## 二、Spring‘ Boot 异常处理方案
+## 二、Spring Boot 异常处理方案
 
 在 Spring Boot 项目的三层构架中，出现了异常，有两种处理方案：
 
-- 方案一：在所有 Controller 控制器类的所有方法中，进行 try…catch 处理（代码臃肿）。
+- 方案一：在所有 Controller 控制器类的所有方法中，进行 try…catch 处理，这会使得代码臃肿。
 - 方案二：全局异常处理器（简单、优雅）如下图所示。
 
 ![SpringBoot全局异常处理](NoteAssets/SpringBoot全局异常处理.png)
