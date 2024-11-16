@@ -302,3 +302,5 @@ demo-project/javaweb-practise/pom.xml
     <version>2.0.49</version>
 </dependency>
 ```
+
+[alibaba fastJSON 的使用](https://www.runoob.com/w3cnote/fastjson-intro.html)
