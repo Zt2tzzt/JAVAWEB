@@ -23,7 +23,7 @@ AOP 面向方法编程，在不修改源代码的基础上，对已有方法，�
 
 中间运行的原始业务方法，可能是其中的一个业务方法：
 
-- 比图：要统计部门管理的 `list` 方法执行耗时，就只有该方法是原始业务方法。
+- 比如：要统计部门管理的 `list` 方法执行耗时，就只有该方法是原始业务方法。
 - 比如：要统计所有部门管理的业务方法执行耗时，那么所有的部门管理的业务方法，都是原始业务方法。
 
 不论运行的是哪个业务方法，最后其实运行的就是定义的模板方法，
@@ -47,7 +47,7 @@ Spring 框架的 AOP 技术，旨在管理 bean 对象的过程中，底层使�
 
 案例理解：使用 Spring AOP，统计各个业务方法的耗时。
 
-1.引入依赖 spring-boot-starter-aop；
+1.引入依赖 `spring-boot-starter-aop` Maven 坐标；
 
 demo-project/javaweb-practise/pom.xml
 
@@ -63,7 +63,7 @@ demo-project/javaweb-practise/pom.xml
 
 2.编写 AOP 程序，针对特定方法，根据业务需求进行编程。
 
-- @Aspect 注解，用于标注切面类。
+- `@Aspect` 注解，用于标注切面类。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/aop/TimeAspect.java
 
@@ -125,7 +125,7 @@ AOP 可以有很多应用场景，比如：
 
 AOP 的优势：
 
-- 代码无侵入，没有修改原始业务方法，即可对原始业务方法进行功能增强。
+- 代码无侵入，没有修改原始业务方法，就可对原始业务方法进行功能增强。
 - 减少重复代码；
 - 提高开发效率；
 - 维护方便。
@@ -146,9 +146,9 @@ JoinPoint 连接点，指的是可以被 AOP 控制的方法对象。
 
 ### 2.Advice 通知
 
-Advice 通知，指那些重复的逻辑，也就是共性功能，最终体现为一个方法。
+Advice 通知，指那些**重复的逻辑**，也就是共性功能，最终体现为一个方法。
 
-在入门程序中。统计了各个业务方法的执行耗时：
+比如：在入门程序中。统计了各个业务方法的执行耗时：
 
 1. 需要在业务方法运行开始前，先记录开始时间；
 2. 在业务方法运行结束后，再来记录结束时间。
@@ -161,11 +161,11 @@ Advice 通知，指那些重复的逻辑，也就是共性功能，最终体现�
 
 ### 3.PointCut 切入点
 
-PointCut 切入点，指的是匹配连接点的条件。
+PointCut 切入点，指的是**匹配连接点的条件**。
+
+Advice 通知，定义的共性功能，要应用在哪些方法上；此时就涉及到了切入点 PointCut 概念。
 
 Advice 通知，仅会在切入点方法执行时被应用。
-
-通知定义的共性功能，要应用在哪些方法上；此时就涉及到了切入点 PointCut 概念。
 
 在 AOP 的开发当中，通常会通过一个**切入点表达式**，来描述切入点。
 
@@ -212,25 +212,25 @@ Spring 中 AOP 的通知类型有：
 
 ### 1.@Around 注解
 
-环绕通知，通知方法，在目标方法前、后都被执行；
+**环绕通知**，通知方法，在目标方法前、后都被执行；
 
 ### 2.@Before 注解
 
-前置通知，通知方法，在目标方法前被执行；
+**前置通知**，通知方法，在目标方法前被执行；
 
 ### 3.@AfterReturning 注解
 
-回后通知，通知方法，在目标方法后被执行，有异常不会执行；
+**返回后通知**，通知方法，在目标方法后被执行，有异常不会执行；
 
-### 4.@After 注解
+### 4.@AfterThrowing 注解
 
-后置通知（也称最终通知），通知方法，在目标方法后被执行，无论是否有异常都会执行；
-
-### 5.@AfterThrowing 注解
-
-异常后通知，通知方法，发生异常后执行。
+**异常后通知**，通知方法，发生异常后执行。
 
 在程序中，进行验证：
+
+### 5.@After 注解
+
+**后置通知**（也称**最终通知**），通知方法，在目标方法后被执行，无论是否有异常都会执行；
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/aop/MyAspect.java
 
@@ -249,9 +249,7 @@ public class MyAspect {
     @Around("execution(* com.kkcf.service.impl.DeptServiceImpl.*(..))")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
         log.info(" AOP ADVICE around before...");
-
         Object result = pjp.proceed();
-
         log.info(" AOP ADVICE around after...");
 
         return result;
@@ -294,12 +292,12 @@ public class MyAspect {
 当连接点执行出现异常后：
 
 - `@AfterReturning` 标识的通知方法，不会执行，`@AfterThrowing` 标识的通知方法，执行了；
-- `@Around` 环绕通知，环绕后的代码逻辑，也不会再执行了 ，因为原始方法调用已经出现异常。
+- `@Around` 环绕通知，环绕后的代码逻辑，也不会再执行了。
 
 使用通知类型，注意事项：
 
 - `@Around` 环绕通知，需要手动调用 `ProceedingJoinPoint` 的 `proceed` 方法，让原始方法执行；其他通知不需要手动调用目标方法。
-- `@Around` 环绕通知，方法的返回值，必须指定为 `Object` 类型，否则原始方法执行完毕，是获取不到返回值的。
+- `@Around` 环绕通知，方法的返回值，必须指定为 `Object` 类型，否则原始方法执行完毕，获取不到返回值。
 
 ## 八、@PointCut 注解抽取切入点表达式
 
@@ -328,9 +326,7 @@ public class MyAspect {
     @Around("pt()")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
         log.info(" AOP ADVICE around before...");
-
         Object result = pjp.proceed();
-
         log.info(" AOP ADVICE around after...");
 
         return result;

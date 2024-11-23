@@ -20,10 +20,14 @@ import java.util.Arrays;
 @Component
 @Aspect
 public class LogAspect {
+    private final OperatorLogMapper operatorLogMapper;
+    private final HttpServletRequest request;
+
     @Autowired
-    private OperatorLogMapper operatorLogMapper;
-    @Autowired
-    private HttpServletRequest request;
+    public LogAspect(OperatorLogMapper operatorLogMapper, HttpServletRequest request) {
+        this.operatorLogMapper = operatorLogMapper;
+        this.request = request;
+    }
 
     @Around("@annotation(com.kkcf.anno.Log)")
     public Object recordLog(ProceedingJoinPoint pjp) throws Throwable {
@@ -34,13 +38,10 @@ public class LogAspect {
 
         // 操作时间
         LocalDateTime operateTime = LocalDateTime.now();
-
         // 操作类名
         String className = pjp.getTarget().getClass().getName();
-
         // 操作方法名
         String methodName = pjp.getSignature().getName();
-
         // 操作方法参数
         Object[] args = pjp.getArgs();
         String methodParams = Arrays.toString(args);
@@ -48,15 +49,14 @@ public class LogAspect {
         long begin = System.currentTimeMillis();
         Object res = pjp.proceed(args); // 调用原始方法
         long end = System.currentTimeMillis();
-        long costTime = end - begin;
 
+        // 方法耗时
+        long costTime = end - begin;
         // 方法返回值
         String resJSONStr = JSONObject.toJSONString(res);
-
         // 记录操作日志
         OperateLog operateLog = new OperateLog(null, operatorUserId, operateTime, className, methodName, methodParams, resJSONStr, costTime);
         operatorLogMapper.insert(operateLog);
-
         log.info("记录操作日志：{}", operateLog);
 
         return res;

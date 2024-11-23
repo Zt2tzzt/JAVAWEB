@@ -8,7 +8,7 @@
 
 它们哪个先运行，哪个后运行？
 
-### 1.Spring AOP 通知默认执行顺序
+### 1.1.Spring AOP 通知默认执行顺序
 
 定义两种类型的通知，进行测试；
 
@@ -85,7 +85,7 @@ public class MyAspectB {
 
 可知：切面类里的通知执行顺序，默认和类名的排序有关；
 
-### 2.@Order 注解指定执行顺序
+### 1.2.@Order 注解指定执行顺序
 
 Spring 提供了 `@Order` 注解，来控制切面的执行顺序。
 
@@ -174,9 +174,9 @@ public class MyAspectB {
 - execution(……)：根据方法的签名来匹配；
 - @annotation(……) ：根据注解匹配；
 
-### 1.execution 切入点表达式
+### 2.1.execution 切入点表达式
 
-#### 1.execution 语法
+#### 2.1.1.execution 语法
 
 execution 主要根据方法的返回值、包名、类名、方法名、方法参数等等信息来匹配，语法为：
 
@@ -188,7 +188,7 @@ execution(访问修饰符? 返回值 包名.类名.?方法名(方法参数) thro
 
 - 访问修饰符：可省略（比如：`public`、`protected`）；
 
-- `包名.类名`：可省略，但不建议省略；
+- 包名.类名：可省略，但不建议省略；
 
 - throws 异常：可省略（方法上声明抛出的异常，不是实际抛出的异常）
 
@@ -200,7 +200,7 @@ execution(访问修饰符? 返回值 包名.类名.?方法名(方法参数) thro
 
 execution 切入点表达式，可以基于**接口**进行匹配。
 
-#### 2.execution 通配符
+#### 2.1.2.execution 通配符
 
 execution 切入点表达式，可用通配符有两个：
 
@@ -289,7 +289,7 @@ execution(* com.kkcf.service.DeptService.*(..)))
 execution(* com.kkcf.*.*.DeptServiceImpl.find*(..)))
 ```
 
-### 2.@annotation 切入点表达式
+### 2.2.@annotation 切入点表达式
 
 当要匹配多个在方法签名上无规则的方法，
 
@@ -422,7 +422,7 @@ public class MyAspect1 {
 2024-10-01T12:00:53.476+08:00  INFO 15848 --- [javaweb-practise] [nio-8080-exec-3] com.kkcf.aop.MyAspect1                   : MyAspect1.after ……
 ```
 
-### 3.AOP 切入点表达式总结
+### 2.3.AOP 切入点表达式总结
 
 execution 切入点表达式：
 
@@ -536,25 +536,25 @@ public class MyAspect {
 2024-10-01T12:31:01.676+08:00  INFO 21368 --- [javaweb-practise] [nio-8080-exec-2] com.kkcf.aop.MyAspect                    :  AOP ADVICE around after...
 ```
 
-## 四、AOP 案例练习
+## 四、AOP 案例-记录操作日志
 
 在案例中，当访问部门管理、员工管理中的增、删、改相关功能接口时，记录详细的操作日志，并保存在数据库中，便于后期数据追踪。
 
 日志信息包含：操作人、操作时间、执行方法的全类名、执行方法名、方法运行时参数、返回值、方法执行时长；
 
-### 1.AOP 案例问题分析
+### 4.1.问题分析
 
 - 项目当中增、删、改相关的方法很多；
 - 针对每一个接口方法进行修改，这种做法比较繁琐；
 
-### 2.AOP 案例实现思路
+### 4.2.实现思路
 
 - 记录操作日志的逻辑是通用的、将它抽取出来定义在一个通知方法当中；
 - 技术方案选择：通过 AOP 面向切面编程的方式，在不改动原始方法的基础上，对原始的功能进行增强。
 - 通知类型选择：操作日志中，涉及到返回值和方法执行时长，所以要使用 AOP 的 `@Around` 环绕通知。
 - 切入点描述选择：由于增、删、改方法名没有规律，所以使用 `@annotation` 切入点表达式，来描述切入点。
 
-### 3.AOP 案例准备工作
+### 4.3.准备工作
 
 在 Maven 项目的 pom.xml 文件中，引入 Spring AOP 的起步依赖；
 
@@ -614,7 +614,7 @@ public class OperateLog {
 }
 ```
 
-### 4.AOP 案例开发
+### 4.4.AOP 案例开发
 
 定义 `OperatorLogMapper` 接口，在其中定义 `insert` 方法。
 
@@ -654,7 +654,7 @@ public @interface Log {
 
 在 Service 层的业务实现类 `DeptServiceImpl` 和 `EmpServiceImpl` 里的增、删、改方法上，加上 `@Log` 注解。
 
-`DeptServiceImpl ` 业务实现类：
+`DeptServiceImpl` 业务实现类：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/service/impl/DeptServiceImpl.java
 
@@ -849,10 +849,14 @@ import java.util.Arrays;
 @Component
 @Aspect
 public class LogAspect {
+    private final OperatorLogMapper operatorLogMapper;
+    private final HttpServletRequest request;
+
     @Autowired
-    private OperatorLogMapper operatorLogMapper;
-    @Autowired
-    private HttpServletRequest request;
+    public LogAspect(OperatorLogMapper operatorLogMapper, HttpServletRequest request) {
+        this.operatorLogMapper = operatorLogMapper;
+        this.request = request;
+    }
 
     @Around("@annotation(com.kkcf.anno.Log)")
     public Object recordLog(ProceedingJoinPoint pjp) throws Throwable {
@@ -863,13 +867,10 @@ public class LogAspect {
 
         // 操作时间
         LocalDateTime operateTime = LocalDateTime.now();
-
         // 操作类名
         String className = pjp.getTarget().getClass().getName();
-
         // 操作方法名
         String methodName = pjp.getSignature().getName();
-
         // 操作方法参数
         Object[] args = pjp.getArgs();
         String methodParams = Arrays.toString(args);
@@ -877,15 +878,14 @@ public class LogAspect {
         long begin = System.currentTimeMillis();
         Object res = pjp.proceed(args); // 调用原始方法
         long end = System.currentTimeMillis();
+
+        // 方法耗时
         long costTime = end - begin;
-
-        // 方法返回值（使用 fastJSON 依赖将 java 对象转为 JSON 对象）
+        // 方法返回值
         String resJSONStr = JSONObject.toJSONString(res);
-
         // 记录操作日志
         OperateLog operateLog = new OperateLog(null, operatorUserId, operateTime, className, methodName, methodParams, resJSONStr, costTime);
         operatorLogMapper.insert(operateLog);
-
         log.info("记录操作日志：{}", operateLog);
 
         return res;
@@ -893,6 +893,6 @@ public class LogAspect {
 }
 ```
 
-- 在 Spring AOP 切面类中，要获取请求对象，可以直接注入一个 HttpServletRequest 对象。
+- 在 Spring AOP 切面类中，要获取请求对象，可以直接注入一个 `HttpServletRequest` 对象。
 
 重启服务，使用接口测试工具，访问新增部门、更新部门两个接口，观察数据库 operate_log 表中插入的记录。
