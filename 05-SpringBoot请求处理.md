@@ -1,6 +1,6 @@
 # Spring Boot 请求处理
 
-在 Spring Boot 入门程序中，使用 Controller 控制器，进行了 Http GET 请求的处理
+在 Spring Boot 入门程序中，使用 Controller 控制器，进行了 Http GET 请求的处理。
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/controller/HelloController.java
 
