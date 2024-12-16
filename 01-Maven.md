@@ -490,6 +490,24 @@ rem 搜索完毕
 pause
 ```
 
-- 将 `[本地maven仓库]` 替换为实际的本地 maven 仓库绝对路径。
+mac 上要转成 .sh 文件
+
+```sh
+#!/bin/bash
+
+# 设置本地 Maven 仓库路径
+REPOSITORY_PATH="[本地maven仓库路径]"
+
+# 提示信息
+echo "正在搜索 *.lastUpdated 文件并删除..."
+
+# 删除所有匹配的 *.lastUpdated 文件
+find "$REPOSITORY_PATH" -type f -name "*.lastUpdated" -exec rm -f {} +
+
+# 提示搜索完毕
+echo "搜索完毕"
+```
+
+将 `[本地maven仓库]` 替换为实际的本地 maven 仓库绝对路径。
 
 Ⅱ、双击运行批处理文件。
