@@ -97,3 +97,69 @@ java -Dserver.port=9000 -jar jar包名称 --server.port=10010
 3. application.properties、
 4. application.yml
 5. application.yaml
+
+## 七、在后台运行 jar 包
+
+### 7.1. 使用 nohup 命令
+
+`nohup`（no hangup）命令用于在后台运行程序，并且即使你关闭终端或会话，程序仍会继续运行。
+
+**步骤：**
+
+1. 打开终端，切换到包含 JAR 文件的目录。
+
+2. 使用以下命令启动 JAR 包：
+
+   ```bash
+   nohup java -jar your-app.jar &
+   ```
+
+   其中：
+
+   - `your-app.jar` 是你的 JAR 文件名。
+   - `&` 确保该命令在后台执行。
+   - `nohup` 确保命令不会因会话关闭而被终止。
+
+3. 通过 `nohup` 启动时，默认会将输出（包括标准输出和错误输出）保存到 `nohup.out` 文件中。你可以查看该文件来检查程序的运行日志：
+
+   ```bash
+   tail -f nohup.out
+   ```
+
+4. 如果你希望自定义输出文件，可以这样做：
+
+   ```bash
+   nohup java -jar your-app.jar > output.log 2>&1 &
+   ```
+
+   这将把输出保存到 `output.log` 文件中。
+
+### 7.2.kill 命令终止进程
+
+`nohup` 本身不会提供直接的命令来停止后台进程，但你可以使用 `kill` 命令终止该进程。
+
+1. **查找进程的 PID（进程 ID）**
+   如果你知道后台进程的名称或部分命令，你可以使用 `ps` 或 `pgrep` 命令查找进程的 PID。例如，假设你使用 `java -jar your-app.jar` 启动了后台进程，你可以执行：
+
+   ```bash
+   ps aux | grep 'your-app.jar'
+   ```
+
+   这将列出包含 `your-app.jar` 的所有进程信息。输出中包含进程 ID（PID）。例如：
+
+   ```bash
+   cdhr    12345  0.5  1.2 123456 1234 ?        Sl   12:34   0:00 java -jar /path/to/your-app.jar
+   ```
+
+2. **使用 `kill` 命令终止进程**
+   一旦你找到了进程的 PID（比如 `12345`），你可以使用 `kill` 命令终止该进程：
+
+   ```bash
+   kill 12345
+   ```
+
+   如果进程没有响应，可以使用 `-9` 信号强制终止进程：
+
+   ```bash
+   kill -9 12345
+   ```
