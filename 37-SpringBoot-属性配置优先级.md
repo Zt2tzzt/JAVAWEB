@@ -100,7 +100,7 @@ java -Dserver.port=9000 -jar jar包名称 --server.port=10010
 
 ## 七、在后台运行 jar 包
 
-### 7.1. 使用 nohup 命令
+### 7.1.使用 nohup 命令
 
 `nohup`（no hangup）命令用于在后台运行程序，并且即使你关闭终端或会话，程序仍会继续运行。
 
@@ -163,3 +163,15 @@ java -Dserver.port=9000 -jar jar包名称 --server.port=10010
    ```bash
    kill -9 12345
    ```
+
+## 八、JVM 虚拟机时区设置
+
+JVM 虚拟机时区，默认跟随系统时区。
+
+如果 JVM 虚拟机与系统时区不符，修改 `/etc/timezone` 文件
+
+替换其中内容为
+
+```conf
+Asia/Shanghai 
+```
