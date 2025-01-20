@@ -553,7 +553,6 @@ public class MyAspect {
   - 通知类型选择：操作日志中，涉及到返回值和方法执行时长，所以要使用 AOP 的 `@Around` 环绕通知。
   - 切入点描述选择：由于增、删、改方法名没有规律，所以使用 `@annotation` 切入点表达式，来描述切入点。
 
-
 ### 4.3.准备工作
 
 在 Maven 项目的 pom.xml 文件中，引入 Spring AOP 的起步依赖；
