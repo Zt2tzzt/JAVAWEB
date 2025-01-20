@@ -287,16 +287,16 @@ public class MyAspect {
 2024-09-30T10:15:03.767+08:00  INFO 25116 --- [javaweb-practise] [nio-8080-exec-5] com.kkcf.aop.MyAspect                    :  AOP ADVICE around after...
 ```
 
-`@AfterThrowing` 异常后通知与 `@AfterRunning` 返回后通知，是互斥的。
+`@AfterThrowing` 异常后通知，与 `@AfterRunning` 返回后通知，是互斥的。
 
 当连接点执行出现异常后：
 
-- `@AfterReturning` 标识的通知方法，不会执行，`@AfterThrowing` 标识的通知方法，执行了；
-- `@Around` 环绕通知，环绕后的代码逻辑，也不会再执行了。
+- `@AfterReturning` 标识的通知方法，不会执行；`@Around` 环绕通知，环绕后的代码逻辑，也不会再执行了。
+- `@AfterThrowing` 标识的通知方法，会执行；
 
 使用通知类型，注意事项：
 
-- `@Around` 环绕通知，需要手动调用 `ProceedingJoinPoint` 的 `proceed` 方法，让原始方法执行；其他通知不需要手动调用目标方法。
+- `@Around` 环绕通知，需要手动调用 `ProceedingJoinPoint` 的 `proceed` 方法，让目标方法执行；其他通知不需要手动调用 `proceed` 方法。
 - `@Around` 环绕通知，方法的返回值，必须指定为 `Object` 类型，否则原始方法执行完毕，获取不到返回值。
 
 ## 八、@PointCut 注解抽取切入点表达式
