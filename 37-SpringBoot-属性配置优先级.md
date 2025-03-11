@@ -100,7 +100,7 @@ java -Dserver.port=9000 -jar jar包名称 --server.port=10010
 
 ## 七、在后台运行 jar 包
 
-### 7.1.使用 nohup 命令
+### 7.1.nohup 命令
 
 `nohup`（no hangup）命令用于在后台运行程序，并且即使你关闭终端或会话，程序仍会继续运行。
 
@@ -134,7 +134,7 @@ java -Dserver.port=9000 -jar jar包名称 --server.port=10010
 
    这将把输出保存到 `output.log` 文件中。
 
-### 7.2.kill 命令终止进程
+kill 命令终止进程
 
 `nohup` 本身不会提供直接的命令来停止后台进程，但你可以使用 `kill` 命令终止该进程。
 
@@ -164,6 +164,117 @@ java -Dserver.port=9000 -jar jar包名称 --server.port=10010
    kill -9 12345
    ```
 
+### 7.2.Systemd 服务
+
+推荐用于生产环境，确保应用随服务器重启而启动
+
+1.进入 `/etc/systemd/system/` 目录
+
+```bash
+cd /etc/systemd/system/
+```
+
+2 创建一个 `service` 文件
+
+```bash
+sudo vim myapp.service
+```
+
+3.在创建的 `myapp.service` 里面填写以下内容：
+
+```properties
+[Unit]
+Description=My Spring Boot Application
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/path/to/your-app  # 你的 JAR 包所在目录
+ExecStart=/usr/bin/java -jar your-app.jar
+SuccessExitStatus=143
+Restart=always
+RestartSec=10
+StandardOutput=file:/var/log/myapp.log
+StandardError=file:/var/log/myapp-error.log
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
+[Unit]
+
+- `Description`：服务描述。
+- `After=network.target`：确保网络服务启动后再运行此服务。
+
+[Service]
+
+- `User=root`：以 `root` 用户运行（可以改为其他用户）。
+- `WorkingDirectory=/path/to/your-app`：指定应用的工作目录。
+- `ExecStart=/usr/bin/java -jar your-app.jar`：启动 `jar` 包的命令。
+- `SuccessExitStatus=143`：Spring Boot 优雅关闭的退出码。
+- `Restart=always`：如果应用崩溃或意外退出，会自动重启。
+- `RestartSec=10`：等待 10 秒后重启。
+- `StandardOutput=file:/var/log/myapp.log`：日志输出到 `/var/log/myapp.log`。
+- `StandardError=file:/var/log/myapp-error.log`：错误日志输出到 `/var/log/myapp-error.log`。
+
+[Install]
+
+- `WantedBy=multi-user.target`：让 `systemd` 在多用户模式下启动此服务。
+
+> 查看 Java 绝对路径：
+>
+> ```bash
+> which java
+> ```
+>
+> 示例输出：
+>
+> ```shell
+> /home/local/java/jdk-17.0.12/bin/java
+> ```
+>
+> 那么 `ExecStart` 应该写成：
+>
+> ```bash
+> ExecStart=/home/local/java/jdk-17.0.12/bin/java -jar your-app.jar
+> ```
+>
+>
+
+4.重新加载 `systemd` 配置
+
+```bash
+sudo systemctl daemon-reload
+```
+
+5.启动服务
+
+```bash
+sudo systemctl start myapp
+```
+
+6.设置开机自启
+
+```bash
+sudo systemctl enable myapp
+```
+
+7.查看服务状态
+
+```bash
+sudo systemctl status myapp
+```
+
+8.其它命令：
+
+```bash
+sudo systemctl stop myapp # 停止服务
+sudo systemctl restart myapp # 重启服务
+sudo systemctl disable myapp # 关闭开机自启
+journalctl -u myapp -f # 查看服务日志
+```
+
 ## 八、JVM 虚拟机时区设置
 
 JVM 虚拟机时区，默认跟随系统时区。
@@ -173,5 +284,5 @@ JVM 虚拟机时区，默认跟随系统时区。
 替换其中内容为
 
 ```conf
-Asia/Shanghai 
+Asia/Shanghai
 ```
