@@ -21,7 +21,7 @@ Maven 的作用主要有：
 
 在 eclipse、MyEclipse、IIDEA 这些 Java IDE 中，创建的普通 Java 项目（工程），结构都是不一样的。
 
-使用 Maven 创建的项目（工程），可以实现项目结构的统一。
+而使用 Maven 创建的项目（工程），可以实现项目结构的统一。
 
 Maven 创建的项目（工程），目录结构如下：
 
@@ -52,16 +52,16 @@ ${maven-project}
 
 ## 二、Maven 的概述
 
-Maven 是一个项目管理和构建工具，它基于项目对象模型（Project Object Model，POM）的概念：
+Maven 是一个项目管理和构建工具，它基于**项目对象模型（Project Object Model，POM）**的概念：
 
 - 通过一小段描述信息，来管理项目的构建。
 
 Maven 构建项目，生命周期的各个阶段，如下图所示：
 
-- 其中通过 Maven 的各个插件，完成不同的功能。
+- 其中通过 Maven 的各个**插件**，完成不同的功能。
 - 各个插件的构建操作，会产生不同的文件：比如：
-  - 编译阶段会有 .class 字节码文件产生；
-  - 打包阶段会有 jar 包产生。
+  - 编译（compile）阶段会有 .class 字节码文件产生；
+  - 打包（package）阶段会有 jar 包产生。
 
 ![maven生命周期](NoteAssets/Maven生命周期.png)
 
@@ -129,11 +129,53 @@ Maven 安装和配置，主要有 4 步：
 
 Ⅳ、配置本机的环境变量 `MAVEN_HOME` 为 maven 的安装目录路径。并将其下的 bin 目录，配置到 `PATH` 环境变量中。
 
-在任意目录下，执行 mvn 命令，验证 maven 环境变量，是否配置成功：
+你可以按以下步骤配置 Maven 的环境变量（假设你已经安装好了 Maven）：
 
-```shell
-mvn -v
-```
+1. **确认 Maven 安装位置**
+   如果你是通过 Homebrew 安装 Maven，默认位置一般在 `/usr/local/Cellar/maven/版本号/libexec`。如果是手动下载安装，则需要记住你解压后的路径。
+
+2. **确定所用的 Shell**
+   macOS Catalina 及以后版本默认使用 zsh（早期版本可能是 bash）。
+
+   - 如果使用 zsh，请编辑 `~/.zshrc` 或 `~/.zprofile` 文件。
+   - 如果使用 bash，则编辑 `~/.bash_profile` 或 `~/.bashrc` 文件。
+
+3. **编辑配置文件**
+   打开终端，使用你喜欢的编辑器（例如 nano 或 vim）打开配置文件。例如，如果使用 zsh：
+
+   ```bash
+   vim ~/.zprofile
+   ```
+
+   在文件中加入下面的内容（请根据你的 Maven 安装路径进行调整）：
+
+   ```bash
+   # Maven 环境变量配置示例（Homebrew 安装示例）
+   export M2_HOME=/usr/local/Cellar/maven/3.8.7/libexec
+   export PATH=$PATH:$M2_HOME/bin
+   ```
+
+   如果你是手动安装的 Maven，则把 `/usr/local/Cellar/maven/3.8.7/libexec` 替换为你实际的 Maven 目录。
+
+4. **使配置生效**
+   保存修改后，在终端执行下面的命令以使改动生效：
+
+   ```bash
+   source ~/.zprofile
+   ```
+
+   （如果使用的是 bash，则执行 `source ~/.bash_profile` 或重新启动终端）
+
+5. **验证配置**
+   在终端中运行：
+
+   ```bash
+   mvn -version
+   # 或者 👇
+   mvn -v
+   ```
+
+   如果配置正确，你会看到 Maven 的版本信息以及 Java 环境信息。
 
 Maven 是基于 java 开发的项目，Maven 的运行，也要基于本地的 JDK。
 
@@ -416,7 +458,7 @@ Maven 项目中，依赖的 jar 包，默认情况下，可以在任何地方使
 
 ## 十、Maven 生命周期
 
-Maven 的生命周期，就是为了对所有的构建过程，进行抽象和统一。
+Maven 的生命周期，就是为了对 Maven 项目的构建过程，进行抽象和统一。
 
 Maven 的生命周期，描述了一次项目构建，经历哪些阶段。
 
@@ -458,9 +500,9 @@ Maven 对项目构建，有**三套**独立的生命周期，分别是：
 
 ### 3.Maven 生命周期是抽象的
 
-Maven 的生命周期是抽象的，这意味着生命周期本身不做任何实际工作。
+Maven 的生命周期是**抽象的**，这意味着生命周期本身不做任何实际工作。
 
-在 Maven 的设计中，实际任务（比如：源代码编译）都交由与 Maven 绑定的插件来完成。
+在 Maven 的设计中，实际任务（比如：源代码编译）都交由与 Maven 绑定的**插件**来完成。
 
 ![maven生命周期](NoteAssets/Maven生命周期.png)
 
@@ -508,6 +550,6 @@ find "$REPOSITORY_PATH" -type f -name "*.lastUpdated" -exec rm -f {} +
 echo "搜索完毕"
 ```
 
-将 `[本地maven仓库]` 替换为实际的本地 maven 仓库绝对路径。
+- 将 `[本地maven仓库]` 替换为实际的本地 maven 仓库绝对路径。
 
 Ⅱ、双击运行批处理文件。

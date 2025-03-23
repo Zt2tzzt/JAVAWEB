@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="javaweb-practise" />
+        <module name="maven-project01" />
+        <module name="aliyun-oss-spring-boot-starter" />
+        <module name="springboot-autoconfiguration-test" />
+        <module name="springbot-mybatis-quickstart" />
+        <module name="springboot-web-quickstart" />
+        <module name="javaweb-pojo" />
+        <module name="aliyun-oss-spring-boot-autoconfigure" />
+        <module name="javaweb-utils" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="aliyun-oss-spring-boot-autoconfigure" options="-parameters" />
+      <module name="aliyun-oss-spring-boot-starter" options="-parameters" />
+      <module name="javaweb-pojo" options="-parameters" />
+      <module name="javaweb-practise" options="-parameters" />
+      <module name="javaweb-utils" options="-parameters" />
+      <module name="springboot-autoconfiguration-test" options="-parameters" />
+      <module name="springboot-web-quickstart" options="-parameters" />
+      <module name="springbot-mybatis-quickstart" options="-parameters" />
+    </option>
+  </component>
+</project>
