@@ -6,7 +6,7 @@
 
 数据库管理系统（DBMS）（DataBase Management System）：是一个软件，用于操作数据库以及数据库存放的数据。
 
-SQL（Structured Query Language）：表示结构化查询语言，它是操作关系型数据库的编程语言；
+结构化查询语言 SQL（Structured Query Language），它是操作关系型数据库的编程语言；
 
 - SQL 定义了一套操作关系型数据库的统一标准；
 - 学习数据库开发，最为重要的就是学习 SQL 语句 。

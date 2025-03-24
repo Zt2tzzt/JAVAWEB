@@ -133,7 +133,7 @@ MySQL 数据库当中，提供了以下五种约束：
 | `NOT NULL`  | 非空约束 | 限制该字段值不能为 `null`。                      |
 | `UNIQUE`      | 唯一约束 | 保证字段的所有数据都是唯一、不重复的。           |
 | `PRIMARY KEY` | 主键约束 | 主键是一行数据的唯一标识，要求**非空且唯一**，常与 `AUTO_INCREMENT` 自增一起使用。 |
-| `DEFAULT`     | 默认约束 | 保存数据时，如果未指定该字段值，则采用默认值。    |
+| `DEFAULT`     | 默认约束 | 保存数据时，如果**未指定**该字段值，则采用默认值。 |
 | `FOREIGN KEY` | 外键约束 | 让两张表的数据建立连接，保证数据的一致性和完整性 |
 
 > 约束作用于字段上，
@@ -249,8 +249,8 @@ CREATE TABLE IF NOT EXISTS user
 
 在 MySQL 中，创建一张包含创建时间（`created_at`）和修改时间（`updated_at`）字段的表时，通常遵循以下规范：
 
-1. **`created_at`**: 表示记录创建的时间，通常设置为 `TIMESTAMP` 或 `DATETIME` 类型，并设置默认值为当前时间。
-2. **`updated_at`**: 表示记录最后一次修改的时间，可以自动更新为每次修改的时间戳。
+1. `created_at`: 表示记录创建的时间，通常设置为 `TIMESTAMP` 或 `DATETIME` 类型，并设置默认值为当前时间。
+2. `updated_at`: 表示记录最后一次修改的时间，可以自动更新为每次修改的时间戳。
 
 ```mysql
 CREATE TABLE your_table (
