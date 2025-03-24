@@ -46,6 +46,7 @@ class Handler extends Thread {
     private void handle(InputStream input, OutputStream output) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
+
         // 读取 HTTP 请求:
         boolean requestOk = false;
         String first = reader.readLine();

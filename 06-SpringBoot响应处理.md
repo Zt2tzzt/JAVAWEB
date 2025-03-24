@@ -311,10 +311,10 @@ demo-project/springboot-web-quickstart/pom.xml
 > - classpath:/resources/
 > - classpath:/META-INF/resources/
 >
-> classpath：代表的是类路径，在 maven 项目中，指的就是 `src/main/resources` 或者 `src/main/java`
+> `classpath`：代表的是类路径，在 Maven 项目中，指的就是 `src/main/resources` 或者 `src/main/java`
 >
 > - `src/main/java` 目录是存放 java 代码的。
-> - 所以配置文件、静态资源文档，还得放在 `src/main/resources`下。
+> - 所以配置文件、静态资源文档，应该放在 `src/main/resources`下。
 
 步骤四：创建 `EmpController` 控制器类，编写 Controller 程序，处理请求，响应数据。
 

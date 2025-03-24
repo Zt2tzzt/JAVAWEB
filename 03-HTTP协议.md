@@ -92,13 +92,13 @@ GET /hello HTTP/1.1
 - `/hello` 是**请求路径**。
 - `HTTP/1.1` 是**请求协议**。
 
-在 HTTP1.1 版本中，浏览器访问服务器的几种请求方式，如下表所示：
+HTTP1.1 协议中，规范了请求的几种方式，如下表所示：
 
 | 请求方式 | 请求说明                                                     |
 | :------: | :----------------------------------------------------------- |
 | **GET**  | 获取资源。向特定的资源发出请求。例：`http://www.baidu.com/s?wd=itheima` |
 | **POST** | 传输实体主体。向指定资源提交数据进行处理请求（例：上传文件），数据被包含在请求体中。 |
-| OPTIONS  | 返回服务器针对特定资源所支持的HTTP请求方式。因为并不是所有的服务器都支持规定的方法，为了安全有些服务器可能会禁止掉一些方法，例如：DELETE、PUT 等。那么 OPTIONS 就是用来询问服务器支持的方法。 |
+| OPTIONS  | 返回服务器针对特定资源所支持的 HTTP 请求方式。因为并不是所有的服务器都支持规定的方法，为了安全有些服务器可能会禁止掉一些方法，例如：DELETE、PUT 等。那么 OPTIONS 就是用来询问服务器支持的方法。 |
 |   HEAD   | 获得报文首部。HEAD 方法类似 GET 方法，但是不同的是 HEAD 方法不要求返回数据。通常用于确认 URI 的有效性及资源更新时间等。 |
 |   PUT    | 修改（覆盖）操作，比如传输文件。PUT 方法可用来传输文件。类似 FTP 协议，文件内容包含在请求报文的实体中，然后请求保存到 URL 指定的服务器位置。 |
 |  DELETE  | 删除操作。请求服务器删除 Request-URI 所标识的资源            |
@@ -146,6 +146,10 @@ sec-ch-ua-platform: "Windows"
 请求体，用于携带请求参数。
 
 请求体，和请求头之间，有一个空行隔开，用于标记请求头结束；如下图所示：
+
+- 红色区域为“请求行”；
+- 黄色区域为“请求头”；
+- 绿色区域为“请求体”
 
 ![Http请求体](NoteAssets/Http请求体.png)
 
@@ -236,7 +240,7 @@ Connection: keep-alive
 
 ## 三、Http 协议解析
 
-浏览器（客户端）往往内置了解析 Http 协议的工具，它会自动发送 Http 请求，并解析服务器的 Http 响应。
+浏览器（客户端）往往内置了解析 Http 协议的工具，意味着浏览器可以发送 Http 请求，并自动解析服务器返回的 Http 响应。
 
 Java 程序可以使用原生的方式，进行基于 TCP 协议的 Web 服务器开发。如下方代码所示：
 
@@ -293,6 +297,7 @@ class Handler extends Thread {
     private void handle(InputStream input, OutputStream output) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
+
         // 读取 HTTP 请求:
         boolean requestOk = false;
         String first = reader.readLine();

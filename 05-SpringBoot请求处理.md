@@ -23,8 +23,8 @@ public class HelloController {
 
 Spring Boot 内置的 Tomcat 服务器，并不能识别 Spring 项目中的 Controller 控制器类。它们是怎么联系起来的？
 
-- Tomcat 是 Servlet 容器，所以它能识别 Servlet 规范，
-- Spring Boot 框架，提供了一个核心的 Servlet 程序 `DispatchServlet`，它实现了 Servlet 规范中的接口。
+- Tomcat 是 **Servlet** 容器，所以它能识别 **Servlet** 规范，
+- Spring Boot 框架，提供了一个核心的 **Servlet** 程序 `DispatchServlet`，它实现了 **Servlet** 规范中的接口。
 
 所以在 Spring Boot 项目中，对于 Http 请求的处理过程是：
 
@@ -366,10 +366,10 @@ public class RequestController {
 
 ### 3.数组参数处理
 
-浏览器（客户端）发送请求，传递数组参数的形式可以是：
+浏览器（客户端）发送请求，传递数组参数可以有两种方式：
 
-- `localhost:8080/arrayParam?hobby=唱&hobby=跳&hobby=rap&hobby=篮球`
-- `localhost:8080/arrayParam?hobby=唱,跳,rap,篮球`
+- 方式一：`localhost:8080/arrayParam?hobby=唱&hobby=跳&hobby=rap&hobby=篮球`
+- 方式二：`localhost:8080/arrayParam?hobby=唱,跳,rap,篮球`
 
 #### 1.数组接收
 
@@ -525,7 +525,7 @@ public class RequestController {
 
 ### 6.路径（路由）参数处理
 
-实际开发中，经常会直接在请求的 URL 中，传递参数。比如：
+实际开发中，经常会直接在请求的 URL 中，传递路径参数。比如：
 
 - `localhost:8080/pathParam/1/zzt`
 

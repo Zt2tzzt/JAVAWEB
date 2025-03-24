@@ -19,7 +19,7 @@ Web 服务器，主要功能是"提供网上信息浏览服务"。
 
 [Tomcat](https://tomcat.apache.org) 服务器（软件），是 Apache 软件基金会的一个核心项目。它是一个免费的开源的 Web 应用服务器。
 
-Tomcat 服务器，仅支持 Servlet、JSP 等少量 JavaEE 规范，所以是一个轻量级 Web 服务器。
+Tomcat 服务器，仅支持 Servlet、JSP 等少量 **JavaEE 规范**，所以是一个轻量级 Web 服务器。
 
 > JavaEE（Java Enterprise Edition）规范，是指 Java 企业级开发的技术规范总和；
 >
@@ -44,6 +44,7 @@ Tomcat 服务器，也被称为 **Web 容器**、**Servlet 容器**；
 
 目录结构如下：
 
+```txt
 ├─📁 bin/--------------- # Tomcat 可执行文件
 ├─📁 conf/-------------- # Tomcat 配置文件
 ├─📁 lib/--------------- # Tomcat 依赖的 jar 包
@@ -58,6 +59,7 @@ Tomcat 服务器，也被称为 **Web 容器**、**Servlet 容器**；
 ├─📄 README.md
 ├─📄 RELEASE-NOTES
 └─📄 RUNNING.txt
+```
 
 ### 3.Tomcat 卸载
 
@@ -69,7 +71,7 @@ Tomcat 启动：执行 `bin/startup.bat`
 
 - Tomcat 服务器启动后，窗口不会关闭，表示 Tomcat 服务器正在运行。
 
-Tomcat 启动的过程中，遇到控制台有中文乱码时，可以通常修改 `conf/logging.prooperties` 配置文件中的如下部分解决：
+Tomcat 启动的过程中，遇到控制台有中文乱码时，一版通过修改 `conf/logging.prooperties` 配置文件中的如下部分解决：
 
 ```properties
 java.util.logging.ConsoleHandler.encoding = GBK
@@ -180,7 +182,7 @@ demo-project/springboot-web-quickstart/pom.xml
 
 ### 4.Spring Boot 内嵌 Tomcat
 
-之前开发的 Spring Boot 入门程序，并没有部署到 Tomcat 的 webapps 目录下，也可以作为 Web 服务器运行。
+之前开发的 Spring Boot 入门程序，并没有部署到 Tomcat 的 webapps 目录下，仍可以作为 Web 服务器运行。
 
 这是因为在 Spring Boot 项目中，引入了 `spring-boot-starter-web` 起步依赖，其内部已经集成了内置的 Tomcat 服务器。
 

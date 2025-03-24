@@ -6,27 +6,27 @@
 
 - 这样就可以让类、接口、方法的复杂度更低，可读性更强，扩展性更好，也更利于后期的维护。
 
-上文中编写的程序，并不满足单一职责原则：
+上文中编写的程序，并不满足单一职责原则，如下图所示：
 
 ![单一职责原则](NoteAssets/单一职责原则.png)
 
 在 Web 项目开发中，可以将代码分为三层：
 
-- Controller 控制层：负责接收前端发送的请求，对请求进行处理，并响应数据。
-- Service 业务逻辑层：负责处理具体的业务逻辑。
-- Dao（Data Access Object）数据访问层：也称为持久层。负责数据访问操作，包括数据的增、删、改、查。
+- **Controller** 控制层：负责接收前端发送的请求，对请求进行处理，并响应数据。
+- **Service** 业务逻辑层：负责处理具体的业务逻辑。
+- **Dao**（Data Access Object）数据访问层：也称为持久层。负责数据访问操作，包括数据的增、删、改、查。
 
 基于三层架构的程序执行流程：
 
 ![三层架构](NoteAssets/三层架构.png)
 
-1. 前端发起的请求
-2. Controller 层接收请求
+1. 前端发起的请求；
+2. Controller 层接收请求；
 3. Controller 层调用 Service 层，来进行逻辑处理，
-4. Serivce 层调用 Dao 层，逻辑处理过程中，需要用到的一些数据要从 Dao 层获取。
-5. Dao 层操作文件中的数据，将操作结果返回给 Service 层。
+4. Serivce 层调用 Dao 层，逻辑处理过程中，需要用到的一些数据要从 Dao 层获取；
+5. Dao 层操作文件中的数据，将操作结果返回给 Service 层；
 6. Service 层处理完后，把处理结果，返回给 Controller 层；
-7. 最后再由 Controller 层响应数据给客户端；
+7. 最后再由 Controller 层响应数据给客户端。
 
 使用三层架构思想，重构之前的代码。
 
@@ -202,9 +202,9 @@ public class EmpController {
 耦合，体现在：
 
 - 如果把 Controller 层中要用到的业务类，变为 `EmpServiceB` 时，需要修改 Controller 层中的代码；
-- 也就是说：当 Service 层的实现类，变了之后， 我们还需要修改 Controller 层的代码，改变引入的 Service 层实例对象。
+- 也就是说：当 Service 层的实现类变了之后， 我们还需要修改 Controller 层的代码，改变引入的 Service 层实例对象。
 
-为了解决上方代码耦合度高的问题，就不能在 `EmpController` 中使用 `new` 创建 Servcie 层的对象。如下方所示：
+为了解决上述情况耦合度高的问题，就不能在 `EmpController` 中使用 `new` 创建 Servcie 层的对象。如下方所示：
 
 demo-project/springboot-web-quickstart/src/main/java/com/kkcf/controller/EmpController.java
 
@@ -430,11 +430,13 @@ public class EmpDaoA implements EmpDao {
 
 demo-project/springboot-web-quickstart/src/main/java
 
+```txt
 ├─📁 com/
 │ └─📁 kkcf/
 └─📁 dao/
   ├─📁 impl/
   └─📄 EmpDao.java
+```
 
 启动项目，出现如下错误：
 
@@ -467,16 +469,18 @@ The injection point has the following annotations:
 
 - 这样 bean 对象就会被自动的扫描到。
 
+```txt
 ├─📁 controller/
 ├─📁 dao/
 ├─📁 service/
 └─📄 SpringbootWebQuickstartApplication.java
+```
 
 ## 八、Spring Boot DI 依赖注入详解
 
 DI 依赖注入，是指 IOC 容器，要为应用程序去提供运行时所依赖的资源，这个资源就是 Bean 对象。
 
-在入门程序案例中，使用了 `@Autowired` 注解，完成了依赖注入的操作（Autowired 自动装配的意思）。
+在入门程序案例中，使用了 `@Autowired` 注解，完成了依赖注入的操作（Autowired 是自动装配的意思）。
 
 `@Autowired` 注解，默认是按照**类型**，进行自动装配的（去 IOC 容器中找某个类型的对象，然后完成注入操作）
 

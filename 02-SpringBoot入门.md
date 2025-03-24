@@ -2,7 +2,7 @@
 
 ## 一、Spring 框架
 
-[Spring](https://spring.io)，是最受欢迎的 Java 框架，没有之一。Spring 发展到今天，已经形成了一种开发生态圈；
+[Spring](https://spring.io) 是最受欢迎的 Java 框架，没有之一。Spring 发展到今天，已经形成了一种开发生态圈；
 
 Spring 提供了若干个子项目，每个项目用于完成特定的功能；
 
@@ -63,33 +63,40 @@ Spring Boot 框架底层，仍然基于 Spring Frameworrk 实现。
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+  
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+  
     <groupId>com.kkcf</groupId>
     <artifactId>springboot-web-quickstart</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>springboot-web-quickstart</name>
     <description>springboot-web-quickstart</description>
     <url/>
+  
     <licenses>
         <license/>
     </licenses>
+  
     <developers>
         <developer/>
     </developers>
+  
     <scm>
         <connection/>
         <developerConnection/>
         <tag/>
         <url/>
     </scm>
+  
     <properties>
         <java.version>17</java.version>
     </properties>
+  
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -136,9 +143,11 @@ public class SpringbootWebQuickstartApplication {
 
 src/main/resource 目录下，创建了两个目录，和一个配置文件，结构如下：
 
+```txt
 ├─📁 static/
 ├─📁 templates/
 └─📄 application.properties
+```
 
 ### 2.请求处理类创建
 
