@@ -7,7 +7,7 @@
 - 增、删、改操作，返回受影响行数；
 - 查操作：返回查询的结果集。
 
-后端开发人员，通常会使用程序，来完成对数据库的操作。
+而后端开发人员，通常会使用程序，来完成对数据库的操作。
 
 ## 一、MyBatis 是什么
 
@@ -61,33 +61,40 @@ demo-project/springbot-mybatis-quickstart/pom.xml
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+  
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+  
     <groupId>com.kkcf</groupId>
     <artifactId>springbot-mybatis-quickstart</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>springbot-mybatis-quickstart</name>
     <description>springbot-mybatis-quickstart</description>
     <url/>
+  
     <licenses>
         <license/>
     </licenses>
+  
     <developers>
         <developer/>
     </developers>
+  
     <scm>
         <connection/>
         <developerConnection/>
         <tag/>
         <url/>
     </scm>
+  
     <properties>
         <java.version>17</java.version>
     </properties>
+  
     <dependencies>
         <!-- Spring Boot 起步依赖-->
         <dependency>
@@ -194,7 +201,7 @@ public class User {
 
 ### 2.MyBatis 入门程序配置数据库连接
 
-Spring Boot 整合的 MyBatis 矿建，配置数据库连接信息在 application.properties 配置文件中。
+Spring Boot 整合的 MyBatis 框架，配置数据库连接信息在 application.properties 配置文件中。
 
 demo-project/springbot-mybatis-quickstart/src/main/resources/application.properties
 

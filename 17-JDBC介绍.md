@@ -1,6 +1,6 @@
 # JDBC 介绍
 
-JDBC（Java DataBase Connectivity）是 SUN 公司官方定义的一套操作所有关系型数据库的规范，即接口。
+JDBC（Java DataBase Connectivity）是 SUN 公司官方定义的一套操作所有**关系型数据库**的规范，即接口。
 
 JDBC 没有提供具体的实现方式，而是由各个数据库厂商，提供具体的实现。也称为 Java 程序的数据库驱动，即一个 Jar 包。
 

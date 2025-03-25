@@ -509,7 +509,7 @@ ORDER BY entrydate ASC;
 
 - `ASC` 可省略；
 
-案例 2：根据入职时间，对员工进行降序：
+案例 2：根据入职时间，对员工进行降序排序：
 
 ```mysql
 SELECT *

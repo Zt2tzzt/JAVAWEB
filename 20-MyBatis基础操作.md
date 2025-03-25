@@ -135,9 +135,9 @@ public class Emp {
 }
 ```
 
-- 数据库 `DATE` 类型，对应 JDK1.8 的 `LocalDate` 类型；
+- 数据库 `DATE` 类型，对应 JDK1.8 提供的 `LocalDate` 类型；
 - 数据库的 `DATETIME` 类型，对应 JDK1.8 的 `LocalDateTime` 类型。
-- 数据库字段名中的 `_` 下划线，在实体类中使用规范的驼峰命名代替。
+- 数据库字段名中的 `_` 下划线，在实体类中使用驼峰命名的字段名代替。
 
 创建一个 Mapper 接口 `EmpMapper`，
 
@@ -145,7 +145,7 @@ public class Emp {
 
 根据主键（Id）删除记录。
 
-创建一个 mapper 包（package），在其中创建一个 `EmpMapper` 接口
+在模块中创建一个 mapper 包（package），在其中创建一个 `EmpMapper` 接口
 
 - 在接口中，定义一个方法 `deleteEmp`，为它使用 `@Delete` 注解，表示该方法用于执行 DELETE 语句。
 - MyBatis 中，提供了 `#{}` 用于 SQL 语句中的占位符。
