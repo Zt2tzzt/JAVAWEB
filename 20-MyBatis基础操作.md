@@ -252,8 +252,8 @@ mybatis.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
 
 可知 MyBatis 在底层，执行的是**预编译** SQL 语句：
 
-- MyBatis 会将 SQL 语句，与传入占位符的参数，一并发给数据库管理系统（DBMS）
-- 数据库管理系统（DBMS）将占位符参数，替换掉 SQL 语句中的占位符后，再执行 SQL
+- MyBatis 会将 SQL 语句，与传入占位符的参数，一并发给数据库管理系统（DBMS）。
+- 数据库管理系统（DBMS）将占位符参数，替换掉 SQL 语句中的占位符后，再执行 SQL。
 
 ## 四、预编译 SQL
 
@@ -593,16 +593,16 @@ public interface EmpMapper {
 
 开启 MyBatis 驼峰命名自动映射的开关；
 
-这种做法，对实体（pojo）类属性命名，与表中字段命名，有严格要求：
-
-- 比如：当表中字段名为 abc_xyz 时；实体类中属性名必须是 abcXyz。否则无法进行映射。
-
 demo-project/springbot-mybatis-quickstart/src/main/resources/application.properties
 
 ```properties
 # 打开 MyBatis 驼峰命名映射
 mybatis.configuration.map-underscore-to-camel-case=true
 ```
+
+这种做法，对实体（pojo）类属性命名，与表中字段命名，有严格要求：
+
+- 比如：当表中字段名为 abc_xyz 时；实体类中属性名必须是 abcXyz。否则无法进行映射。
 
 单元测试：
 
