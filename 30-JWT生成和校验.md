@@ -64,7 +64,7 @@ class JavawebPractiseApplicationTests {
 }
 ```
 
-> 在测试类中，注释掉上方的 `@SpringBootTest` 注解，以进行简单的单元测试，不用加载整个 Spring 环境。
+> 在测试类中，注释掉上方的 `@SpringBootTest` 注解，以进行简单的单元测试，无需加载整个 Spring 环境。
 
 运行测试方法，得到生成的令牌为
 

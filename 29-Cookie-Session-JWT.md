@@ -204,7 +204,7 @@ Cookie: JSESSIONID=4848BA0F0BB2CA6F50D9A1CDD34D494D
 
 - 发现浏览器请求时携带了 Cookie，其中携带了 Session。
 
-服务端控制台输出如下：
+访问 `http://localhost:8080/s2` 两次，服务端控制台输出如下：
 
 ```sh
 2024-09-25T13:46:22.458+08:00  INFO 31428 --- [javaweb-practise] [nio-8080-exec-4] com.kkcf.controller.SessionController    : session hashcode: 229412214
