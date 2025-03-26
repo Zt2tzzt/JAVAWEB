@@ -234,7 +234,7 @@ demo-project/javaweb-practise/pom.xml
 </dependency>
 ```
 
-Lombok 提供了注解 `@Slf4j`，在类上方使用，用于在类中定义日志记的录静态常量对象。
+Lombok 提供了注解 `@Slf4j`，在类上使用，用于在类中定义日志记录的静态常量对象。
 
 ```java
 public static final Logger log = LoggerFactory.getLogger(DeptController.class);

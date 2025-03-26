@@ -240,6 +240,8 @@ public class AliyunOSSProperties2 {
 
 在测试类中测试：
 
+demo-project/javaweb-practise/src/test/java/com/kkcf/JavawebPractiseApplicationTests.java
+
 ```java
 package com.kkcf;
 
@@ -268,6 +270,8 @@ class JavawebPractiseApplicationTests {
 可在 Maven 项目的 pom.xml 文件中，引入 spring-boot-configuration-processor 依赖：
 
 这项依赖的作用，是自动识别 `@ConfigurationProperties` 注解标识的 bean 对象。
+
+demo-project/javaweb-practise/pom.xml
 
 ```xml
 <dependency>

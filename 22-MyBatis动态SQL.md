@@ -458,3 +458,59 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
     </select>
 </mapper>
 ```
+
+## 六、trim 标签
+
+`<trim>` 标签是 MyBatis 提供的一个动态 SQL 组件，主要用于在拼接 SQL 语句时，自动添加或去除特定的前缀、后缀以及多余的逗号等。它可以替代 `where`、`set` 等标签，提供更灵活的 SQL 生成方式。
+
+`<trim>` 标签的主要属性：
+
+- **`prefix`**：指定 SQL 片段的前缀，例如 `WHERE`、`SET` 等。
+- **`suffix`**：指定 SQL 片段的后缀。
+- **`prefixOverrides`**：去除指定的前缀，例如 `AND`、`OR`，避免 SQL 语句错误。
+- **`suffixOverrides`**：去除指定的后缀，例如多余的 `,`。
+
+`<trim>` 的使用示例
+
+### 1. trim 替代 where 语句
+
+**需求**：当查询条件存在时，在 SQL 语句前加上 `WHERE`，同时自动去除 `AND`。
+
+```xml
+<select id="findUsers" resultType="User">
+    SELECT * FROM users
+    <trim prefix="WHERE" prefixOverrides="AND">
+        <if test="username != null">
+            AND username = #{username}
+        </if>
+        <if test="age != null">
+            AND age = #{age}
+        </if>
+        <if test="email != null">
+            AND email = #{email}
+        </if>
+    </trim>
+</select>
+```
+
+### 2. trim 替代 set 语句
+
+**需求**：更新用户信息时，自动添加 `SET` 关键字，并去除多余的 `,`。
+
+```xml
+<update id="updateUser">
+    UPDATE users
+    <trim prefix="SET" suffixOverrides=",">
+        <if test="username != null">
+            username = #{username},
+        </if>
+        <if test="age != null">
+            age = #{age},
+        </if>
+        <if test="email != null">
+            email = #{email},
+        </if>
+    </trim>
+    WHERE id = #{id}
+</update>
+```

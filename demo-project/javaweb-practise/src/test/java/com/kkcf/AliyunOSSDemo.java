@@ -45,10 +45,10 @@ public class AliyunOSSDemo {
         // 填写 Bucket 名称，例如 examplebucket。
         String bucketName = "zetian-bucket";
 
-        // 填写 Object 完整路径，例如 exampledir/exampleobject.txt。Object 完整路径中不能包含 Bucket名 称。
+        // 填写 Object 完整路径，例如 exampledir/exampleobject.txt。Object 完整路径中不能包含 Bucket 名称。
         String objectName = "baja(2).jpg";
 
-        // 创建OSSClient实例。
+        // 创建 OSSClient 实例。
         OSS ossClient = new OSSClientBuilder().build(endpoint, credentialsProvider);
 
         try {

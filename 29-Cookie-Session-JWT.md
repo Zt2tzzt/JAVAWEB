@@ -15,7 +15,7 @@ Cookie 是 HTTP 协议支持的技术。各大浏览器厂商都支持了这一�
 
 主要体现在：
 
-1. 服务器端，在给客户端响应数据的时，可**自动**将 Cookie 响应给浏览器；
+1. 服务器端，在给客户端响应数据时，可**自动**将 Cookie 响应给浏览器；
 2. 客户端（浏览器）接收到响应回来的 Cookie 之后，会**自动**的将 Cookie 的值存储在浏览器本地；
 3. 客户端（浏览器）后续的每一次请求当中，都会将浏览器本地所存储的 Cookie **自动**地携带到服务端。
 
@@ -33,7 +33,7 @@ HTTP 协议，提供了一个标准：
 
 ### 2.服务器端设置和解析 Cookie
 
-在 Controller 层，创建 `CookieController` 控制器类，用于
+在 Controller 层，创建 `CookieController` 控制器类
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/controller/CookieController.java
 

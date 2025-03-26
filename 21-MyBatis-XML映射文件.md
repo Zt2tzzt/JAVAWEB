@@ -16,7 +16,7 @@ MyBatis 中的 XML 配置文件，又称为 XML 映射文件。
 在 Mybatis 中，使用 XML 映射文件，需要符合下面规范：
 
 1. 一个 Mapper 接口，对应一个 XML 映射文件。
-2. XML 映射文件的名称，与  Mapper 接口的名称保持一致；它们分别放在 resources 目录相 java 目录同名同包下。
+2. XML 映射文件的名称，与  Mapper 接口的名称保持一致；它们分别放在 resources 目录下的与 java 目录同名同包的目录下。
 3. XML 映射文件中，`<mapper>` 标签的 `namespace` 属性值，与 Mapper 接口全限定名（全类名）保持一致。
 4. XML 映射文件中， SQL 语句对应的标签（比如 `<select>` 标签）的
    - `id` 属性值，与 Mapper 接口中的方法名保持一致；
@@ -24,7 +24,7 @@ MyBatis 中的 XML 配置文件，又称为 XML 映射文件。
 
 `<select>` 标签：就是用于编写 SELECT 查询语句的。
 
-- 其 `resultType` 属性，指的是查询返回的单条记录，所对应的类型的全限定名。
+- 其 `resultType` 属性，指的是查询返回的**单条记录**，所对应的类型的全限定名。
 
 ## 二、MyBatis XML 映射文件操作数据库
 
