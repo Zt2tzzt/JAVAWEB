@@ -181,7 +181,9 @@ public class WebConfig implements WebMvcConfigurer {
 7. 最终再来执行 Filter 过滤器当中放行后的逻辑。
 8. 执行完毕之后，最终给浏览器响应数据。
 
-Filter 过滤器与 Interceptor 拦截器的区别，主要有两点：
+## 五、Filter 过滤器与 Interceptor 拦截器的区别
+
+主要有两点：
 
 - 接口规范不同：
   - Filter 过滤器，需要实现 Servlet 规范的 `Filter` 接口；
@@ -191,7 +193,7 @@ Filter 过滤器与 Interceptor 拦截器的区别，主要有两点：
   - Filter 过滤器，会拦截所有对资源的请求；
   - Interceptor 拦截器，只会拦截 Spring 环境中的资源请求。
 
-## 五、Intercepter 拦截器登录校验实现
+## 六、Intercepter 拦截器登录校验实现
 
 登录校验的业务逻辑，与之前 Filter 过滤器中的逻辑是完全一致的。
 

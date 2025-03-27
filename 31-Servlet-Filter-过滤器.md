@@ -36,7 +36,7 @@ Servlet 规范中的 Filter 过滤器，是 JavaWeb 三大组件（Servlet、Fil
       - `/*` 表示拦截浏览器的所有请求；
       - 注释掉 `@WebFilter` 注解，Filter 也就失效了。
    2. 再在引导类（启动类）加上 `@ServletComponentScan` 注解
-      - JavaWeb 三大组件，不属于 Spring Boor 组件，要加上该注解表示在当前项目中支持 Servlet 组件。
+      - JavaWeb 三大组件（**Servlet、Filter、Listener**），不属于 Spring Boor 组件，要加上该注解表示在当前项目中支持 Servlet 组件。
 
 定义过滤器类 DemoFilter。
 
@@ -164,10 +164,10 @@ Filter 过滤器的拦截路径，可根据需求，进行配置。
 
 这个链上的过滤器，在执行的时候，会一个一个的执行：
 
-1. 先执行第一个 Filter 过滤器，放行之后，再来执行第二个Filter 过滤器。
+1. 先执行第一个 Filter 过滤器，放行之后，再来执行第二个 Filter 过滤器。
 2. 执行完最后一个过滤器，并放行之后，才会访问对应的 Web 资源。
 3. 访问完 web 资源之后，按照过滤器的执行流程，还会回到过滤器当中，来执行过滤器放行后的逻辑；
-   - 在执行放行后的逻辑的时候，顺序是反着的。
+   - 在执行放行后的逻辑的时候，顺序是反的。
 
 ![Filter过滤器链](NoteAssets/Filter过滤器链.png)
 

@@ -101,9 +101,9 @@ Spring 框架，已封装好了事务控制，只需通过一个注解 `@Transac
 - 类上使用：当前类中所有的方法，都交给 Spring 进行事务管理；
 - 接口上使用：接口下所有的实现类中所有的方法，都交给 Spring 进行事务管理。
 
-`@Transactional` 注解：一般用在 Service（业务）层方法上，来控制事务。
+`@Transactional` 注解：一般用在 Service（业务）层实现类的方法上，来控制事务。
 
-- 因为在 Service（业务）层中，一个业务功能，可能会包含多个数据访问的操作（增、删、改）。
+- 因为在 Service（业务）层实现类中，一个业务功能，可能会包含多个数据访问的操作（增、删、改）。
 
 案例理解：在 Service 层的 `DeptServiceImpl` 类中的 `removeById` 方法上，加上 `@Transactional` 注解。
 
@@ -252,6 +252,7 @@ public class DeptServiceImpl implements DeptService {
 
 ```mysql
 DROP TABLE IF EXISTS dept_log;
+
 CREATE TABLE IF NOT EXISTS dept_log
 (
     id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
