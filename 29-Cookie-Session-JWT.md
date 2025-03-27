@@ -30,7 +30,6 @@ HTTP 协议，提供了一个标准：
   - 客户端（浏览器）会自动携带 Cookie 发送请求给服务器；
   - 服务器端要解析。
 
-
 ### 2.服务器端设置和解析 Cookie
 
 在 Controller 层，创建 `CookieController` 控制器类
