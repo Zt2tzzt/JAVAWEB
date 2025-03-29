@@ -38,9 +38,11 @@ Spring Boot 还支持命令行参数的配置方式，以配置 Tomcat 服务器
 
 ![idea设置Java系统属性和命令行参数](NoteAssets/idea设置Java系统属性和命令行参数.jpg)
 
-命令行参数，优先级高于 Java 系统属性；
+Spring Boot 项目属性配置优先级从高到低：
 
-Java 系统属性，优先级高于三种配置文件。
+1. 命令行参数；
+2. Java 系统属性；
+3. 三种配置文件。
 
 ## 四、Maven 项目打包
 
@@ -75,12 +77,18 @@ IDEA 打包 Maven 项目：
 
 ## 五、命令行设置 Java 系统属性、命令行参数
 
-项目打包上线后，要通过命令，设置 Java 系统属性、命令行参数
+项目打包上线后，要通过命令，配置 Tomcat 服务器端口号为例，执行 `java -jar` 命令，运行 jar 包
 
-- 以配置 Tomcat 服务器端口号为例，执行 `java -jar` 命令，运行 jar 包
+设置 Java 系统属性
 
 ```sh
-java -Dserver.port=9000 -jar jar包名称 --server.port=10010
+java -Dserver.port=9000 -jar jar包名称
+```
+
+设置命令行参数
+
+```sh
+java -jar jar包名称 --server.port=10010
 ```
 
 ## 六、Spring Boot 属性配置优先级总结
@@ -191,7 +199,7 @@ After=network.target
 User=root
 WorkingDirectory=/path/to/your-app  # 你的 JAR 包所在目录
 ExecStart=/usr/bin/java -jar your-app.jar
-SuccessExitStatus=143
+SuccessExitStatus=143 # Spring Boot 优雅关闭的退出码
 Restart=always
 RestartSec=10
 StandardOutput=file:/var/log/myapp.log
@@ -199,7 +207,6 @@ StandardError=file:/var/log/myapp-error.log
 
 [Install]
 WantedBy=multi-user.target
-
 ```
 
 [Unit]
@@ -281,7 +288,7 @@ JVM 虚拟机时区，默认跟随系统时区。
 
 如果 JVM 虚拟机与系统时区不符，修改 `/etc/timezone` 文件
 
-替换其中内容为
+替换其中内容为，将虚拟机时区设为上海时区：
 
 ```conf
 Asia/Shanghai

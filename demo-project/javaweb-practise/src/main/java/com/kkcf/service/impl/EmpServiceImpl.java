@@ -66,7 +66,6 @@ public class EmpServiceImpl implements EmpService {
 
     @Override
     public Emp empById(int id) {
-
         return empMapper.selectById(id);
     }
 

@@ -267,7 +267,7 @@ class JavawebPractiseApplicationTests {
 
 为配合该实体类的属性，在 properties 或者 yml 配置文件中，提示应配置的属性；
 
-可在 Maven 项目的 pom.xml 文件中，引入 spring-boot-configuration-processor 依赖：
+可在 Maven 项目的 pom.xml 文件中，引入 `spring-boot-configuration-processor` 依赖：
 
 这项依赖的作用，是自动识别 `@ConfigurationProperties` 注解标识的 bean 对象。
 

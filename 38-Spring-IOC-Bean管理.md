@@ -79,7 +79,7 @@ com.kkcf.controller.DeptController@4d8f2cfd
 com.kkcf.controller.DeptController@4d8f2cfd
 ```
 
-发现：执行方法三次获取出的 Bean 对象，地址值一样，说明是同一个对象；
+发现：三次获取出的 Bean 对象，内存地址值一样，说明是同一个对象；
 
 IOC 容器（Spring 容器）中，Bean 对象默认是**单例**的（只有一个 Bean 对象）。
 
@@ -356,7 +356,7 @@ demo-project/javaweb-practise/pom.xml
 </dependency>
 ```
 
-解决方案一：在启动类（引导类）里，定义 `@Bean` 注解标注的方法，用于 Spring 项目在启动时创建 Bean 对象，并让如 IOC 容器中管理。
+**解决方案一**：在启动类（引导类）里，定义 `@Bean` 注解标注的方法，用于 Spring 项目在启动时创建 Bean 对象，并交给 IOC 容器管理。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/JavawebPractiseApplication.java
 
@@ -385,7 +385,7 @@ public class JavawebPractiseApplication {
 
 为保证启动类的纯粹性，不推荐这种做法。
 
-解决方案二：在 `@Configuration` 声明的配置类中，定义 `@Bean` 注解标注的方法。
+**解决方案二**：在 `@Configuration` 注解标注的配置类中，定义 `@Bean` 注解标注的方法。
 
 - 可以通过 `@Bean` 注解的 `name` 或 `value` 属性，来指定 Bean 对象的名称；
 - 但在实际开发中，一般不指定，默认是方法名称。
@@ -463,7 +463,7 @@ public class BeanTest {
 tom:18
 ```
 
-如果第三方 Bean 对象，创建时需要依赖其它 Bean 对象，那么在 `@Bean` 注解标注的方法中，设置形参即可；
+如果第三方 Bean 对象，创建时需要依赖其它 Bean 对象，那么在 `@Bean` 注解标注的方法参数中，设置形参即可；
 
 IOC 容器会根据类型，自动装配（依赖注入）。
 

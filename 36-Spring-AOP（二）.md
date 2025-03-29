@@ -77,10 +77,10 @@ public class MyAspectB {
 观察控制台日志输出：
 
 ```sh
-2024-09-29T16:41:03.419+08:00  INFO 14000 --- [javaweb-practise] [nio-8080-exec-1] com.kkcf.aop.MyAspectB                   : MyAspectA.before……
-2024-09-29T16:41:03.419+08:00  INFO 14000 --- [javaweb-practise] [nio-8080-exec-1] com.kkcf.aop.MyAspectA                   : MyAspectB.before……
-2024-09-29T16:41:03.788+08:00  INFO 14000 --- [javaweb-practise] [nio-8080-exec-1] com.kkcf.aop.MyAspectA                   : MyAspectB.after……
-2024-09-29T16:41:03.788+08:00  INFO 14000 --- [javaweb-practise] [nio-8080-exec-1] com.kkcf.aop.MyAspectB                   : MyAspectA.after……
+2024-09-29T16:41:03.419+08:00  INFO 14000 --- [javaweb-practise] [nio-8080-exec-1] com.kkcf.aop.MyAspectA                   : MyAspectA.before……
+2024-09-29T16:41:03.419+08:00  INFO 14000 --- [javaweb-practise] [nio-8080-exec-1] com.kkcf.aop.MyAspectB                   : MyAspectB.before……
+2024-09-29T16:41:03.788+08:00  INFO 14000 --- [javaweb-practise] [nio-8080-exec-1] com.kkcf.aop.MyAspectB                   : MyAspectB.after……
+2024-09-29T16:41:03.788+08:00  INFO 14000 --- [javaweb-practise] [nio-8080-exec-1] com.kkcf.aop.MyAspectA                   : MyAspectA.after……
 ```
 
 可知：切面类里的通知执行顺序，默认和类名的排序有关；
@@ -204,8 +204,8 @@ execution 切入点表达式，可以基于**接口**进行匹配。
 
 execution 切入点表达式，可用通配符有两个：
 
-- `*` ：单个独立的任意符号，可以通配任意返回值、包名、类名、方法名、任意类型的一个参数，也可以通配包、类、方法名的一部分。
-- `..` ：多个连续的任意符号，可以通配任意层级的包，或任意类型、任意个数的参数。
+- `*` ：单个独立的任意符号，可以通配任意返回值、包名、类名、方法名、任意类型的**一个**参数，也可以通配包、类、方法名的一部分。
+- `..` ：多个连续的任意符号，可以通配任意层级的包，或任意类型、**任意个数**的参数。
 
 execution 切入点表达式，一般用法：
 
@@ -295,9 +295,7 @@ execution(* com.kkcf.*.*.DeptServiceImpl.find*(..)))
 
 - 比如：`list()` 和 `removeById()` 这两个方法。
 
-这时使用 execution 切入点表达式来描述，就不是很方便。
-
-因为要将两个 execution 切入点表达式，使用 `||` 组合在一起；
+这时使用 execution 切入点表达式来描述，就不是很方便。因为要将两个 execution 切入点表达式，使用 `||` 组合在一起；
 
 事实上，可以借助于 `@annotation` 切入点表达式，来描述这一类的切入点，简化切入点表达式的书写。
 
@@ -516,7 +514,7 @@ public class MyAspect {
 }
 ```
 
-- `JoinPoint` 类是 org.aspectj.lang 包下的；
+- `JoinPoint` 类，是 org.aspectj.lang 包下的；
 - `proceed` 方法，调用有参的方法时，要先获取参数，再将参数传递进去。
 - 在 AOP 中，可对连接点对象的返回值，进行篡改。
 
@@ -540,18 +538,28 @@ public class MyAspect {
 
 需求：在案例中，当访问部门管理、员工管理中的增、删、改相关功能接口时，记录详细的操作日志，并保存在数据库中，便于后期数据追踪。
 
-日志信息包含：操作人、操作时间、执行方法的全类名、执行方法名、方法运行时参数、返回值、方法执行时长；
+日志信息包含：
+
+- 操作人；
+- 操作时间；
+- 执行方法的全类名；
+- 执行方法名；
+- 方法运行时参数；
+- 返回值；
+- 方法执行时长；
 
 ### 4.1.问题分析
 
-- 项目当中增、删、改相关的方法很多；针对每一个接口方法进行修改，这种做法比较繁琐；
+项目当中增、删、改相关的方法很多；针对每一个接口方法进行修改，这种做法显然比较繁琐；
 
 ### 4.2.实现思路
 
-- 记录操作日志的逻辑是通用的、将它抽取出来定义在一个通知方法当中；
-- 技术方案选择：通过 AOP 面向切面编程思想，在不改动原始方法的基础上，对原始的功能进行增强。
-  - 通知类型选择：操作日志中，涉及到返回值和方法执行时长，所以要使用 AOP 的 `@Around` 环绕通知。
-  - 切入点描述选择：由于增、删、改方法名没有规律，所以使用 `@annotation` 切入点表达式，来描述切入点。
+记录操作日志的逻辑是通用的、将它抽取出来定义在一个通知方法当中；
+
+技术方案选择：通过 AOP 面向切面编程思想，在不改动原始方法的基础上，对原始的功能进行增强。
+
+- 通知类型选择：操作日志中，涉及到返回值和方法执行时长，所以要使用 AOP 的 `@Around` 环绕通知。
+- 切入点描述选择：由于增、删、改方法名没有规律，所以使用 `@annotation` 切入点表达式，来描述切入点。
 
 ### 4.3.准备工作
 
@@ -572,6 +580,7 @@ demo-project/javaweb-practise/pom.xml
 ```mysql
 -- 操作日志表
 DROP TABLE IF EXISTS operate_log;
+
 CREATE TABLE IF NOT EXISTS operate_log
 (
     id            INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID',
