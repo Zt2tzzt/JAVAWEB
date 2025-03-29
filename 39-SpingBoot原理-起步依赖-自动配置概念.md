@@ -17,8 +17,8 @@ Spring Boot 框架简化（非替代）了 Spring 框架的开发。直接基于
 
 Spring Boot 框架，之所以简单、快捷，是因为底层提供了两个重要的机制：
 
-- 起步依赖；用于简化 pom.xml 文件中依赖的配置。从而解决 Spring 框架中依赖配置繁琐的问题。
-- 自动配置。用于简化 Spring 容器中 Bean 的声明、配置，只需引入起步依赖，常用的配置都已完成，直接使用即可。
+- **起步依赖**；用于简化 pom.xml 文件中依赖的配置。从而解决 Spring 框架中依赖配置繁琐的问题。
+- **自动配置**。用于简化 Spring 容器中 Bean 的声明、配置，只需引入起步依赖，常用的配置都已完成，直接使用即可。
 
 Spring Boot 框架的原理，就是它的**起步依赖**、**自动配置**的原理。
 
@@ -26,7 +26,7 @@ Spring Boot 框架的原理，就是它的**起步依赖**、**自动配置**的
 
 ## 一、Spring Boot 起步依赖
 
-在不使用 Spring Boot，而是 Spring 框架，进行 Web 项目开发时，需要引入如下依赖：
+在不使用 Spring Boot，而是 Spring Framework 框架，进行 Web 项目开发时，需要引入如下依赖：
 
 - spring-webmvc 依赖：Spring 框架进行 Web 程序开发所需要的依赖；
 - servlet-api 依赖：Servlet 基础依赖；
@@ -39,9 +39,8 @@ Spring Boot 框架的原理，就是它的**起步依赖**、**自动配置**的
 
 当使用 Spring Boot 框架，进行 Web 项目开发时，就不需要像上面这么繁琐的引入依赖了。
 
-只需要引入一个 Web 开发的**起步依赖**：`springboot-starter-web` 即可。
-
-它会利用 **Maven 的依赖传递**特性，将相关的依赖（以及对应的版本号）全部引入进来。
+- 只需要引入一个 Web 开发的**起步依赖**：`springboot-starter-web` 即可。
+- 它会利用 **Maven 的依赖传递**特性，将相关的依赖（以及对应的版本号）全部引入进来。
 
 ![SpringBootWeb开发依赖](NoteAssets/SpringBootWeb开发依赖.png)
 
@@ -104,3 +103,4 @@ public class AutoConfigurationTest {
 Spring Boot 自动配置，就是当 Spring Boot 项目启动时，通过自动配置，将配置类，和它管理的 Bean 对象，自动存入到 IOC 容器中；不需要手动去声明。
 
 分析 Spring Boot 的自动配置原理，就是解析在 Spring Boot 项目中，引入依赖之后，是如何将依赖的 jar 包中，所定义的配置类，以及 Bean 对象，加载到 Spring IOC 容器中的。
+

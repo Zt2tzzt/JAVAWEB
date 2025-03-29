@@ -344,9 +344,11 @@ com.example.HeaderParser@5d04fbb7
 
 说明 `MyImportSelector` 实现类的 `selectImports` 方法中，声明的 `HeaderConfig` 配置类所配置的 `HeaderParser` 的 Bean 对象，已经在 IOC 容器中管理，并且可以注入使用了。
 
-基于以上方式，当要引入一个第三方依赖时，开发者要实现自动配置，还要知道第三方依赖中有哪些配置类、Bean 对象、`ImportSelector` 实现类需要被导入；
+基于以上方式，当要引入一个第三方依赖时，开发者要实现自动配置：
 
-这对开发者很不友好，非常繁琐；
+- 需要知道第三方依赖中，有哪些配置类、Bean 对象、`ImportSelector` 实现类需要被导入；
+
+这对开发者很不友好，非常繁琐，也是不现实的；
 
 ### 3.@EnableXxxx 注解
 
@@ -599,6 +601,8 @@ public class GsonAutoConfiguration {……}
 
 而 Spring 会自动调用配置类中使用 `@Bean` 标识的方法，并把方法的返回值注册到 IOC 容器中。
 
+## 四、Spring Boot 自动配置总结
+
 总结：自动配置原理，源码的入口就是引导类上的 `@SpringBootApplication` 注解，在这个注解中，封装了三个注解，分别是：
 
 - `@SpringBootConfiguration`，声明当前类是一个配置类；
@@ -612,4 +616,4 @@ public class GsonAutoConfiguration {……}
 
 这些 Bean 并不会全部注册到 IOC 容器中；
 
-在声明 Bean 对象时，上面有加一个以 `@ConditionalXxxx` 的注解，用于按照条件进行装配，只有满足条件之后，Bean 才会注册到 IOC 容器中。
+在声明 Bean 对象时，上面有加一个 `@ConditionalXxxx` 的注解，用于按照条件进行装配，只有满足条件之后，Bean 才会注册到 IOC 容器中。
