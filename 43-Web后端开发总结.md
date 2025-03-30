@@ -16,10 +16,10 @@ Java Web 后端开发，现在基本上都是基于标准的三层架构进行�
 
 - 比如：进行统一的登录校验；统一的字符编码……
 
-可以借助于：
+可以借助于两种方式：
 
-- Java Web 当中三大组件之一的过滤器 Filter；
-- 或者 Spring 提供的拦截器 Interceptor 来实现。
+- 方式一：Java Web 当中三大组件之一的过滤器 Filter；
+- 方式二：Spring 提供的拦截器 Interceptor 来实现。
 
 ![过滤器、拦截器](NoteAssets/过滤器、拦截器.png)
 

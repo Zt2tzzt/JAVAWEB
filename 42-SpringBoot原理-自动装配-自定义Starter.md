@@ -2,7 +2,7 @@
 
 ## 一、Spring Boot starter 是什么
 
-starter 就是 Spring Boot 的起步依赖。
+starter 就是 Spring Boot 的**起步依赖**。
 
 Spring Boot 官方，提供了很多起步依赖；
 
@@ -51,7 +51,7 @@ Mybatis 依赖，提供了配置类，并且也提供了 Spring Boot 项目启�
 
 在自定义一个起步依赖 starter 的时候，按照规范，需要定义两个模块（Module）：
 
-1. starter 模块，利用 Maven 的依赖传递特性，进行依赖管理，会把程序开发所需要的依赖，都引入到项目中；
+1. starter 模块，利用 Maven 的**依赖传递**特性，进行依赖管理，会把程序开发所需要的依赖，都引入到项目中；
 2. autoconfigure 模块，用于自动配置；
 
 在项目中，只需要引入一个起步依赖（starter 模块）即可，它会将 autoconfigure 自动配置的依赖传递进来。
@@ -240,21 +240,26 @@ demo-project/aliyun-oss-spring-boot-starter/pom.xml
     <version>0.0.1-SNAPSHOT</version>
 
     <url/>
+  
     <licenses>
         <license/>
     </licenses>
+  
     <developers>
         <developer/>
     </developers>
+  
     <scm>
         <connection/>
         <developerConnection/>
         <tag/>
         <url/>
     </scm>
+  
     <properties>
         <java.version>17</java.version>
     </properties>
+  
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -329,31 +334,38 @@ demo-project/aliyun-oss-spring-boot-autoconfigure/pom.xml
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+  
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+  
     <groupId>com.aliyun.oss</groupId>
     <artifactId>aliyun-oss-spring-boot-autoconfigure</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <url/>
+  
     <licenses>
         <license/>
     </licenses>
+  
     <developers>
         <developer/>
     </developers>
+  
     <scm>
         <connection/>
         <developerConnection/>
         <tag/>
         <url/>
     </scm>
+  
     <properties>
         <java.version>17</java.version>
     </properties>
+  
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -200,8 +200,7 @@ com.example.HeaderParser@212c0aff
 
 说明 IOC 容器中已加载 Bean 对象 `headerParser`；
 
-- 因为 Spring Boot 在调用 `@Bean` 标识的 `headerParser` 方法前，IOC 容器中是没有 `HeaderParser` 类型的 Bean 对象；
-- 所以 `headerParser` 对象正常创建，并注册到 IOC 容器中。
+- 因为 Spring Boot 在调用 `@Bean` 标识的 `headerParser` 方法前，IOC 容器中没有 `HeaderParser` 类型的 Bean 对象；所以 `headerParser` 对象正常创建，并注册到 IOC 容器中。
 
 在第三方依赖的 `HeaderConfig` 配置类中，修改 `@ConditionalOnMissingBean` 注解的使用：
 
@@ -232,8 +231,7 @@ com.example.HeaderParser@7f5ecada
 
 说明 IOC 容器中已加载 Bean 对象 `headerParser`；
 
-- 因为 Spring Boot 在调用配置类中 `@Bean` 标识的 `headerParser` 方法前，IOC 容器里没有名称为 `deptController2` 的 Bean 对象；
-- 所以 Bean 对象 `headerParser` 正常创建，并注册到 IOC 容器中。
+- 因为 Spring Boot 在调用配置类中 `@Bean` 标识的 `headerParser` 方法前，IOC 容器里没有名称为 `deptController2` 的 Bean 对象；所以 Bean 对象 `headerParser` 正常创建，并注册到 IOC 容器中。
 
 在第三方依赖的 `HeaderConfig` 配置类中，再次修改 `@ConditionalOnMissingBean` 注解的使用：
 
@@ -264,8 +262,7 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying b
 
 说明 IOC 容器中没有加载 Bean 对象 `headerParser`；
 
-- 因为 `HeaderConfig` 类上有 `@Configuration` 注解，其中包含了 `@Component` 注解；
-- 所以 Spring Boot 项目在启动时，会创建 `HeaderConfig` 的 Bean 对象，并注册到 IOC 容器中。
+- 因为 `HeaderConfig` 类上有 `@Configuration` 注解，其中包含了 `@Component` 注解；所以 Spring Boot 项目在启动时，会创建 `HeaderConfig` 的 Bean 对象，并注册到 IOC 容器中。
 - 当 IOC 容器中，有 `HeaderConfig` 类型的 Bean 对象存在，就不会把 `HeaderParser` 类型的对象注册到 IOC 容器中了。
 
 ### 3.@ConditionalOnProperty 注解
