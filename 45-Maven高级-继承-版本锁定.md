@@ -34,7 +34,7 @@ Maven 工程的继承，在子工程的 pom.xml 文件中使用 `<parent>` 标�
 
 所有的 Spring Boot 项目，都有一个统一的父工程，即 spring-boot-starter-parent。
 
-与 java 语言类似，Maven 项目不支持多继承，但可以多重继承；
+与 java 语言类似，Maven 项目**不支持多继承**，但**可以多重继承**；
 
 子工程如果继承了 spring-boot-starter-parent，就无法继承自定义的父工程 javaweb-parent了。
 
@@ -185,7 +185,7 @@ demo-project/javaweb-parent/pom.xml
 
 在项目开发中，有一部分依赖，并不是各个模块都共有的。比如：
 
-- 一个父工程有五个自工程，其中三个用到了 jwt 依赖。 其它两个并不需要这个依赖，
+- 一个父工程有五个子工程，其中三个用到了 jwt 依赖。 其它两个并不需要这个依赖，
 - 那么这个依赖，不应配置在父工程中，而是在需要的模块中配置。
 
 由于是一个项目，那它的多个模块中，依赖的版本要一致，这样便于项目依赖的统一管理。比如：
@@ -233,7 +233,7 @@ demo-project/javaweb-practise/pom.xml
 </dependencies>
 ```
 
-在父工程中，所配置的 `<dependencyManagement>` 标签只能统一管理依赖版本，并不会将这个依赖直接引入进来。 这点和 `<dependencies>` 标签是不同的。
+在父工程中，所配置的 `<dependencyManagement>` 标签，只能统一管理依赖版本，并不会将这个依赖直接引入进来。 这点和 `<dependencies>` 标签是不同的。
 
 子工程要使用这个依赖，还是需要引入的，只是无需使用 `<version>` 标签指定版本号了，父工程统一管理。变更依赖版本。
 
@@ -360,3 +360,4 @@ demo-project/javaweb-parent/pom.xml
 
 - `<dependencies>` 是直接依赖，在父工程配置了依赖，子工程会直接继承下来。
 - `<dependencyManagement>` 是统一管理依赖版本，子工程不会直接继承，还需要引入依赖，但无需指定版本。
+
