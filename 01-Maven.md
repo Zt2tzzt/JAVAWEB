@@ -47,8 +47,8 @@ ${maven-project}
 
 在 Maven 工程中，提供了一套标准的指令，用于项目开发完成后的**清理**、**编译**、**测试**、**打包**、**发布**
 
-- 比如：在 Maven 项目（工程）中，执行 `compile` 命令，会将整个项目（工程）进行编译，并把编译后的结果，放到 target 目录下。
-- 比如：在 Maven 项目（工程）中，执行 `package` 命令，会将整个项目（工程）进行打包，并把打包后的 jar 包，放到 target 目录下。
+- 比如：在 Maven 项目（工程）中，执行 `compile` 命令，会将整个项目（工程）进行**编译**，并把编译后的结果，放到 target 目录下。
+- 比如：在 Maven 项目（工程）中，执行 `package` 命令，会将整个项目（工程）进行**打包**，并把打包后的 jar 包，放到 target 目录下。
 
 ## 二、Maven 的概述
 
@@ -106,7 +106,7 @@ Maven 安装和配置，主要有 4 步：
 </settings>
 ```
 
-Ⅲ、配置阿里云远程仓库（私服），修改 maven 安装目录下 `conf/settings.xml` 中的 `<mirro>` 标签，为其添加如下子标签。
+Ⅲ、配置阿里云远程仓库（私服），修改 maven 安装目录下 `conf/settings.xml` 中的 `<mirros>` 标签，为其添加如下子标签。
 
 ```xml
 <settings
@@ -179,7 +179,7 @@ Maven 安装和配置，主要有 4 步：
 
 Maven 是基于 java 开发的项目，Maven 的运行，也要基于本地的 JDK。
 
-在真实开发中，很少在命令行执行 mvn 命令，绝大多数时候，都是使用 IDEA 中集成的 maven，来执行命令。
+> 在真实开发中，很少在命令行执行 mvn 命令，绝大多数时候，都是使用 IDEA 中集成的 maven，来执行命令。
 
 ## 五、IDEA 集成 Maven 并创建 Maven 项目
 
@@ -356,7 +356,7 @@ Maven 项目中可以引入多个依赖：步骤如下：
 
 ### 2.依赖传递
 
-当 maven 项目中，引入了一个依赖，比如上面的 `logback-classic`，那么它依赖的另外两个 jar 包 `logback-core` 和 `slf4j`，也会被引入到项目中。
+当 maven 项目中，引入了一个依赖，比如上面的 `logback-classic`，那么它依赖的另外两个 jar 包：`logback-core` 和 `slf4j`，也会被引入到项目中。
 
 这就涉及到了 Maven 的依赖传递特性。
 
@@ -367,7 +367,7 @@ Maven 项目管理的依赖，可以分为：
 
 ![Maven依赖的传递性](NoteAssets/Maven依赖的传递性.png)
 
-- 上图蓝色区域是 projectA 的直接依赖，黄色区域是 projectA 的间接依赖。
+- 上图**蓝色区域**是 projectA 的直接依赖，**黄色区域**是 projectA 的间接依赖。
 
 > 在 IDEA 中，在 pom.xml 查看依赖结构：
 >
@@ -538,7 +538,7 @@ mac 上要转成 .sh 文件
 #!/bin/bash
 
 # 设置本地 Maven 仓库路径
-REPOSITORY_PATH="[本地maven仓库路径]"
+REPOSITORY_PATH="[本地maven仓库]"
 
 # 提示信息
 echo "正在搜索 *.lastUpdated 文件并删除..."
