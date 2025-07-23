@@ -58,6 +58,8 @@ Spring Boot 框架底层，仍然基于 Spring Frameworrk 实现。
 
 生成的 pom.xml 文件如下：
 
+demo-project/springboot-web-quickstart/pom.xml
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

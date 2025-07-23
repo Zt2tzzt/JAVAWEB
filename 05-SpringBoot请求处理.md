@@ -162,7 +162,7 @@ public class RequestController {
 
 #### 3.@RequestParam 注解
 
-如果要将不同的请求参数名，与形参变量名映射起来，要使用 `@RequestParam` 注解
+如果要将不同的**请求参数名**，与**形参变量名**映射起来，要使用 `@RequestParam` 注解
 
 ##### 1.value 属性
 
@@ -226,7 +226,7 @@ public class RequestController {
 
 这时，可以考虑将请求参数，封装到一个实体（pojo）类的对象中。
 
-- 要遵守**请求参数名与实体类的属性名相同**的规则。
+- 要遵守“**请求参数名与实体类的属性名相同**”的规则。
 
 创建一个实体（pojo）类 User：
 

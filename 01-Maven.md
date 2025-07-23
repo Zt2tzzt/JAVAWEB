@@ -60,8 +60,8 @@ Maven 构建项目，生命周期的各个阶段，如下图所示：
 
 - 其中通过 Maven 的各个**插件**，完成不同的功能。
 - 各个插件的构建操作，会产生不同的文件：比如：
-  - 编译（compile）阶段会有 .class 字节码文件产生；
-  - 打包（package）阶段会有 jar 包产生。
+  - 编译（`compile`）阶段会有 .class 字节码文件产生；
+  - 打包（`package`）阶段会有 jar 包产生。
 
 ![maven生命周期](NoteAssets/Maven生命周期.png)
 
@@ -70,8 +70,8 @@ Maven 构建项目，生命周期的各个阶段，如下图所示：
 Maven 仓库，用于存储资源，管理各种 jar 包。
 
 - 本地仓库：计算机本地的一个目录；
-- [中央仓库](http://repo1.maven.org/maven2)：由 Maven 团队维护的全球唯一的远程仓库。
 - 远程仓库（私服）：一般由公司团队搭建的私有仓库。
+- [中央仓库](http://repo1.maven.org/maven2)：由 Maven 团队维护的全球唯一的远程仓库。
 
 Maven 会先在本地仓库查找需要的 Jar 包进行关联，
 
@@ -138,7 +138,7 @@ Maven 安装和配置，主要有 4 步：
    macOS Catalina 及以后版本默认使用 zsh（早期版本可能是 bash）。
 
    - 如果使用 zsh，请编辑 `~/.zshrc` 或 `~/.zprofile` 文件。
-   - 如果使用 bash，则编辑 `~/.bash_profile` 或 `~/.bashrc` 文件。
+   - 如果使用 bash，则编辑 `~/.bashrc` 或 `~/.bash_profile` 文件。
 
 3. **编辑配置文件**
    打开终端，使用你喜欢的编辑器（例如 nano 或 vim）打开配置文件。例如，如果使用 zsh：
@@ -220,12 +220,12 @@ IDEA 配置集成 Maven 有两种方案：
 
 1. 接第一步，在右侧打开 Advanced Setting；
 
-2. 配置 GroupId，ArtifactId，version；maven 项目中，这些信息被称为**坐标**。比如：
-   - GroupId，设为 `com.kkcf`；表示：组织名
+2. 配置 GroupId，ArtifactId，version 等信息；maven 项目中，这些信息被称为**坐标**。比如：
+   - `GroupId`，设为 `com.kkcf`；表示：组织名
 
-   - ArtifactId，设为 `maven-01`；表示：模块名，
+   - `ArtifactId`，设为 `maven-01`；表示：模块名，
 
-   - version 会被 IDEA 自动生成，创建时无需指定。表示：版本号。
+   - `version` 会被 IDEA 自动生成，创建时无需指定。表示：版本号。
 
 3. 点击 Create 创建项目。maven 会自动加载项目所依赖的插件，放入本地仓库中。
 
@@ -303,11 +303,11 @@ Maven 项目中的坐标，是资源的唯一标识，它可以唯一定位资�
 
 Maven 坐标的主要组成：
 
-- groupId：表示当前 Maven 项目隶属组织名称，通常是域名反写。
+- `groupId`：表示当前 Maven 项目隶属组织名称，通常是域名反写。
   - 比如：`com.kkcf`
-- artifactId：定义当前 Maven 项目名称，通常是模块名称。
+- `artifactId`：定义当前 Maven 项目名称，通常是模块名称。
   - 比如：`order-service`、`goods-service`
-- version：定义当前项目的版本号：
+- `version`：定义当前项目的版本号：
 
 Maven 项目的坐标如下：
 
@@ -351,7 +351,7 @@ Maven 项目中可以引入多个依赖：步骤如下：
 注意事项：
 
 1. 如果引入的依赖，在本地仓库中不存在，将会连接远程仓库（或中央仓库）下载依赖；
-   - 这个过程会比较耗时，耐心等待。
+   - 这个过程会比较耗时，需要耐心等待。
 2. 如果不知道依赖的坐标信息，可以到 mvn 的[中央仓库站点](https://mvnrepository.com/)中搜索。
 
 ### 2.依赖传递
@@ -466,13 +466,13 @@ Maven 的生命周期，描述了一次项目构建，经历哪些阶段。
 
 Maven 对项目构建，有**三套**独立的生命周期，分别是：
 
-- 第一套：clean：清理工作。
+- 第一套：`clean`：清理工作。
   - 比如：清理上一次编译的 .class 字节码文件；打包之后的 jar 包文件。
 
-- 第二套：default：核心工作。
+- 第二套：`default`：核心工作。
   - 比如：编译、测试、打包、安装、部署等。
 
-- 第三套：site：生成报告、发布站点等（很少用）。
+- 第三套：`site`：生成报告、发布站点等（很少用）。
 
 这三套生命周期，每一套又分为若干个阶段，如下图所示：
 
