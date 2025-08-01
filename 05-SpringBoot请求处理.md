@@ -65,7 +65,7 @@ Spring Boot 内置的 Tomcat 服务器，并不能识别 Spring 项目中的 Con
 
 - 应用程序，通过该对象，来获取请求信息，进行处理。
 
-在 Spring 框架中，可使用 `HttpServletResponse` 对象（请求对象），来封装要返回的响应信息。
+在 Spring 框架中，可使用 `HttpServletResponse` 对象（请求对象），来接收并封装要返回的响应信息。
 
 - Tomcat 会将该对象中封装的响应信息，返回给浏览器（客户端）。
 
@@ -84,14 +84,14 @@ Spring Boot 内置的 Tomcat 服务器，并不能识别 Spring 项目中的 Con
 - GET 请求，在请求 url 中传递 query 字符串，或者通过路径传递参数。
 - POST 请求，在请求体（body）中以多种形式（比如： x-www-form-urlencoded、json）方式传递的参数。
 
-### 1.简单参数处理
+### 4.1.简单参数处理
 
 在基于 Spring Boot 开发的后端服务中，接收传递过来的参数，有两种方式：
 
 - 原始方式
 - Spring Boot 特有的方式
 
-#### 1.原始方式处理
+#### 4.1.1.原始方式处理
 
 Tomcat 接收到 http 请求时：会把请求的相关信息，封装到 `HttpServletRequest` 类型的请求对象中。
 
@@ -129,7 +129,7 @@ public class RequestController {
 
 这种方式，仅做了解。在实际开发中不会使用。
 
-#### 2.Spring Boot 方式处理
+#### 4.1.2.Spring Boot 方式处理
 
 在 Spring Boot 框架中，对原始的 `HttpServletRequest` 请求对象 API 进行了封装；
 
@@ -160,11 +160,11 @@ public class RequestController {
 
 在客户端，发送请求 `localhost:8080/simpleParam?name=zzt&age=18` 测试。
 
-#### 3.@RequestParam 注解
+#### 4.1.3.@RequestParam 注解
 
-如果要将不同的**请求参数名**，与**形参变量名**映射起来，要使用 `@RequestParam` 注解
+如果要将不同的**请求参数名**，与**形参变量名**进行映射，要使用 `@RequestParam` 注解
 
-##### 1.value 属性
+##### 4.1.3.1.value 属性
 
 在方法形参前面，加上 `@RequestParam` 注解，然后通过 `value` 属性作为请求参数名，从而完成映射。代码如下：
 
@@ -190,7 +190,7 @@ public class RequestController {
 
 在客户端，发送请求 `localhost:8080/simpleParam?name=zzt&age=18` 测试。
 
-##### 2.required 属性
+##### 4.1.3.2.required 属性
 
 `@RequestParam` 注解中的 `required` 属性，默认为 `true`，表示该请求参数必须传递，如果不传递就报错。
 
@@ -218,7 +218,7 @@ public class RequestController {
 
 在客户端，发送请求 `localhost:8080/simpleParam?name=zzt&age=18` 测试。
 
-### 2.实体参数处理
+### 4.2.实体参数处理
 
 上面的案例中，请求在传递简单参数时，请求中有多少个请求参数，后端 Controller 控制器的处理方法中，形参就要有多少个。
 
@@ -298,7 +298,7 @@ public class RequestController {
 
 在客户端，发送请求 `localhost:8080/simplePojo?name=zzt&age=18` 测试。
 
-#### 1.实体类的封装
+#### 4.2.1.实体类的封装
 
 `User` 实体类中，还有一个 `Address` 类型的属性。
 
@@ -364,14 +364,14 @@ public class RequestController {
 
 测试，在客户端发起的请求 url 应为：`localhost:8080/simplePojo?name=zzt&age=18&address.province=广东&address.city="深圳"`
 
-### 3.数组参数处理
+### 4.3.数组参数处理
 
 浏览器（客户端）发送请求，传递数组参数可以有两种方式：
 
 - 方式一：`localhost:8080/arrayParam?hobby=唱&hobby=跳&hobby=rap&hobby=篮球`
 - 方式二：`localhost:8080/arrayParam?hobby=唱,跳,rap,篮球`
 
-#### 1.数组接收
+#### 4.3.1.数组接收
 
 直接使用数组类型的形参，来接收请求的参数。
 
@@ -400,7 +400,7 @@ public class RequestController {
 }
 ```
 
-#### 2.集合接收
+#### 4.3.2.集合接收
 
 要求请求参数名，与形参集合对象名相同；且请求参数为多个，
 
@@ -434,7 +434,7 @@ public class RequestController {
 }
 ```
 
-### 4.日期参数处理
+### 4.4.日期参数处理
 
 在一些特殊的需求中，可能会涉及到请求传递日期类型的数据。比如：
 
@@ -442,7 +442,7 @@ public class RequestController {
 
 日期的格式多种多样（如：2022-12-12 10:05:45 、2022/12/12 10:05:45）；
 
-#### 1.@DateTimeFormat 注解
+#### 4.4.1.@DateTimeFormat 注解
 
 对于日期类型的参数，需要使用 `@DateTimeFormat` 注解，以及其 `pattern` 属性，来设置形参的日期的格式。
 
@@ -476,9 +476,9 @@ public class RequestController {
 }
 ```
 
-### 5.JSON 参数处理
+### 4.5.JSON 参数处理
 
-客户端请求传递 JSON 格式的参数，通常会使用 POST 请求方式，并在请求体中携带 JSON 数据，比如：
+客户端请求传递 JSON 格式的参数，通常会使用 **POST** 请求方式，并在请求体中携带 JSON 数据，比如：
 
 - `localhost:8080/jsonParam`，在请求体中，携带如下 json 参数：
 
@@ -493,7 +493,7 @@ public class RequestController {
 }
 ```
 
-#### 1.@RequestBody 注解
+#### 4.5.1.@RequestBody 注解
 
 服务器端 Controller 控制器中的方法，处理 JSON 类型的参数：
 
@@ -523,13 +523,13 @@ public class RequestController {
 }
 ```
 
-### 6.路径（路由）参数处理
+### 4.6.路径（路由）参数处理
 
 实际开发中，经常会直接在请求的 URL 中，传递路径参数。比如：
 
 - `localhost:8080/pathParam/1/zzt`
 
-#### 1.@PathVariable 注解
+#### 4.6.1.@PathVariable 注解
 
 服务器端 Controller 控制器的处理方法，要使用 `@RequestMapping` 结合 `@PathVariable` 注解来处理：
 
