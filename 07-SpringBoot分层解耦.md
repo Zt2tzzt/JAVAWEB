@@ -2,7 +2,7 @@
 
 ## 一、Web 开发三层架构思想
 
-分层架构，遵循**单一职责原则**。它指的是一个类，或一个方法，就只管一块功能，或只管一件事。
+分层架构，遵循**单/一职责原则**。它指的是一个类，或一个方法，就只管一块功能，或只管一件事。
 
 - 这样就可以让类、接口、方法的复杂度更低，可读性更强，扩展性更好，也更利于后期的维护。
 
@@ -30,7 +30,7 @@
 
 使用三层架构思想，重构之前的代码。
 
-### 1.Dao 层
+### 1.1.Dao 层
 
 创建一个 dao 包（package），在其中创建一个接口 `EmpDao`，用于增强灵活性
 
@@ -75,7 +75,7 @@ public class EmpDaoA implements EmpDao {
 }
 ```
 
-### 2.Service 层
+### 1.2.Service 层
 
 创建一个 service 包（package），在其中创建一个接口 `EmpService`，用于增强灵活性。
 
@@ -98,6 +98,8 @@ public interface EmpService {
 创建一个 `EmpServiceA` 类，实现 `EmpService` 接口：
 
 - 使用 Dao 层创建的实例对象 `empDao` 调用方法，获取数据。
+
+demo-project/springboot-web-quickstart/src/main/java/com/kkcf/service/impl/EmpServiceA.java
 
 ```java
 package com.kkcf.service.impl;
@@ -143,7 +145,7 @@ public class EmpServiceA implements EmpService {
 }
 ```
 
-### 3.Controller 层
+### 1.3.Controller 层
 
 在 `EmpController` 中，使用 Service 层创建的实例对象 `empService`，获取数据。
 
@@ -182,7 +184,7 @@ public class EmpController {
 
 - **耦合**：软件中，各个层、模块之间的依赖、关联。
 
-### 1.高内聚、低耦合
+### 2.1.高内聚、低耦合
 
 软件设计原则是：高内聚，低耦合；
 
@@ -224,24 +226,24 @@ public class EmpController {
 - 容器中存储一些对象（比如：`EmpService` 接口类型的对象)。
 - Controller 层会从容器中，获取这些对象。
 
-### 2.IOC 控制反转
+### 2.2.IOC 控制反转
 
 要想实现上述解耦操作，就涉及到 Spring 中的核心概念：
 
 **IOC（Inversion Of Control）控制反转**：对象的创建控制权，由程序自身转移到外部容器。
 
-- 这个容器称为：**IOC 容器**或 **Spring 容器**。
+- 这个容器称为：**IOC 容器** / **Spring 容器**。
 
-### 3.DI 依赖注入
+### 2.3.DI 依赖注入
 
 **DI（Dependency Injection）依赖注入**：容器为应用程序提供运行时，所依赖的资源，称之为依赖注入。
 
 - 程序运行时，需要某个资源，此时容器就为其提供这个资源。
 - 比如：`EmpController` 程序运行时，需要 `EmpService` 对象，Spring 容器就为其提供并注入 `EmpService` 对象。
 
-### 4.Bean 对象
+### 2.4.Bean 对象
 
-**Bean 对象**：指的是 IOC 容器中，创建、管理的对象。
+**Bean 对象**：指的是 **IOC 容器**中，创建、管理的对象。
 
 ## 三、Spring Boot IOC 控制反转
 
@@ -249,7 +251,7 @@ public class EmpController {
 
 将 Dao 层，Service 层的实现类，都交给 IOC 容器管理。
 
-### 1.@Component 注解
+### 3.1.@Component 注解
 
 那么就要将 Dao 层、Service 层的实现类上，加上 `@Componet` 注解
 
@@ -282,9 +284,9 @@ public class EmpServiceA implements EmpService {
 - Service 层代码运行的时候，需要使用 IOC 容器中 Dao 层的 Bean 对象；
 - Controller 层代码运行的时候，需要使用 IOC 容器中 Service 层的 Bean 对象。
 
-### 1.@Autowired 注解
+### 4.1.@Autowired 注解
 
-那么就要分别将 Service 层，Controller 层实现类中，使用的 Dao 层，Service 层的成员变量实例对象上，加上 `@Autowired` 注解，表示自动装配。
+那么就要分别将 Service 层，Controller 层实现类中，分别使用的 Dao 层，Service 层的成员变量实例对象上，加上 `@Autowired` 注解，表示自动装配。
 
 Service 层 `EmpServiceA` 实现类：
 
@@ -346,7 +348,7 @@ public class EmpServiceA implements EmpService {
 
 即可实现 Service 层逻辑的切换。
 
-## 六、Spring Boot IOC 控制反转详解
+## 六、Spring Boot IOC 详解
 
 由上面的案例可知，IOC 控制反转，就是将对象的控制权，交给 Spring 的 IOC 容器，由 IOC 容器创建及管理对象。
 
@@ -354,7 +356,7 @@ IOC 容器，创建的对象，称为 bean 对象。
 
 在上面的入门案例中，要把某个类的对象，交给 IOC 容器管理，需要在类上添加一个注解：`@Component`
 
-### 1.@Controller、@Service、@Repository 注解
+### 6.1.@Controller、@Service、@Repository 注解
 
 事实上，Spring 框架为了更好的标识 web 应用程序开发当中，bean 对象到底归属于哪一层，提供了 `@Component` 的衍生注解如下：
 
@@ -393,7 +395,7 @@ public class EmpDaoA implements EmpDao {
 }
 ```
 
-### 2.Bean 对象名称指定
+### 6.2.Bean 对象名称指定
 
  在 IOC 容器中，每一个Bean 对象，都有一个标识，也就是名字。
 
@@ -424,7 +426,7 @@ public class EmpDaoA implements EmpDao {
 
 使用上面注解声明的 Bean 对象，想要生效，还需要被组件扫描：
 
-下面修改项目 dao 包的目录结构，来测试 Dao 层的 bean 对象是否生效：
+下面，修改项目 dao 包的目录结构，来测试 Dao 层的 bean 对象是否生效：
 
 修改后的结构如下：
 
@@ -437,6 +439,8 @@ demo-project/springboot-web-quickstart/src/main/java
   ├─📁 impl/
   └─📄 EmpDao.java
 ```
+
+* dao 包从 kkcf 包中移出。
 
 启动项目，出现如下错误：
 
@@ -453,11 +457,11 @@ The injection point has the following annotations:
   - @org.springframework.beans.factory.annotation.Autowired(required=true)
 ```
 
-### 1.@ComponentScan 注解
+### 7.1.@ComponentScan 注解
 
 没有找到 bean 对象，是因为 bean 对象没有被 Spring 的组件扫描注解 `@ComponentScan` 扫描到。
 
-### 2.@SpringBootApplication 注解
+### 7.2.@SpringBootApplication 注解
 
 在 Spring Boot 项目中，虽然没有显式配置 `@ComponentScan` 注解，但是已经包含在了引导类（`SpringbootWebQuickstartApplication`）声明注解 `@SpringBootApplication` 中；
 
@@ -468,6 +472,8 @@ The injection point has the following annotations:
 推荐做法：将定义的 controller，service，dao 这些包，都放在引导类所在包（比如：`com.kkcf` ）的子包下，如下方目录结构所示：
 
 - 这样 bean 对象就会被自动的扫描到。
+
+demo-project/springboot-web-quickstart/src/main/java/com/kkcf
 
 ```txt
 ├─📁 controller/
@@ -480,7 +486,7 @@ The injection point has the following annotations:
 
 DI 依赖注入，是指 IOC 容器，要为应用程序去提供运行时所依赖的资源，这个资源就是 Bean 对象。
 
-在入门程序案例中，使用了 `@Autowired` 注解，完成了依赖注入的操作（Autowired 是自动装配的意思）。
+在入门程序案例中，使用了 `@Autowired` 注解，完成了依赖注入的操作（"Autowired"是自动装配的意思）。
 
 `@Autowired` 注解，默认是按照**类型**，进行自动装配的（去 IOC 容器中找某个类型的对象，然后完成注入操作）
 
@@ -534,7 +540,7 @@ Field empService in com.kkcf.controller.EmpController required a single bean, bu
 
 为解决这个问题，Spring 提供了以下几个注解：
 
-### 1.@Primary 注解
+### 8.1.@Primary 注解
 
 当存在多个相同类型的 Bean 对象，可供注入时
 
@@ -552,14 +558,14 @@ public class EmpServiceA implements EmpService {
 }
 ```
 
-### 2.@Qualifier 注解
+### 8.2.@Qualifier 注解
 
 当存在多个相同类型的 Bean 对象，可供注入时
 
 在要注入 Bean 对象的类中，使用 `@Autowired` 结合 `@Qualifier` 注解
 
 - `@Qualifier` 注解不能单独使用，必须配合 `@Autowired` 注解使用。
-- `@Qualifier` 注解，使用 `value` 属性。按照类型，进行 Bean 对象注入，
+- `@Qualifier` 注解，使用 `value` 属性。**按照类型**，进行 Bean 对象注入，
 
 比如：在 Controller 层中，为 Bean 对象注入指定一个对象：
 
@@ -589,14 +595,14 @@ public class EmpController {
 }
 ```
 
-### 3.@Resource 注解
+### 8.3.@Resource 注解
 
 当存在多个相同类型的 Bean 注入时，可供注入时，
 
 在要注入 Bean 对象的类中，使用 `@Resource` 注解。
 
 - `@Resource` 注解，由 JDK 提供，而非 Spring 框架。
-- `@Resource` 注解，使用 `name` 属性。按照名称，进行 Bean 对象注入。
+- `@Resource` 注解，使用 `name` 属性。**按照名称**，进行 Bean 对象注入。
 
 比如：在 Controller 层中，为 Bean 对象注入指定一个对象：
 

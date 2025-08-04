@@ -41,7 +41,7 @@
 
 ## 一、DATABASE 操作
 
-### 1.DATABASE 查询
+### 1.1.DATABASE 查询
 
 查询所有的数据库，执行 DDL 语句：
 
@@ -57,7 +57,7 @@ SELECT DATABASE();
 
 - `DATABASE()` 是 MySQL 中的函数，返回当前正在使用的数据库。
 
-### 2.DATABASE 创建
+### 1.2.DATABASE 创建
 
 数据库名字是唯一的，所以在创建数据库时，可以加上 `IF NOT EXISTS` 关键字：
 
@@ -65,7 +65,7 @@ SELECT DATABASE();
 CREATE DATABASE IF NOT EXISTS 数据库名;
 ```
 
-### 2.DATABASE 使用
+### 1.3.DATABASE 使用
 
 要操作某一个数据库，必须切换到对应的数据库中。
 
@@ -73,7 +73,7 @@ CREATE DATABASE IF NOT EXISTS 数据库名;
 USE 数据库名;
 ```
 
-### 3.DATABASE 删除
+### 1.4.DATABASE 删除
 
 不能删除不存在的数据库，所以可以加上 `IF EXISTS` 关键字，执行 DDL 语句：
 
@@ -91,7 +91,7 @@ DROP DATABASE IF EXISTS 数据库名;
 
 ## 二、TABLE 操作
 
-### 1.TABLE 创建
+### 2.1.TABLE 创建
 
 数据库表创建，语法如下：
 
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS user
 ) COMMENT '用户表';
 ```
 
-#### 1.字段约束
+#### 2.1.1.字段约束
 
 想要限制字段所存储的数据，就需要用到数据库中的**约束**。
 
@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS user
 ) COMMENT '用户表';
 ```
 
-#### 2.MySQL 数据类型
+#### 2.1.2.MySQL 数据类型
 
 MySQL 中的数据类型，主要分为三类：
 
@@ -166,7 +166,7 @@ MySQL 中的数据类型，主要分为三类：
 - 字符串类型；
 - 日期时间类型。
 
-##### 1.MySQL 数值类型
+##### 2.1.2.1.MySQL 数值类型
 
 MySQL 数值类型，如下表所示：
 
@@ -190,7 +190,7 @@ MySQL 数值类型，如下表所示：
 - 年龄字段，不会出现负数，而且人的年龄不会太大，可以这样声明 `age TINYINT UNSIGNED`；
 - 分数，总分 100 分，最多出现一位小数，可以这样声明：`score DOUBLE(4,1)`
 
-##### 2.MySQL 字符串类型
+##### 2.1.2.2.MySQL 字符串类型
 
 MySQL 字符串类型，如下表所示：
 
@@ -207,15 +207,15 @@ MySQL 字符串类型，如下表所示：
 | `LONGBLOB`   | 0-4 294 967 295 bytes | 二进制形式的极大文本数据     |
 | `LONGTEXT`   | 0-4 294 967 295 bytes | 极大文本数据                 |
 
-- `CHAR(10)`：固定存 10 个字符；性能高（不用判断数据的长度），但浪费空间。
-- `VARCHAR(10)`：最多存 10 个字符，不足 10 个按照实际长度存储；性能相对低（要判断数据的长度），但节省空间。
+- `CHAR(10)`：固定存 10 个字符；性能高（存储时不用判断数据的长度），但浪费空间。
+- `VARCHAR(10)`：最多存 10 个字符，不足 10 个按照实际长度存储；性能相对低（存储时要判断数据的长度），但节省空间。
 
 示例：
 
 - 用户名，长度不定，最长不会超过 50，可以这样声明：`username VARCHAR(50)`；
 - 手机号，固定长度为 11，可以这样声明：`phone CHAR(11)`。
 
-##### 3.MySQL 日期类型
+##### 2.1.2.3.MySQL 日期类型
 
 MySQL 日期类型，如下表所示：
 
@@ -224,8 +224,8 @@ MySQL 日期类型，如下表所示：
 | `DATE`      | 3    | 1000-01-01 至  9999-12-31                  | YYYY-MM-DD          | 日期值                   |
 | `TIME`      | 3    | -838:59:59 至  838:59:59                   | HH:MM:SS            | 时间值或持续时间         |
 | `YEAR`      | 1    | 1901 至 2155                               | YYYY                | 年份值                   |
-| `DATETIME`  | 8    | 1000-01-01 00:00:00 至 9999-12-31 23:59:59 | YYYY-MM-DD HH:MM:SS | 混合日期和时间值         |
-| `TIMESTAMP` | 4    | 1970-01-01 00:00:01 至 2038-01-19 03:14:07 | YYYY-MM-DD HH:MM:SS | 混合日期和时间值，时间戳 |
+| `DATETIME`  | 8    | 1000-01-01 00:00:00 至 9999-12-31 23:59:59 | YYYY-MM-DD HH:MM:SS | 混合日期和时间值，无时区     |
+| `TIMESTAMP` | 4    | 1970-01-01 00:00:01 至 2038-01-19 03:14:07 | YYYY-MM-DD HH:MM:SS | 混合日期和时间值，时间戳，以 UTC 存储 |
 
 `DATE`、`DATETIME`、`TIMESTAMP` 用的比较多。
 
@@ -265,7 +265,7 @@ CREATE TABLE your_table (
 
 ![数据库表结构设计基本流程](NoteAssets/数据库表结构设计基本流程.png)
 
-### 2.TABLE 查询
+### 2.2.TABLE 查询
 
 查询当前使用的数据库中所有表，执行 DDL 语句：
 
@@ -287,7 +287,7 @@ DESC 表名;
 SHOW CREATE TABLE 表名;
 ```
 
-### 3.TABLE 修改
+### 2.3.TABLE 修改
 
 在表中，**添加字段**，语法如下：
 
@@ -319,7 +319,7 @@ ALTER TABLE 表名 DROP 字段名;
 RENAME TABLE 表名 TO 新表名;
 ```
 
-### 4.TABLE 删除
+### 2.4.TABLE 删除
 
 删除一张表，DDL 语法如下：
 
