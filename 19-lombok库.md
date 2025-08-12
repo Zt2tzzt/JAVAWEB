@@ -15,15 +15,15 @@ Lombok 是一个实用的 Java 类库，可以通过简单的注解，来简化�
 
 ### 1.@Getter、@Setter 注解
 
-为所有的属性提供 `get`、`set` 方法
+为实体类所有的属性提供 `get`、`set` 方法
 
 ### 2.@ToString 注解
 
-为类自动生成易阅读的 `toString` 方法
+为实体类自动生成易阅读的 `toString` 方法
 
 ### 3.@EqualsAndHashCode 注解
 
-根据类所拥有的非静态字段，自动重写 `equals` 方法和  `hashCode` 方法
+根据实体类所拥有的除了 `static` 修饰的字段之外，自动重写 `equals` 方法和  `hashCode` 方法
 
 ### 4.@Data 注解
 
@@ -79,5 +79,5 @@ public class User {
 
 Lombok 的注意事项：
 
-- Lombok 会在程序编译时，自动生成对应的 java 代码，再编译成字节码文件。
-- 在使用 lombok 时，还需要安装一个 lombok 的插件（IDEA 中已自带）
+- Lombok 会在程序**编译时**，自动生成对应的 java 代码，再编译成字节码文件。
+- 在编辑器中使用 lombok 时，还需要安装一个 lombok 的插件（IDEA 中已自带）

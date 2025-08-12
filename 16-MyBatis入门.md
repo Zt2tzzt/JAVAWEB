@@ -221,13 +221,13 @@ spring.datasource.password=xxxxxx
 在 MyBatis 框架中，可以通过两种方式编写 SQL 语句:
 
 - 方式一：注解。
-- 方式二：XML 映射文件方式，
+- 方式二：XML 映射文件，
 
 在项目中，创建 mapper 包，相当于三层架构中的 dao 包，用于存放 MyBatis 框架中用到的 Mapper 接口。
 
 - 在 mapper 包中，一般只需要定义接口，不需要定义实现类，接口名一般为 `xxxMapper`；
 - `@Mapper` 注解，表示在程序运行时，MyBatis 框架会自动生成该接口的实现类对像（代理对象，Bean 对象），并将该对象，交给 IOC 容器管理。
-- 在 `@Select` 注解中，写 SQL 语句。
+- 在 `@Select` 注解中，编写 SQL 语句。
 - 查询语句会将查询结果，自动封装到接口的返回值中。
 
 demo-project/springbot-mybatis-quickstart/src/main/java/com/kkcf/mapper/UserMapper.java
