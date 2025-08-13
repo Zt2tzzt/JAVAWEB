@@ -24,7 +24,6 @@ public class LoginController {
     @PostMapping
     public Result<String> login(@RequestBody Emp emp) {
         log.info("员工登录，员工信息：{}", emp);
-
         Emp res = empService.loginEmp(emp);
 
         String jwt = JwtUtil.generateToken(new HashMap<>(Map.of(

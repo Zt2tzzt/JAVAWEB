@@ -404,7 +404,7 @@ public class RequestController {
 
 要求请求参数名，与形参集合对象名相同；且请求参数为多个，
 
-##### 1.@RequestParam 注解
+##### 4.3.2.1.@RequestParam 注解
 
 要使用 `@RequestParam` 注解，绑定请求参数与集合类型的形参之间的关系。
 

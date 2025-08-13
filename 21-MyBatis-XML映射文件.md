@@ -1,6 +1,6 @@
 # MyBatis XML 映射文件
 
-MyBatis 开发，有两种方式：
+MyBatis 编写 SQL 有两种方式：
 
 - 注解
 - XML 映射文件。
@@ -16,11 +16,11 @@ MyBatis 中的 XML 配置文件，又称为 XML 映射文件。
 在 Mybatis 中，使用 XML 映射文件，需要符合下面规范：
 
 1. 一个 Mapper 接口，对应一个 XML 映射文件。
-2. XML 映射文件的名称，与  Mapper 接口的名称保持一致；它们分别放在 resources 目录下的与 java 目录同名同包的目录下。
-3. XML 映射文件中，`<mapper>` 标签的 `namespace` 属性值，与 Mapper 接口全限定名（全类名）保持一致。
+2. XML 映射文件的名称，与  Mapper 接口的名称保持一致；它们放在 resources 目录下的与 java 目录同名同包的目录下。
+3. XML 映射文件中，`<mapper>` 标签的 `namespace` 属性值，与 Mapper 接口**全限定名（全类名）**保持一致。
 4. XML 映射文件中， SQL 语句对应的标签（比如 `<select>` 标签）的
    - `id` 属性值，与 Mapper 接口中的方法名保持一致；
-   - `resultType` 属性值，与返回类型的全限定名（全类名）保持一致。
+   - `resultType` 属性值，与返回类型的**全限定名（全类名）**保持一致。
 
 `<select>` 标签：就是用于编写 SELECT 查询语句的。
 
@@ -57,7 +57,9 @@ public interface EmpMapper {
 
 第二步：创建 XML 映射文件
 
-- Maven 项目中，要在 resources 目录下，与 EmpMapper 同名同包的路径下创建。即这个目录：demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/EmpMapper.xml
+- Maven 项目中，要在 resources 目录下，与 EmpMapper 同名同包的路径下创建。即这个目录：
+  - demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/EmpMapper.xml
+
 
 > IDEA 的 Maven 项目，在 resource 文件夹中，创建目录，以 `/` 分隔
 

@@ -16,6 +16,7 @@ public class AliyunOSSDemo {
 
     public static CredentialsProvider getCredential() throws IOException {
         Properties properties = new Properties();
+
         // 设置 config.ini 文件路径
         String configFilePath = "config.ini";
         InputStream is = AliyunOSSDemo.class.getClassLoader().getResourceAsStream(configFilePath);

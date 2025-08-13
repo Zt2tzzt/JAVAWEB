@@ -250,21 +250,21 @@ mybatis.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
 - Preparing 表示执行的 SQL 语句，其中的 `?` 表示占位符。
 - Parameters 表示填充 SQL 语句占位符的参数。
 
+## 四、预编译 SQL
+
 可知 MyBatis 在底层，执行的是**预编译** SQL 语句：
 
-- MyBatis 会将 SQL 语句，与传入占位符的参数，一并发给数据库管理系统（DBMS）。
-- 数据库管理系统（DBMS）将占位符参数，替换掉 SQL 语句中的占位符后，再执行 SQL。
-
-## 四、预编译 SQL
+- MyBatis 会将 SQL 语句，与传入占位符的参数，一并发给**数据库管理系统（DBMS）**。
+- **数据库管理系统（DBMS）**将占位符参数，替换掉 SQL 语句中的占位符后，再执行 SQL。
 
 预编译 SQL 的优势：
 
 - 性能更高；
 - 更加安全（防止 SQL 注入）
 
-### 1.预编译 SQL 性能高
+### 4.1.预编译 SQL 性能高
 
-数据库在执行 SQL 语句时，会经历如下几步：
+**数据库管理系统（DBMS）**在执行 SQL 语句时，会经历如下几步：
 
 1. SQL 语法解析检查；
 2. 优化 SQL；
@@ -278,11 +278,11 @@ mybatis.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
 由上图可知：
 
 - 普通 SQL 语句，每次执行前，都要经历前三步；
-- 预编译 SQL，执行一次之后，会将编译后的 SQL 语句缓存起来，再次执行时，不用再次编译。只是输入的参数不同。
+- 预编译 SQL，执行一次之后，会将编译后的 SQL 语句缓存起来，再次执行时，输入不同的参数即可。
 
-### 2.预编译 SQL 更安全
+### 4.2.预编译 SQL 更安全
 
-预编译 SQL 更安全，能防止 SQL 注入，将敏感字进行转义，保障 SQL 的安全性。
+预编译 SQL 能防止 SQL 注入，将敏感字进行转义，保障 SQL 的安全性。
 
 SQL 注入：是通过操作输入的数据，来修改事先定义好的 SQL 语句，以达到执行代码对服务器进行攻击的方法。
 
@@ -373,13 +373,13 @@ class SpringbotMybatisQuickstartApplicationTests {
 }
 ```
 
-### 1.新增主键返回（@Options 注解）
+### 6.1.新增主键返回（@Options 注解）
 
-概念：在数据添加成功后，需要获取插入数据库数据的主键。
+概念：在数据添加成功后，需要获取插入数据库记录的主键。
 
 插入记录后，主键返回的使用场景：
 
-- 在有中间表的情况下，比如新增套餐后，还需要录入套餐中的菜品，它们的数据库表结构是多对多关系。
+- 在有中间表的情况下，比如新增套餐后，还需要录入套餐中的菜品，套餐和菜品两个表结构是多对多关系。
 - 所以要拿到套餐、菜品的主键（Id），用于在中间表中，建立它们的关联关系。
 
 默认情况下，执行插入操作时，不会返回主键值。
@@ -544,7 +544,7 @@ MyBatis 查询操作的数据封装
 
 解决方案有三种：
 
-### 1.MyBatis 查询起别名
+### 8.1.MyBatis 查询起别名
 
 在 Mapper 接口抽象方法上的注解中，为 SQL 语句中的字段，起别名。
 
@@ -563,7 +563,7 @@ public interface EmpMapper {
 }
 ```
 
-### 2.MyBatis 查询 @Results、@Result 注解使用
+### 8.2.MyBatis 查询 @Results、@Result 注解使用
 
 在 Mapper 接口抽象方法上，使用 `@Results` 和 `@Result` 注解，手动映射封装。
 
@@ -587,7 +587,7 @@ public interface EmpMapper {
 }
 ```
 
-### 3.MyBatis 查询驼峰命名映射开启
+### 8.3.MyBatis 查询驼峰命名映射开启
 
 在 application.properties 配置文件中，进行配置；
 
@@ -627,7 +627,6 @@ class SpringbotMybatisQuickstartApplicationTests {
     @Test
     public void testSelectEmpById() {
         Emp emp = empMapper.selectEmpById(18);
-
         System.out.println(emp);
     }
 }
@@ -667,7 +666,7 @@ ORDER BY entrydate DESC;
 
 查询条件中的字符串拼接，有两种方式：
 
-### 1.${…} 的使用
+### 9.1.${…} 的使用
 
 方式一：使用 `${…}` 拼接姓名（性能低，有安全风险，不推荐）
 
@@ -704,7 +703,7 @@ public interface EmpMapper {
 }
 ```
 
-### 2.MySQL CONCAT 函数
+### 9.2.MySQL CONCAT 函数
 
 方式二：使用 MySQL 提供的函数 `CONCAT()`
 
@@ -807,7 +806,7 @@ class SpringbotMybatisQuickstartApplicationTests {
 
 ![MyBatis-Mapper接口方法参数说明1](NoteAssets/MyBatis-Mapper接口方法参数说明1.png)
 
-### 1.@Param 注解
+### 10.1.@Param 注解
 
 Spring Boot 1.X 版本，或单独使用 MyBatis 框架时
 

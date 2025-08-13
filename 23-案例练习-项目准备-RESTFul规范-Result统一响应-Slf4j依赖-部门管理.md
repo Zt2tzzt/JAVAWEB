@@ -2,7 +2,7 @@
 
 ## 一、准备工作
 
-### 1.数据库准备
+### 1.1.数据库准备
 
 准备数据库，表结构，数据。
 
@@ -65,7 +65,7 @@ VALUES (1, 'jinyong', '123456', '金庸', 1, '1.jpg', 4, '2000-01-01', 2, NOW(),
        (17, 'chenyouliang', '123456', '陈友谅', 1, '17.jpg', NULL, '2015-03-21', NULL, NOW(), NOW());
 ```
 
-### 2.项目创建
+### 1.2.项目创建
 
 创建 Spring Boot Web 结合 MyBatis 的项目：
 
@@ -107,7 +107,7 @@ REST 风格 URL
 ```sh
 http://localhost:8080/users/1  GET：查询 id 为 1 的用户
 http://localhost:8080/users    POST：新增用户
-http://localhost:8080/users    PUT：修改用户
+http://localhost:8080/users    PUT/PATCH：修改用户
 http://localhost:8080/users/1  DELETE：删除 id 为 1 的用户
 ```
 
@@ -117,7 +117,7 @@ http://localhost:8080/users/1  DELETE：删除 id 为 1 的用户
 
 - GET：查询
 - POST：新增
-- PUT ：修改
+- PUT / PATCH ：修改
 - DELETE：删除
 
 RESTFul 风格，两点注意：
@@ -134,13 +134,13 @@ RESTFul 风格，两点注意：
 
 使用 `@RequestMapping` 注解，指定请求方式（比如：GET、POST…），有两种方式：
 
-- 方式一，使用 @RequestMapping 注解的 `method` 属性：
+- 方式一，使用 `@RequestMapping` 注解的 `method` 属性：
 
   ```java
   @RequestMapping(value = "/depts", method = RequestMethod.GET)
   ```
 
-- 方式二：使用 @RequestMapping 注解的衍生注解，比如：
+- 方式二：使用 `@RequestMapping` 注解的衍生注解，比如：
 
   ```java
   @GetMapping("/depts")
@@ -148,7 +148,7 @@ RESTFul 风格，两点注意：
 
 ### 2.@RequestMapping 抽取公共路径
 
-@RequestMapping 注解在类上使用，用于抽取控制器类中，处理请求方法的公共路径。
+`@RequestMapping` 注解在类上使用，用于抽取控制器类中处理请求方法的公共路径。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/controller/EmpController.java
 
@@ -161,7 +161,7 @@ public class EmpController {
 
 ## 三、统一响应 Result 类
 
-统一响应结果 Result 类的实现：
+统一响应结果 `Result` 类的实现：
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/pojo/Result.java
 
@@ -250,9 +250,9 @@ log.info("查询结果：{}", result);
 
 ## 五、部门管理
 
-### 1.部门列表查询
+### 5.1.部门列表查询
 
-#### 1.部门列表查询基本信息
+#### 5.1.1.部门列表查询基本信息
 
 请求路径：/depts
 
@@ -260,11 +260,11 @@ log.info("查询结果：{}", result);
 
 接口描述：该接口用于部门列表数据查询
 
-#### 2.部门列表查询请求参数
+#### 5.1.2.部门列表查询请求参数
 
 无
 
-#### 3.部门列表查询响应数据
+#### 5.1.3.部门列表查询响应数据
 
 参数格式：application/json
 
@@ -303,7 +303,7 @@ log.info("查询结果：{}", result);
 }
 ```
 
-#### 4.部门列表查询接口开发
+#### 5.1.4.部门列表查询接口开发
 
 创建 `DeptMapper` 接口，在其中添加 `selectDepts` 方法：
 
@@ -403,9 +403,9 @@ public class DeptController {
 }
 ```
 
-### 2.删除部门
+### 5.2.删除部门
 
-#### 1.删除部门基本信息
+#### 5.2.1.删除部门基本信息
 
 > 请求路径：/depts/{id}
 >
@@ -413,7 +413,7 @@ public class DeptController {
 >
 > 接口描述：该接口用于根据 ID 删除部门数据
 
-#### 2.删除部门请求参数
+#### 5.2.2.删除部门请求参数
 
 参数格式：路径参数
 
@@ -429,7 +429,7 @@ public class DeptController {
 /depts/1
 ```
 
-#### 3.删除部门响应数据
+#### 5.2.3.删除部门响应数据
 
 参数格式：application/json
 
@@ -451,7 +451,7 @@ public class DeptController {
 }
 ```
 
-#### 4.删除部门接口开发
+#### 5.2.4.删除部门接口开发
 
 在 `DeptMapper` 接口中，定义 `deleteDeptById` 方法：
 
@@ -559,9 +559,9 @@ public class DeptController {
 }
 ```
 
-### 3.添加部门
+### 5.3.添加部门
 
-#### 1.添加部门基本信息
+#### 5.3.1.添加部门基本信息
 
 > 请求路径：/depts
 >
@@ -569,7 +569,7 @@ public class DeptController {
 >
 > 接口描述：该接口用于添加部门数据
 
-#### 2.添加部门请求参数
+#### 5.3.2.添加部门请求参数
 
 格式：application/json
 
@@ -587,7 +587,7 @@ public class DeptController {
 }
 ```
 
-#### 3.添加部门响应数据
+#### 5.3.3.添加部门响应数据
 
 参数格式：application/json
 
@@ -609,7 +609,7 @@ public class DeptController {
 }
 ```
 
-#### 4.添加部门接口开发
+#### 5.3.4.添加部门接口开发
 
 在 `DeptMapper` 接口中，定义 `insertDept` 方法：
 
@@ -670,7 +670,6 @@ public class DeptServiceImpl implements DeptService {
         // 补充数据
         dept.setCreateTime(LocalDate.now());
         dept.setUpdateTime(LocalDate.now());
-
         return deptMapper.insertDept(dept);
     }
 }
@@ -710,16 +709,15 @@ public class DeptController {
         log.info("新增部门信息：{}", dept);
 
         int i = deptService.addDept(dept);
-
         return i > 0 ? Result.success(null)
                 : Result.error("新增部门失败", null);
     }
 }
 ```
 
-### 4.根据 ID 查询（回显）
+### 5.4.根据 ID 查询（回显）
 
-#### 1.根据 ID 查询基本信息
+#### 5.4.1.根据 ID 查询基本信息
 
 > 请求路径：/depts/{id}
 >
@@ -727,7 +725,7 @@ public class DeptController {
 >
 > 接口描述：该接口用于根据 ID 查询部门数据
 
-#### 2.根据 ID 查询请求参数
+#### 5.4.2.根据 ID 查询请求参数
 
 参数格式：路径参数
 
@@ -743,7 +741,7 @@ public class DeptController {
 /depts/1
 ```
 
-#### 3.根据 ID 查询响应数据
+#### 5.4.3.根据 ID 查询响应数据
 
 参数格式：application/json
 
@@ -774,7 +772,7 @@ public class DeptController {
 }
 ```
 
-#### 4.根据 ID 查询接口开发
+#### 5.4.4.根据 ID 查询接口开发
 
 在 `DeptMapper` 接口中，定义 `selectDeptById` 方法：
 
@@ -872,16 +870,15 @@ public class DeptController {
         log.info("根据 id 查询部门信息，id：{}", id);
 
         Dept dept = deptService.getById(id);
-
         return dept != null ? Result.success(dept)
                 : Result.error("根据 id 查询部门信息失败", null);
     }
 }
 ```
 
-### 5.修改部门
+### 5.5.修改部门
 
-#### 1.修改部门基本信息
+#### 5.5.1.修改部门基本信息
 
 > 请求路径：/depts
 >
@@ -889,7 +886,7 @@ public class DeptController {
 >
 > 接口描述：该接口用于修改部门数据
 
-#### 2.修改部门请求参数
+#### 5.5.2.修改部门请求参数
 
 格式：application/json
 
@@ -909,7 +906,7 @@ public class DeptController {
 }
 ```
 
-#### 3.修改部门响应数据
+#### 5.5.3.修改部门响应数据
 
 参数格式：application/json
 
@@ -1028,7 +1025,6 @@ public class DeptController {
         log.info("修改部门信息：{}", dept);
 
         int i = deptService.updateDept(dept);
-
         return i > 0 ? Result.success(null)
                 : Result.error("修改部门信息失败", null);
     }

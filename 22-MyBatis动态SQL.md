@@ -4,7 +4,7 @@
 
 上文条件查询的接口方法 `selectEmpByCondition` 中，编写的 SQL 语句，将条件直接写死了。
 
-- 如果只传递了参数 name，其它两个字段 gender 和 entrydate 不传，那么这两个参数的值就是 null。这个查询结果，是不正确的。
+- 如果只传递了参数 `name`，其它两个字段 `gender` 和 `entrydate` 不传，那么这两个参数的值就是 null。这个查询结果，是不正确的。
 - 正确的做法应是：传递了参数，再组装这个查询条件；没有传递参数，就不应该组装这个查询条件。
 
 比如：如果姓名输入了"张"，其它表单字段没有填写，那么对应的 SQL 应为：
@@ -96,7 +96,7 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
 </mapper>
 ```
 
-- `<if>` 标签的 `test` 属性，其中的关键字（比如 `and`）都是小写的。
+- `<if>` 标签的 `test` 属性值里面的关键字（比如 `and`）都是小写的。
 
 单元测试：
 
@@ -156,7 +156,6 @@ class SpringbotMybatisQuickstartApplicationTests {
     public void testSelectEmpByCondition() {
         //List<Emp> emps = empMapper.selectEmpByCondition("张", (short) 1, LocalDate.of(2010, 1, 1), LocalDate.of(2020, 1, 1));
         List<Emp> emps = empMapper.selectEmpByCondition(null, (short) 1, null, null);
-
         emps.forEach(System.out::println);
     }
 }
@@ -461,14 +460,14 @@ demo-project/springbot-mybatis-quickstart/src/main/resources/com/kkcf/mapper/Emp
 
 ## 六、trim 标签
 
-`<trim>` 标签是 MyBatis 提供的一个动态 SQL 组件，主要用于在拼接 SQL 语句时，自动添加或去除特定的前缀、后缀以及多余的逗号等。它可以替代 `where`、`set` 等标签，提供更灵活的 SQL 生成方式。
+`<trim>` 标签是 MyBatis 提供的一个动态 SQL 组件，主要用于在拼接 SQL 语句时，自动添加或去除特定的前缀、后缀（比如多余的逗号）等。它可以替代 `where`、`set` 等标签，提供更灵活的 SQL 生成方式。
 
 `<trim>` 标签的主要属性：
 
 - **`prefix`**：指定 SQL 片段的前缀，例如 `WHERE`、`SET` 等。
 - **`suffix`**：指定 SQL 片段的后缀。
-- **`prefixOverrides`**：去除指定的前缀，例如 `AND`、`OR`，避免 SQL 语句错误。
-- **`suffixOverrides`**：去除指定的后缀，例如多余的 `,`。
+- **`prefixOverrides`**：去除指定的前缀，比如 `AND`、`OR`，避免 SQL 语句错误。
+- **`suffixOverrides`**：去除指定的后缀，比如多余的 `,`。
 
 `<trim>` 的使用示例
 
