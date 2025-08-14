@@ -12,9 +12,9 @@
 
 ## 二、Spring Boot 二种外部属性配置
 
-为了增强程序的扩展性，在 Spring Boot 项目中，除了支持配置文件的配置方式外，还支持另外两种常见的配置方式：
+为了增强程序的扩展性，在启动 Spring Boot 项目时，还支持另外两种常见的配置方式：
 
-### 1.Java 系统属性
+### 2.1.Java 系统属性
 
 Spring Boot 还支持 Java 系统属性的配置方式，以配置 Tomcat 服务器端口号为例，格式如下：
 
@@ -22,7 +22,7 @@ Spring Boot 还支持 Java 系统属性的配置方式，以配置 Tomcat 服务
 -Dserver.port=9000
 ```
 
-### 2.命令行参数
+### 2.2.命令行参数
 
 Spring Boot 还支持命令行参数的配置方式，以配置 Tomcat 服务器端口号为例，格式如下：
 
@@ -32,7 +32,7 @@ Spring Boot 还支持命令行参数的配置方式，以配置 Tomcat 服务器
 
 ## 三、IDEA 设置 Java 系统属性、命令行参数
 
-在 IDEA 中，运行程序，可配置项目的 Java 系统属性，命令行参数。
+在 IDEA 中，运行程序，可配置项目的 **Java 系统属性**，**命令行参数**。
 
 左上方点击要运行的方法 -> Edit Configurations -> Modify Options -> Add VM options 、Program arguments
 

@@ -37,7 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
     /**
-     * 此方法用于：在目标资源方法前运行，返回 true 则放行，返回 false 则不放行
+     * 此方法用于：在目标资源方法前执行，返回 true 则放行，返回 false 则不放行
      *
      * @param request
      * @param response
@@ -88,7 +88,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 - `postHandle` 方法：在目标资源方法执行后执行。
 - `afterCompletion` 方法：在视图渲染完毕后执行，最后执行。
 
-### 1.@Configuration 注解
+### 2.1.配置类和 @Configuration 注解
 
 定义配置类 `WebConfig` 实现 `WebMvcConfigurer` 接口。
 

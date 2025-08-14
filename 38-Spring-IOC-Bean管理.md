@@ -1,8 +1,6 @@
 # Spring IOC Bean 管理
 
-Spring 提供了 `@Component` 注解，以及它的三个衍生注解 `@Controller`、`@Service`、`@Repository` 来声明 IOC 容器中的 Bean 对象；
-
-在 Spring 中，也可以使用依赖注入（DI），为应用程序注入运行时需要的 Bean 对象。
+Spring 提供了 `@Component` 注解，以及它的三个衍生注解 `@Controller`、`@Service`、`@Repository` 来声明 IOC 容器中的 Bean 对象；在 Spring 中，也可以使用依赖注入（DI），为应用程序注入运行时需要的 Bean 对象。
 
 ## 一、IOC 容器获取 Bean 对象
 
@@ -137,7 +135,7 @@ public class BeanTest {
 
 执行测试方法：
 
-1. 在加载 Spring 环菌时，`DeptController` 的 Bean 对象，就创建了。
+1. 在**加载 Spring 环菌**时，`DeptController` 的 Bean 对象，就创建了。
 
    ```sh
    创建了 DeptController
@@ -217,7 +215,7 @@ public class BeanTest {
 
 执行测试方法，发现：
 
-1. 加载 Spring 环菌时，没有创建 `DeptController` 的 Bean 对象；
+1. **加载 Spring 环菌**时，没有创建 `DeptController` 的 Bean 对象；
 2. 而是在测试方法执行，要获取 Bean 对象时，Bean 对象才被创建。
 
 获取到了 10 次相同的 Bean 对象。
@@ -356,7 +354,7 @@ demo-project/javaweb-practise/pom.xml
 </dependency>
 ```
 
-**解决方案一**：在启动类（引导类）里，定义 `@Bean` 注解标注的方法，用于 Spring 项目在启动时创建 Bean 对象，并交给 IOC 容器管理。
+**解决方案一**：在**启动类**（引导类）里，定义 `@Bean` 注解标注的方法，用于 Spring 项目在启动时创建 Bean 对象，并交给 IOC 容器管理。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/JavawebPractiseApplication.java
 
@@ -385,7 +383,7 @@ public class JavawebPractiseApplication {
 
 为保证启动类的纯粹性，不推荐这种做法。
 
-**解决方案二**：在 `@Configuration` 注解标注的配置类中，定义 `@Bean` 注解标注的方法。
+**解决方案二**：在 `@Configuration` 注解标注的**配置类**中，定义 `@Bean` 注解标注的方法。
 
 - 可以通过 `@Bean` 注解的 `name` 或 `value` 属性，来指定 Bean 对象的名称；
 - 但在实际开发中，一般不指定，默认是方法名称。

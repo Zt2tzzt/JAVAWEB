@@ -10,9 +10,7 @@ public class AbcFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         System.out.println("abc，放行前的逻辑……");
-
         filterChain.doFilter(servletRequest, servletResponse);
-
         System.out.println("abc，放行后的逻辑……");
     }
 }

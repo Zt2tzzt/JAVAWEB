@@ -2,7 +2,6 @@ package com.kkcf;
 
 import com.kkcf.utils.AliyunOSSProperties1;
 import com.kkcf.utils.AliyunOSSProperties2;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;

@@ -54,7 +54,7 @@ class JavawebPractiseApplicationTests {
         ));
 
         String jwt = Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256, "kkcf") // 签名算法，密钥
+                .signWith(SignatureAlgorithm.HS256, "kkcf") // 签名算法，密钥 kkcf
                 .setClaims(claims) // 存放的数据
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 设置有效期为 1 小时
                 .compact();
@@ -74,7 +74,7 @@ eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiemV0aWFuIiwiZXhwIjoxNzI3MzE2NTQ5LCJpZCI6MX0.751
 
 - 可发现 JWT 令牌,，通过英文的点（`.`），对第一、二、三部分进行分割；
 
-在 JWT [官网](https://jwt.io/)，将生成的令牌放在 Encoded 位置，此时就会自动的将令牌解析出来。
+在 JWT [官网](https://jwt.io/)，将生成的令牌放在 Encoded 位置，此时就会自动的将令牌解析如下：
 
 HEADER
 
@@ -99,6 +99,8 @@ PAYLOAD:DATA
 - 第二个部分（PAYLOAD）解析出来，可看到是自定义的 JSON 格式数据，
 - 还有一个 `exp` 表示设置的过期时间。
 
+前两个部分是 Base64 编码，所以可以直接解码出来。
+
 VERIFY SIGNATURE
 
 ```sh
@@ -109,9 +111,7 @@ HMACSHA256(
 ) secret base64 encoded
 ```
 
-由于前两个部分是 Base64 编码，所以可以直接解码出来。
-
-但最后一个部分并不是 Base64 编码，而是经过签名算法计算出来的，所以最后一个部分不会解析。
+最后一个部分不是 Base64 编码，而是经过签名算法计算出来的，所以最后一个部分不会解析。
 
 ## 二、JWT 解析
 
@@ -250,7 +250,6 @@ public class LoginController {
     @PostMapping
     public Result<String> login(@RequestBody Emp emp) {
         log.info("员工登录，员工信息：{}", emp);
-
         Emp res = empService.loginEmp(emp);
 
         String jwt = JwtUtil.generateToken(new HashMap<>(Map.of(

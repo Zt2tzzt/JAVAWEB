@@ -38,7 +38,7 @@
 
 ## 三、Spring Boot 全局异常处理
 
-### 1.@RestControllerAdvice、@ExceptionHandler 注解
+### 3.1.全局异常处理类和 @RestControllerAdvice、@ExceptionHandler 注解
 
 Spring Boot 全局异常处理器的使用：
 

@@ -7,7 +7,7 @@ Spring 是目前最流行的 Java 框架，它可以快速、方便的来构建 
 开发者直接基于 Spring Framework 框架，进行开发， 会比较繁琐，主要体现在：
 
 - pom.xml 的依赖配置，需要自行找到所需依赖，和它配套的依赖，以及对应的版本，否则会出现版本冲突问题。比较繁琐。
-- 配置文件（比如 application.yml）中，要做大量的配置，造成 Spring 框架入门难度较大，学习成本较高。
+- 配置文件（比如 `application.yml`）中，要做大量的配置，造成 Spring 框架入门难度较大，学习成本较高。
 
 ![Spring和SpringBoot](NoteAssets/Spring和SpringBoot.png)
 
@@ -103,4 +103,3 @@ public class AutoConfigurationTest {
 Spring Boot 自动配置，就是当 Spring Boot 项目启动时，通过自动配置，将配置类，和它管理的 Bean 对象，自动存入到 IOC 容器中；不需要手动去声明。
 
 分析 Spring Boot 的自动配置原理，就是解析在 Spring Boot 项目中，引入依赖之后，是如何将依赖的 jar 包中，所定义的配置类，以及 Bean 对象，加载到 Spring IOC 容器中的。
-

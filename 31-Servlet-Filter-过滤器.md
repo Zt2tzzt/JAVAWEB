@@ -1,22 +1,19 @@
 # JavaWeb Servlet 规范 Filter 过滤器
 
-客户端登录后，收到服务器发放的 token 令牌：
+客户端登录，收到服务器发放的 jwt 令牌；客户端以后的请求，都会在请求头中携带 jwt 令牌到服务端，
 
-客户端后续的请求，都会在请求头中携带 JWT 令牌到服务端，
-
-而服务端需要统一拦截所有的请求，来判断是否携带了合法的 JWT 令牌。
+服务端需要统一拦截所有的客户端请求，来判断它们是否携带了合法的 jwt 令牌。
 
 在 Spring Boot 项目中，统一拦截所有请求，有两种解决方案：
 
 1. Filter 过滤器
 2. Interceptor 拦截器
 
-## 一、Filter 过滤器是什么
+## 一、Filter 过滤器概念
 
 Servlet 规范中的 Filter 过滤器，是 JavaWeb 三大组件（Servlet、Filter、Listener）之一，它并不是 Spring 框架中的组件。
 
-- Filter 过滤器，可以拦截经由 Web 服务器的所有对资源的请求；
-- 使用了 Fileter 过滤器后，要想访问 web 服务器上的资源，必须先经过 Filter 过滤器处理，才可以访问对应的资源。
+- Filter 过滤器，可以拦截经由 Web 服务器的所有对资源的请求；即请求必须先经过 Filter 过滤器处理，才可以访问对应的资源。
 - 过滤器一般完成一些通用的操作，比如：
   - 登录校验；
   - 统一编码处理；
@@ -26,19 +23,19 @@ Servlet 规范中的 Filter 过滤器，是 JavaWeb 三大组件（Servlet、Fil
 
 ## 二、Filter 过滤器的使用
 
-### 1.@WebFilter 注解与过滤器类
+### 2.1.@WebFilter 注解与过滤器类
 
 过滤器的实现，分为两步：
 
 1. 定义 Filter，定义一个过滤器类，实现 `javax.servlet.Fileter` 接口。并重写其所有方法。
 2. 配置 Filter，
    1. 在过滤器类上加 `@WebFilter` 注解。使用属性 `urlPatterns` 指定拦截资源的路径。
-      - `/*` 表示拦截浏览器的所有请求；
+      - `urlPatterns = /*` 表示拦截浏览器的所有请求；
       - 注释掉 `@WebFilter` 注解，Filter 也就失效了。
    2. 再在引导类（启动类）加上 `@ServletComponentScan` 注解
       - JavaWeb 三大组件（**Servlet、Filter、Listener**），不属于 Spring Boor 组件，要加上该注解表示在当前项目中支持 Servlet 组件。
 
-定义过滤器类 DemoFilter。
+定义过滤器类 `DemoFilter`。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/filter/DemoFilter.java
 
@@ -68,8 +65,7 @@ public class DemoFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         System.out.println("拦截到了请求，放行前的逻辑……");
-        // 放行
-        filterChain.doFilter(servletRequest, servletResponse);
+        filterChain.doFilter(servletRequest, servletResponse); // 放行
         System.out.println("拦截到了请求，放行后的逻辑……");
     }
 
@@ -84,15 +80,15 @@ public class DemoFilter implements Filter {
 }
 ```
 
-- JavaWeb 服务器启动时，会自动创建 Filter 过滤器对象；该对象创建完毕后，会自动调用 `init` 方法
+- JavaWeb 服务器**启动时**，会自动创建 Filter 过滤器对象；该对象创建完毕后，会自动调用 `init` 方法
   - 通常会在 `init` 方法中，完成一些资源和环境的准备操作。
 
-- JavaWeb 服务器关闭时，会自动调用 `destroy` 方法，该方法只会被调用一次。
+- JavaWeb 服务器**关闭时**，会自动调用 `destroy` 方法，该方法只会被调用一次。
   - 通常会在 `destroy` 方法中，做一些资源的释放。资源清理的工作。
 - `init`、`destroy` 方法一般有固定的逻辑，所以 `Filter` 接口中，提供了默认实现。
 - `doFilter`  方法，是每次拦截到请求后，都会调用的方法。
 
-### 2.@ServletComponentScan 注解与启动类
+### 2.2.@ServletComponentScan 注解与启动类
 
 在引导（启动）类，加上一个注解 `@ServletComponentScan`，来开启 Spring Boot 项目，对于 Servlet 组件的支持。
 
@@ -140,7 +136,7 @@ destroy 销毁方法执行了
 放行就是调用 `filterChain` 对象的 `doFilter` 方法：
 
 - 调用该方法前编写的代码，属于放行之前的逻辑。
-- 调用该方法后编写的代码，属于放行之后的逻辑（访问完 Web 资源后，还会回到过滤器中执行的逻辑）。
+- 调用该方法后编写的代码，属于放行之后的逻辑（访问完 Web 资源后，**还会回到过滤器**中执行的逻辑）。
 
 ![Filter拦截器执行流程](NoteAssets/Filter拦截器执行流程.png)
 
@@ -150,11 +146,11 @@ Filter 过滤器的拦截路径，可根据需求，进行配置。
 
 三种配置规则如下：
 
-| 拦截路径     | urlPatterns值 | 含义                                  |
-| ------------ | ------------- | ------------------------------------- |
-| 拦截具体路径 | /login        | 只有访问 `/login` 路径时，才会被拦截  |
-| 目录拦截     | /emps/*       | 访问 `/emps` 下的所有资源，都会被拦截 |
-| 拦截所有     | /*            | 访问所有资源，都会被拦截              |
+| 拦截路径     | urlPatterns 值 | 含义                                  |
+| ------------ | -------------- | ------------------------------------- |
+| 拦截具体路径 | /login         | 只有访问 `/login` 路径时，才会被拦截  |
+| 目录拦截     | /emps/*        | 访问 `/emps` 下的所有资源，都会被拦截 |
+| 拦截所有     | /*             | 访问所有资源，都会被拦截              |
 
 ## 五、Filter 过滤器链
 
@@ -193,9 +189,7 @@ public class AbcFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         System.out.println("abc，放行前的逻辑……");
-
         filterChain.doFilter(servletRequest, servletResponse);
-
         System.out.println("abc，放行后的逻辑……");
     }
 }
