@@ -142,8 +142,8 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying b
 
 判断的方式有三种：
 
-- 没有属性，表示标注方法的类、方法声明的 Bean 对象。
-- `name` 属性，指定字节码文件的全类名。
+- 没有属性，表示该注解标注的类、方法声明的 Bean 对象。
+- `name` 属性，指定字节码文件的**全类名**。
 - `value` 属性（可省略），指定字节码文件对象。
 
 在第三方依赖的 `HeaderConfig` 配置类中，声明 Bean 对象的 `headerParser` 方法上，加上 `@ConditionalOnMissingBean` 注解。

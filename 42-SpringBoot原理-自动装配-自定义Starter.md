@@ -64,11 +64,11 @@ Mybatis 依赖，提供了配置类，并且也提供了 Spring Boot 项目启�
 
 目标：引入 aliyun-oss-spring-boot-starter 起步依赖后，直接注入 `AliyunOSSUtils` 的 Bean 对象，就可使用阿里云 OSS SDK 功能。
 
-### 1.阿里云 OSS 在原项目使用
+### 5.1.阿里云 OSS 在原项目使用
 
 原项目中，阿里云 OSS 的使用。
 
-#### 1.原项目配置文件
+#### 5.1.1.原项目配置文件
 
 demo-project/javaweb-practise/src/main/resources/application.yml
 
@@ -81,7 +81,7 @@ aliyun:
     bucketName: zetian-bucket
 ```
 
-#### 2.原项目 AliyunOSSProperties2 类
+#### 5.1.2.原项目 AliyunOSSProperties2 类
 
 `AliyunOSSProperties2` 类，用于从配置文件中，加载配置的属性：
 
@@ -105,7 +105,7 @@ public class AliyunOSSProperties2 {
 }
 ```
 
-#### 3.原项目 AliyunOSSUtil2 类
+#### 5.1.3.原项目 AliyunOSSUtil2 类
 
 `AliyunOSSUtil2` 工具类
 
@@ -161,14 +161,14 @@ public class AliyunOSSUtil2 {
 
 所以，可以制作一个公共组件（自定义 starter）；将来要使用阿里云 OSS 进行文件上传，只需要将起步依赖引入进来之后，就可以直接注入 `AliyunOSSUtil2` 的 Bean 对象使用了。
 
-### 2.阿里云 OSS 自定义 starter
+### 5.2.阿里云 OSS 自定义 starter
 
 具体的实现步骤：
 
 1. 创建自定义 starter 模块（进行依赖管理）；
    - 把阿里云 OSS 所有的依赖，统一管理起来。
 2. 创建 autoconfigure 模块；
-   - 在 starter 模块中引入 autoconfigure模块；
+   - 在 starter 模块中引入 autoconfigure 模块；
    - 别的项目使用时，只需要引入 starter 起步依赖即可。
 3. 在 autoconfigure 中，完成自动配置；
    1. 定义一个自动配置类，在自动配置类中将所要配置的 Bean 都提前配置好；
@@ -176,7 +176,7 @@ public class AliyunOSSUtil2 {
 
 下面按照步骤，来实现自定义 starter。
 
-#### 1.starter 模块创建
+#### 5.2.1.starter 模块创建
 
 在 IDEA 中，创建一个 Maven 模块（Module）。
 
@@ -281,7 +281,7 @@ starter 项目，仅进行依赖管理，所以将项目下的所有内容，都
 > mvn idea:module
 > ```
 
-#### 2.autoconfigure 模块创建
+#### 5.2.2.autoconfigure 模块创建
 
 在 IDEA 中，创建第二个 Maven 模块：
 
@@ -379,7 +379,7 @@ demo-project/aliyun-oss-spring-boot-autoconfigure/pom.xml
 
 在 src 目录中，删除启动类，和测试类。
 
-#### 3.starter 模块引入 autoconfigure 模块
+#### 5.2.3.starter 模块引入 autoconfigure 模块
 
 在 aliyun-oss-spring-boot-starter 模块的 pom.xml 文件中，引入 aliyun-oss-spring-boot-autoconfigure 的依赖
 
@@ -393,9 +393,9 @@ demo-project/aliyun-oss-spring-boot-starter/pom.xml
 </dependency>
 ```
 
-#### 4.autoconfigure 模块自动配置
+#### 5.2.4.autoconfigure 模块自动配置
 
-##### 1.AliyunOSSProperties2 类添加并修改
+##### 5.2.4.1.AliyunOSSProperties2 类添加并修改
 
 `AliyunOSSProperties2` 类，用于加载配置文件中的属性。
 
@@ -460,7 +460,7 @@ public class AliyunOSSProperties2 {
 }
 ```
 
-##### 2.AliyunOSSUtil2 类添加并修改
+##### 5.2.4.2.AliyunOSSUtil2 类添加并修改
 
 将 `AliyunOSSUtil2` 类，复制到 aliyun-oss-spring-boot-autoconfigure 的 com.aliyun.oss 包中
 
@@ -550,7 +550,7 @@ demo-project/aliyun-oss-spring-boot-autoconfigure/pom.xml
 </dependency>
 ```
 
-##### 3.AliOSSAutoConfiguration 类添加
+##### 5.2.4.3.AliOSSAutoConfiguration 类添加
 
 下面定义一个自动配置类 `AliOSSAutoConfiguration`，在自动配置类中，来声明 `AliyunOSSUtil2` 类的 Bean 对象。
 
@@ -575,7 +575,12 @@ public class AliOSSAutoConfiguration {
 }
 ```
 
-##### 4.自动配置文件
+`@EnableConfigurationProperties` 的作用：
+
+1. **让 `@ConfigurationProperties` 注解的类被注册成 Spring Bean**（即使没有加 `@Component` 等注解）。
+2. **启用配置绑定功能**，把配置文件里的值注入到这些类的字段中。
+
+##### 5.2.4.4.自动配置文件
 
 在 aliyun-oss-spring-boot-autoconfigure 模块中的 resources 目录下，新建自动配置文件：
 
@@ -585,7 +590,7 @@ demo-project/aliyun-oss-spring-boot-autoconfigure/src/main/resources/META-INF/sp
 com.aliyun.oss.AliOSSAutoConfiguration
 ```
 
-### 3.阿里云 OSS 自定义 starter 使用
+### 5.3.阿里云 OSS 自定义 starter 使用
 
 阿里云 OSS 的 starter 已经定义好了，接下来做一个测试。
 

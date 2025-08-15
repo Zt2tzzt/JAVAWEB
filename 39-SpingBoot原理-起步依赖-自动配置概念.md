@@ -26,7 +26,7 @@ Spring Boot 框架的原理，就是它的**起步依赖**、**自动配置**的
 
 ## 一、Spring Boot 起步依赖
 
-在不使用 Spring Boot，而是 Spring Framework 框架，进行 Web 项目开发时，需要引入如下依赖：
+在使用 Spring Framework 框架而非 Spring Boot 进行 Web 项目开发时，需要引入如下依赖：
 
 - spring-webmvc 依赖：Spring 框架进行 Web 程序开发所需要的依赖；
 - servlet-api 依赖：Servlet 基础依赖；
@@ -39,12 +39,12 @@ Spring Boot 框架的原理，就是它的**起步依赖**、**自动配置**的
 
 当使用 Spring Boot 框架，进行 Web 项目开发时，就不需要像上面这么繁琐的引入依赖了。
 
-- 只需要引入一个 Web 开发的**起步依赖**：`springboot-starter-web` 即可。
+- 只需要引入一个 Web 开发的**起步依赖**：`spring-boot-starter-web` 即可。
 - 它会利用 **Maven 的依赖传递**特性，将相关的依赖（以及对应的版本号）全部引入进来。
 
 ![SpringBootWeb开发依赖](NoteAssets/SpringBootWeb开发依赖.png)
 
-Spring Boot 框架，提供项目开发所需[常见起步依赖](https://docs.spring.io/spring-boot/docs/2.7.7/reference/htmlsingle/#using.build-systems.starters)；比如：`springboot-starter-web`：
+Spring Boot 框架，提供项目开发所需[常见起步依赖](https://docs.spring.io/spring-boot/docs/2.7.7/reference/htmlsingle/#using.build-systems.starters)；比如：`spring-boot-starter-web`：
 
 - 它是 Spring Boot 结合 Web 开发的起步依赖，
 - 其中集成了 Web 开发常见的依赖：json、web、webmvc、tomcat…。

@@ -18,26 +18,26 @@ Java Web 后端开发，现在基本上都是基于标准的三层架构进行�
 
 可以借助于两种方式：
 
-- 方式一：Java Web 当中三大组件之一的过滤器 Filter；
-- 方式二：Spring 提供的拦截器 Interceptor 来实现。
+- 方式一：Java Web 当中三大组件之一的**过滤器 Filter**；
+- 方式二：Spring 提供的**拦截器 Interceptor** 来实现。
 
 ![过滤器、拦截器](NoteAssets/过滤器、拦截器.png)
 
 ## 三、Spring 第一大核心 IOC、DI
 
-为了实现三层架构，层与层之间的解耦，要使用 Spring 框架第一大核心：IOC 控制反转、DI 依赖注入。
+为了实现三层架构，层与层之间的解耦，要使用 Spring 框架第一大核心：**IOC 控制反转**、**DI 依赖注入**。
 
-- IOC 控制反转，指的是将对象创建的控制权，由应用程序自身，交给外部容器，这个容器就是我们常说的 IOC 容器或 Spring 容器。
-- DI 依赖注入，指的是容器为程序提供运行时所需要的资源。
+- **IOC 控制反转**，指的是将对象创建的控制权，由应用程序自身，交给外部容器，这个容器就是我们常说的 IOC 容器或 Spring 容器。
+- **DI 依赖注入**，指的是容器为程序提供运行时所需要的资源。
 
 ## 四、Spring 第二大核心 AOP，以及常用技术栈
 
 除此之外，常用的 web 后端开发技术还有：
 
 - Spring 第二大核心是 AOP 面向切面编程；
-- Spring 中的事务管理、
-- Spring 中全局异常处理器。
-- 会话技术 Cookie、Session 和新的会话跟踪解决方案 JWT 令牌。
+- Spring 中的事务管理 -> `@Transactional` 注解、
+- Spring 中全局异常处理器 -> `@RestControllerAdvice、@ExceptionHandler` 注解。
+- 会话技术 Cookie、Session 和 **JWT 令牌**。
 - 阿里云 OSS 对象存储服务。
 - Mybatis 持久层架构操作数据库等技术。
 
@@ -74,4 +74,4 @@ Spring MVC 不是一个单独的框架，它是 Spring 框架的一部分，是 
 
 基于传统的 SSM 框架，开发项目会比较繁琐，效率也比较低；
 
-现在企业项目开发，基本都是基于 Spring Boot 整合 SSM 进行项目开发的。
+现在企业项目开发，基本都是基于 **Spring Boot 整合 SSM** 进行项目开发的。

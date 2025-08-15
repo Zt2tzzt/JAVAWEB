@@ -47,12 +47,12 @@ Maven 高级功能包括:
 
 还定义了一些实体类。
 
-- 即 pojo 包下存放的类：其中有
-  - 分页查询结果封装 `EmpPageBean` 类、；
+- 即 pojo 包下存放的**实体类**：其中有
+  - 分页查询结果封装 `EmpPageBean` 类；
   - 统一响应结果 `Result` 类；
   - ……
 
-还定义了一些通用的工具类。
+还定义了一些通用的**工具类**。
 
 - 即 utils 包下存放的类，其中有
   - `JwtUtil` 类；
@@ -68,9 +68,9 @@ Maven 高级功能包括:
 
 - 方案二：分模块设计：
 
-  - 将 pojo 包下的实体类，抽取到一个 Maven 模块 javaweb-pojo 中。
-  - 将 utils 包下的工具类，抽取到一个 Maven 模块 javaweb-utils 中
-  - 其他的业务代码，仍放在 javaweb-practise 模块中，再在该模块中引入  javaweb-pojo、 javaweb-utils 依赖。
+  - 将 pojo 包下的**实体类**，抽取到一个 Maven 模块` javaweb-pojo` 中。
+  - 将 utils 包下的**工具类**，抽取到一个 Maven 模块 `javaweb-utils` 中
+  - 其他的业务代码，仍放在 `javaweb-practise` 模块中，再在该模块中引入 `javaweb-pojo`、`javaweb-utils` 依赖。
 
 ![javaweb分模块案例理解](NoteAssets/javaweb分模块案例理解.png)
 
@@ -80,7 +80,7 @@ Maven 高级功能包括:
 
 ### 1.javaweb-pojo 模块
 
-在 IDEA 中，创建 Maven 模块 javaweb-pojo，用于存放实体类
+在 IDEA 中，创建 Maven 模块 `javaweb-pojo`，用于存放实体类：
 
 1. Project Structure -> Moudule -> + 号 -> New Module -> Java
 2. 右侧 Build system 选择 Maven。
@@ -191,6 +191,6 @@ demo-project/javaweb-practise/pom.xml
 </dependency>
 ```
 
-至此，已经完成了模块的拆分，拆分出了 javaweb-practise、javaweb-pojo，javaweb-utils 三个包，
+至此，已经完成了模块的拆分，拆分出了 `javaweb-practise`、`javaweb-pojo`，`javaweb-utils` 三个包，
 
 其他项目中要用，就可以直接引入依赖。
