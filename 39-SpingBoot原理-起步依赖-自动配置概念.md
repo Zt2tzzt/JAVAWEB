@@ -50,7 +50,7 @@ Spring Boot 框架，提供项目开发所需[常见起步依赖](https://docs.s
 - 其中集成了 Web 开发常见的依赖：json、web、webmvc、tomcat…。
 - 引入这个起步依赖，其他的依赖，都会自动的通过 Maven 的依赖传递引入。
 
-结论：起步依赖的原理就是 Maven 的依赖传递。
+结论：起步依赖的原理就是 Maven 的**依赖传递**。
 
 ## 二、Spring Boot 自动配置
 
@@ -64,13 +64,13 @@ Spring 项目启动后，一些**配置类**，**Bean 对象**，就自动存入
 
 比如：在其中可以看到，有两个 CommonConfig，
 
-- 在第一个 CommonConfig 类中，定义了一个 Bean 对象，名字就叫 saxReader（即前面自定义配置类中管理的 Bean 对象，属于 dom4j 包，用于 xml 的解析）。
-- 在第二个 CommonConfig 类中，它的 Bean 对象名字叫 commonConfig，因为 CommonConfig 配置类上添加了一个注解 `@Configuration`，该注解底层封装了 `@Component` 注解。
+- 在第一个 `CommonConfig` 类中，定义了一个 Bean 对象，名字就叫 `saxReader`（即前面自定义配置类中管理的 Bean 对象，属于 dom4j 包，用于 xml 的解析）。
+- 在第二个 `CommonConfig` 类中，它的 Bean 对象名字叫 `commonConfig`，因为 `CommonConfig` 配置类上添加了一个注解 `@Configuration`，该注解底层封装了 `@Component` 注解。
 - 所以，配置类，最终也是 Spring IOC 容器中的一个 Bean 对象。
 
-在 IOC 容器中，除了开发者自行用配置类定义的 Bean 以外，还有很多 Spring Boot 项目在启动时，加载进来的配置类。它们也会生成很多的 Bean 对象。
+在 IOC 容器中，除了开发者自行用配置类定义的 Bean 以外，还有很多 Spring Boot 项目在启动时，加载进来的第三方依赖提供的配置类。它们也会生成很多的 Bean 对象。
 
-比如：在其中可以看到 gsonAutoConfig 中，管理了 gson 的 Bean 对象
+比如：在其中可以看到 `gsonAutoConfig` 中，管理了 gson 的 Bean 对象
 
 > gson 是 Google 提供的，用于将 Java 对象转为 Json 对象的包。
 

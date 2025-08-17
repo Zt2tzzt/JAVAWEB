@@ -68,7 +68,7 @@ Maven 高级功能包括:
 
 - 方案二：分模块设计：
 
-  - 将 pojo 包下的**实体类**，抽取到一个 Maven 模块` javaweb-pojo` 中。
+  - 将 pojo 包下的**实体类**，抽取到一个 Maven 模块`javaweb-pojo` 中。
   - 将 utils 包下的**工具类**，抽取到一个 Maven 模块 `javaweb-utils` 中
   - 其他的业务代码，仍放在 `javaweb-practise` 模块中，再在该模块中引入 `javaweb-pojo`、`javaweb-utils` 依赖。
 

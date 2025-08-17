@@ -2,7 +2,7 @@
 
 Spring 提供了 `@Component` 注解，以及它的三个衍生注解 `@Controller`、`@Service`、`@Repository` 来声明 IOC 容器中的 Bean 对象；在 Spring 中，也可以使用依赖注入（DI），为应用程序注入运行时需要的 Bean 对象。
 
-## 一、IOC 容器获取 Bean 对象
+## 一、ApplicationContext IOC 容器对象获取 Bean 对象
 
 Spring Boot 项目启动时，会自动创建 IOC 容器（Spring 容器），并创建 Bean 对象，存放在 IOC 容器里。
 
@@ -12,15 +12,15 @@ Spring Boot 项目启动时，会自动创建 IOC 容器（Spring 容器），�
 
 在 Spring 环境中，可直接将 `ApplicationContext` 类型的  IOC 容器对象，注入到应用程序（类）中。
 
-通过 IOC 容器对象，获取 Bean 对象，主要有三种方式：
+通过 `ApplicationContext` IOC 容器对象，获取 Bean 对象，主要有三种方式：
 
-方式一：根据 name，获取 Bean 对象（带类型转换）。
+方式一：根据名称（name），获取 Bean 对象（带类型转换）。
 
 ```java
 Object getBean(String name)
 ```
 
-方式二：根据类型，获取 Bean 对象。
+方式二：根据字节码文件类型，获取 Bean 对象。
 
 ```java
 <T> T getBean(Class<T> requiredType)
@@ -67,7 +67,7 @@ public class BeanTest {
 }
 ```
 
-- Bean 对象，在声明时，如果没有指定名称，那么默认就是**类型首字母小写**。
+- Bean 对象，在声明时，如果没有指定名称，那么它的名称默认就是**类型首字母小写**。
 
 执行测试方法，观察控制台输出：
 
@@ -83,7 +83,7 @@ IOC 容器（Spring 容器）中，Bean 对象默认是**单例**的（只有一
 
 > “Spring 项目启动时，会把 Bean 都创建好，放在 IOC 容器中”，这只针对默认的单例 Bean 对象；
 >
-> 事实上，Bean 对象，还会受到作用域，和延迟初始化的影响；
+> 事实上，Bean 对象，还会受到**作用域**，和**延迟初始化**的影响；
 
 案例理解：在 `DeptController` 类中，加入空参构造方法，在其中加入打印语句，用于记录 Bean 对象的创建。
 
@@ -133,7 +133,7 @@ public class BeanTest {
 }
 ```
 
-执行测试方法：
+执行测试方法，输出结果如下：
 
 1. 在**加载 Spring 环菌**时，`DeptController` 的 Bean 对象，就创建了。
 
@@ -160,11 +160,11 @@ public class BeanTest {
 
 默认的单例 Bean 对象，会在容器启动时被创建；
 
-### 1.@Lazy 注解
+### 2.1.@Lazy 注解
 
-可以使用 `@Lazy` 注解，来延迟默认单例 Bean 对象的初始化，直到第一次使用时，再创建 Bean 对象。
+使用 `@Lazy` 注解，来延迟单例 Bean 对象的初始化，直到第一次使用时，再创建 Bean 对象。
 
-在 `DeptController` 类上，加上 @Lazy 注解。
+在 `DeptController` 类上，加上 `@Lazy` 注解。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/controller/DeptController.java
 
@@ -218,7 +218,7 @@ public class BeanTest {
 1. **加载 Spring 环菌**时，没有创建 `DeptController` 的 Bean 对象；
 2. 而是在测试方法执行，要获取 Bean 对象时，Bean 对象才被创建。
 
-获取到了 10 次相同的 Bean 对象。
+获取到了 10 次相同的 Bean 对象，输出结果如下：
 
 ```sh
 创建了 DeptController
@@ -248,7 +248,7 @@ Spring 的 Bean 对象，支持五种作用域。如下表所示，后三种在 
 | session     | 每个会话范围内，会创建新的实例（用于 Web 环境中，了解） |
 | application | 每个应用范围内，会创建新的实例（用于 Web 环境中，了解） |
 
-### 1.@Scope 注解
+### 3.1.@Scope 注解
 
 `@Scope` 注解，可以配置 Bean 的作用域。
 
@@ -273,7 +273,7 @@ public class DeptController {
 }
 ```
 
-在测试类中，获取十次 DeptController 的 Bean 对象：
+在测试类中，获取十次 `DeptController` 的 Bean 对象：
 
 demo-project/javaweb-practise/src/test/java/com/kkcf/BeanTest.java
 
@@ -336,11 +336,11 @@ com.kkcf.controller.DeptController@63eea8c4
 
 - 只需要在类上标注 `@Component` 或者它的三个衍生注解（`@Controller`、`@Service`、`@Repository`）即可。
 
-然而，在项目开发中，用到的某个类，不是自己编写的，而是引入的第三方依赖提供的，这时就需要使用 `@Bean` 注解。
+然而，在项目开发中，用到的某个类，由引入的第三方依赖提供的，不是自己编写，这时就需要使用 `@Bean` 注解。
 
-### 1.@Bean 注解
+### 4.1.@Bean 注解
 
-无法用 `@Component` 及衍生注解声明来自第三方（非自定义）的 Bean 对象；需要用到 `@Bean` 注解。
+使用到 `@Bean` 注解。注入无法用 `@Component` 及衍生注解声明来自第三方（非自定义）的 Bean 对象；
 
 比如：引入 dom4j 依赖，解析 xml 文件。
 
@@ -353,6 +353,8 @@ demo-project/javaweb-practise/pom.xml
     <version>2.1.3</version>
 </dependency>
 ```
+
+#### 4.1.2.在启动累里使用 @Bean 注解
 
 **解决方案一**：在**启动类**（引导类）里，定义 `@Bean` 注解标注的方法，用于 Spring 项目在启动时创建 Bean 对象，并交给 IOC 容器管理。
 
@@ -382,6 +384,8 @@ public class JavawebPractiseApplication {
 ```
 
 为保证启动类的纯粹性，不推荐这种做法。
+
+#### 4.1.3.在 @Configuration 注解标注的配置累里使用 @Bean 注解
 
 **解决方案二**：在 `@Configuration` 注解标注的**配置类**中，定义 `@Bean` 注解标注的方法。
 
@@ -489,7 +493,7 @@ public class CommonCofig {
 
 > 使用 `@Configuration` 可声明配置类；
 >
-> `@Configuration` 注解底层，也是用了 `@Component` 注解，为配置类生成 Bean 对象，并进行管理。
+> `@Configuration` 注解底层，也是用了 `@Component` 注解，所以配置累，也会作为 Bean 对象放入 IOC 容器中并进行管理。
 
 ### 2.@Bean 与 @Component 选择
 

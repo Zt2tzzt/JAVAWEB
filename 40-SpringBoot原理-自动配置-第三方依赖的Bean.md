@@ -1,6 +1,6 @@
 # Spring Boot 原理之自动配置第三方依赖的 Bean、自动配置
 
-解析 Spring Boot 自动配置的原理，就是分析在当前项目中，引入依赖后，是如何将依赖的 jar 包中所提供的 Bean 对象以及配置类，加载到当前 Spring 项目的 IOC 容器中的。
+解析 Spring Boot 自动配置的原理，就是分析在当前项目中，引入依赖后，是如何将依赖的 jar 包中所提供的 **Bean 对象**以及**配置类**，加载到当前 Spring 项目的 IOC 容器中的。
 
 ## 一、第三方依赖引入
 
@@ -23,7 +23,7 @@ demo-project/javaweb-practise/pom.xml
 </dependency>
 ```
 
-该依赖中，定义了一个类 `TokenParser`，并声明了 `@Component` 注解，将它交给 IOC 容器管理。
+该依赖中，定义了一个类 `TokenParser`，并标注了 `@Component` 注解，将它交给 IOC 容器管理。
 
 com/example/TokenParser.java
 
@@ -34,7 +34,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TokenParser {
-
     public void parse() {
         System.out.println("TokenParser ... parse ...");
     }
@@ -90,8 +89,8 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying b
 
 引入的第三方依赖中，Bean 对象、配置类，为什么没有生效？原因：
 
-- 在之前介绍 IOC 的时候有提到过，在类上添加 `@Component` 注解来声明 Bean 对象，还需要保证 `@Component` 注解能被当前项目的 Spring 框架扫描到。
-- Spring Boot 项目中，启动类（引导类）上的 `@SpringBootApplication` 注解，具有组件扫描的作用，但是它只会扫描启动类所在的包及其子包。
+- 在之前介绍 IOC 的时候有提到过，在类上添加 `@Component` 注解来声明 Bean 对象，还需要保证 `@Component` 注解能被当前项目的 Spring 框架**扫描**到。
+- Spring Boot 项目中，启动类（引导类）上的 `@SpringBootApplication` 注解，具有组件扫描的作用，但是它只会扫描**启动类所在的包及其子包**。
 - 第三方依赖中提供的包（比如 com.example）扫描不到。
 
 ## 二、Spring Boot 项目扫描第三方依赖 Bean 对象
@@ -100,9 +99,9 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying b
 
 ### 2.1.@ComponentScan 注解
 
-方案一：在引导（启动）类上，使用 `@ComponentScan` 注解，指定要扫描的依赖包。
+方案一：在启动类（引导类）上，使用 `@ComponentScan` 注解，指定要扫描的依赖包。
 
-- 一旦声明该注解，原来默认扫描就会被覆盖掉，所以要重新指定。
+- 一旦声明该注解，原来默认扫描就会被**覆盖掉**，所以要重新指定。
 
 demo-project/javaweb-practise/src/main/java/com/kkcf/JavawebPractiseApplication.java
 
@@ -130,7 +129,7 @@ public class JavawebPractiseApplication {
 com.example.TokenParser@6cd6698b
 ```
 
-说明，TokenParser 的 Bean 对象，已经在 IOC 容器中管理，并且可以注入使用了。
+说明，`TokenParser` 的 Bean 对象，已经在 IOC 容器中管理，并且可以注入使用了。
 
 事实上，采用以上方式，当需要引入大量的第三方依赖时，就需要在启动类上配置很多要扫描的包，缺点显而易见：
 
@@ -139,7 +138,7 @@ com.example.TokenParser@6cd6698b
 
 结论：Spring Boot 中，并没有采用以上这种方案。
 
-> `@Configuration` 注解，用于声明配置类，该注解底层使用了 `@Component` 注解，
+> `@Configuration` 注解，底层使用了 `@Component` 注解，
 >
 > `@Configuration` 注解，标注的配置类，将生成的 Bean 对象交给 IOC 容器管理。
 

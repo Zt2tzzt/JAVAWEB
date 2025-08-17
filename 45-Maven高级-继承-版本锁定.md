@@ -360,4 +360,3 @@ demo-project/javaweb-parent/pom.xml
 
 - `<dependencies>` 是直接依赖，在父工程配置了依赖，子工程会直接继承下来。
 - `<dependencyManagement>` 是统一管理依赖版本，子工程不会直接继承，还需要引入依赖，但无需指定版本。
-
