@@ -2,7 +2,7 @@
 
 ## 一、Conditional 条件装配注解
 
-在第三方依赖中（比如 gson）自动配置类声明的 Bean 对象，除了在方法上加了一个 `@Bean` 注解外，还会经常用到一个以 `@Conditional`  开头的注解。
+在第三方依赖中（比如 gson）自动**配置类**声明的 Bean 对象，除了在方法上加了一个 `@Bean` 注解外，还会经常用到一个以 `@Conditional`  开头的注解。
 
 GsonAutoConfiguration.class
 

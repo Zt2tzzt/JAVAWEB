@@ -87,9 +87,9 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying b
 
 说明，在 Spring 容器中，没有该类型的 Bean 对象。
 
-引入的第三方依赖中，Bean 对象、配置类，为什么没有生效？原因：
+引入的第三方依赖中，Bean 对象、配置类，没有生效的原因：
 
-- 在之前介绍 IOC 的时候有提到过，在类上添加 `@Component` 注解来声明 Bean 对象，还需要保证 `@Component` 注解能被当前项目的 Spring 框架**扫描**到。
+- 之前介绍 IOC 控制反转概念时有提到，在类上标注 `@Component` 注解来声明 Bean 对象，还需要保证 `@Component` 注解能被当前项目的 Spring 框架**扫描**到。
 - Spring Boot 项目中，启动类（引导类）上的 `@SpringBootApplication` 注解，具有组件扫描的作用，但是它只会扫描**启动类所在的包及其子包**。
 - 第三方依赖中提供的包（比如 com.example）扫描不到。
 
@@ -494,7 +494,7 @@ import ……
 public class AutoConfigurationImportSelector implements DeferredImportSelector, BeanClassLoaderAware, ResourceLoaderAware, BeanFactoryAware, EnvironmentAware, Ordered {……}
 ```
 
-- 可见 `AutoConfigurationImportSelector` 类实现了 `DeferredImportSelector` 接口；
+可见 `AutoConfigurationImportSelector` 类实现了 `DeferredImportSelector` 接口；
 
 `DeferredImportSelector` 接口源码如下，它继承自  `ImportSelector` 接口：
 
@@ -604,9 +604,9 @@ public class GsonAutoConfiguration {……}
 
 总结：自动配置原理，源码的入口就是引导类上的 `@SpringBootApplication` 注解，在这个注解中，封装了三个注解，分别是：
 
-- `@SpringBootConfiguration`，声明当前类是一个配置类；
-- `@ComponentScan`，进行组件扫描（默认扫描启动类所在包及其子包）；
-- `@EnableAutoConfiguration`，封装了 `@Import` 注解，其中指定了一个 `ImportSelector` 接口的实现类 `AutoConfigurationImportSelector`；
+- `@SpringBootConfiguration` 注解，声明当前类是一个配置类；
+- `@ComponentScan` 注解，进行组件扫描（默认扫描启动类所在包及其子包）；
+- `@EnableAutoConfiguration` 注解，封装了 `@Import` 注解，其中指定了一个 `ImportSelector` 接口的实现类 `AutoConfigurationImportSelector`；
   - 在实现类重写的 `selectImports()` 方法，读取当前项目下所有依赖 jar 包中 `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` 文件里面定义的配置类中 `@Bean` 注解标识的方法。
   - Spring Boot 项目启动时，就会加载依赖 jar 包配置文件中定义的配置类，并将这些类的全限定名，封装到 String 类型的数组中；
   - 最终通过 `@Import` 注解，将这些配置类全部加载到 IOC 容器中进行管理。
