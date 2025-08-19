@@ -2,14 +2,14 @@
 
 ## 一、Maven 继承是什么
 
-案例分模块设计之后，发现 javaweb-pojo、javaweb-utils、javaweb-practise 三个 Maven 模块中，都引入了 lombok 的依赖。
+案例分模块设计之后，发现 `javaweb-pojo`、`javaweb-utils`、`javaweb-practise` 三个 Maven 模块中，都引入了 `lombok` 的依赖。
 
 如果是做一个大型项目，各个模块中重复的依赖，可能会很多。在每一个 Maven 模块里，都配置一次，是比较繁琐的。
 
-为解决这个问题，可以再创建一个父工程 javaweb-parent：
+为解决这个问题，可以再创建一个父工程 `javaweb-parent`：
 
-1. 让三个模块 javaweb-pojo、javaweb-utils、javaweb-practise 继承这个父工程 。；
-2. 将各个模块中共有的依赖，提取到父工程 javaweb-parent 中；
+1. 让三个模块 `javaweb-pojo`、`javaweb-utils`、`javaweb-practise` 继承这个父工程 。；
+2. 将各个模块中共有的依赖，提取到父工程 `javaweb-parent` 中；
 3. 只要子工程继承了父工程，依赖也会继承下来，这样就无需在各个子工程中进行配置了。
 
 Maven 工程继承：
@@ -30,7 +30,7 @@ Maven 工程的继承，在子工程的 pom.xml 文件中使用 `<parent>` 标�
 
 ## 二、Maven 继承案例理解
 
-当前项目 javaweb-practise，还有点特殊，它是一个 Spring Boot 项目；
+当前项目 `javaweb-practise`，还有点特殊，它是一个 Spring Boot 项目；
 
 所有的 Spring Boot 项目，都有一个统一的父工程，即 spring-boot-starter-parent。
 
@@ -48,9 +48,9 @@ A[spring-boot-starter-parent] --> B[javaweb-parent]
     B --> E[javaweb-practise]
 ```
 
-### 1.父工程创建
+### 2.1.父工程创建
 
-在 IDEA 中，创建 Maven 模块 javaweb-parent，作为父工程。
+在 IDEA 中，创建 Maven 模块 `javaweb-parent`，作为父工程。
 
 1. Project Structure -> Moudule -> + 号 -> New Module -> Java
 2. 右侧 Build system 选择 Maven。
@@ -62,7 +62,7 @@ A[spring-boot-starter-parent] --> B[javaweb-parent]
 
 4. 点击 Create 创建项目，
 
-### 2.父工程打包方式设置
+### 2.2.父工程打包方式设置
 
 在父工程的 pom.xml 文件中，设置打包方式为 pom（默认 jar）。
 
@@ -79,13 +79,13 @@ Maven 项目打包方式：
 
 - jar：普通模块打包，Spring Boot 项目基本都是 jar 包，因为内嵌了 Tomcat 服务器。
 - war：普通 Web 程序打包，需要部署在外部的 Tomcat 服务器中运行。
-- pom：父工程或聚合工程，该模块不写代码，仅进行依赖管理。
+- pom：**父工程或聚合工程**，该模块不写代码，仅进行依赖管理。
 
-### 3.子工程中描述父工程信息
+### 2.3.子工程中描述父工程信息
 
 在子工程的 pom.xml 文件中，配置继承关系。使用 `<parent>` 标签，描述父工程信息。
 
-javaweb-pojo 子工程：
+`javaweb-pojo` 子工程：
 
 demo-project/javaweb-pojo/pom.xml
 
@@ -97,6 +97,7 @@ demo-project/javaweb-pojo/pom.xml
     <relativePath>../javaweb-parent/pom.xml</relativePath>
 </parent>
 
+<!-- <groupId>com.kkcf</groupId> -->
 <artifactId>javaweb-pojo</artifactId>
 <version>1.0-SNAPSHOT</version>
 ```
@@ -104,7 +105,7 @@ demo-project/javaweb-pojo/pom.xml
 - 在子工程中，配置了继承关系之后，坐标中的 `<groupId>` 标签可省略，因为会自动继承父工程的 。
 - `<relativePath>` 指定父工程的 pom 文件的相对位置（如果不指定，将从本地仓库/远程仓库查找该工程）。
 
-javaweb-utils 子工程：
+`javaweb-utils` 子工程：
 
 demo-project/javaweb-utils/pom.xml
 
@@ -116,11 +117,12 @@ demo-project/javaweb-utils/pom.xml
     <relativePath>../javaweb-parent/pom.xml</relativePath>
 </parent>
 
+<!-- <groupId>com.kkcf</groupId> -->
 <artifactId>javaweb-utils</artifactId>
 <version>1.0-SNAPSHOT</version>
 ```
 
-javaweb-practise 子工程：
+`javaweb-practise` 子工程：
 
 demo-project/javaweb-practise/pom.xml
 
@@ -131,6 +133,7 @@ demo-project/javaweb-practise/pom.xml
     <version>1.0-SNAPSHOT</version>
     <relativePath>../javaweb-parent/pom.xml</relativePath>
 </parent>
+
 <!--<parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -143,9 +146,11 @@ demo-project/javaweb-practise/pom.xml
 <description>javaweb-practise</description>
 ```
 
-### 4.父工程中配置共有依赖
+### 2.4.父工程中配置共有依赖
 
-在父工程 javaweb-parent 的 pom.xml 中，配置各个工程共有的依赖（子工程会自动继承父工程的依赖），以及共有的父工程 spring-boot-starter-parent 依赖。
+在父工程 `javaweb-parent` 的 pom.xml 中，配置各个工程共有的依赖（子工程会自动继承父工程的依赖）;
+
+以及共有的父工程 `spring-boot-starter-parent` 依赖。
 
 demo-project/javaweb-parent/pom.xml
 
@@ -181,7 +186,78 @@ demo-project/javaweb-parent/pom.xml
 > │ ├─📁 javaweb-practise
 > │ ├─📁 javaweb-utils
 
-## 三、Maven 版本锁定
+## 三、spring-boot-starter-parent 依赖
+
+`spring-boot-starter-parent` 是 Spring Boot 官方推荐的 **Maven 父项目（Parent POM）**.
+
+主要作用是 **统一依赖版本、管理 Maven 插件、提供默认构建配置**，让 Spring Boot 项目可以用最简洁的 `pom.xml` 开发运行。
+
+主要作用可以分为以下几点：
+
+### 3.1.依赖管理（Dependency Management）
+
+- 它定义了 Spring Boot 及常用第三方库的依赖版本（通过 `dependencyManagement` 管理）。
+- 使用时你在 `<dependencies>` 里只需要写 **groupId + artifactId**，可以省略版本号，Maven 会自动使用 Spring Boot 官方推荐的版本。
+  例如：
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+```
+
+- 不需要指定 `<version>`，因为 `spring-boot-starter-parent` 已经统一定义好了。
+
+### 3.2.插件管理（Plugin Management）
+
+- 它配置了常用 Maven 插件（如 `maven-compiler-plugin`, `spring-boot-maven-plugin`）的默认版本和常用参数。
+- 这样你就不用自己去写一大堆 `<plugin>` 配置，减少了 `pom.xml` 的复杂度。
+
+### 3.3.默认构建配置
+
+父 POM 里包含一些默认构建配置，比如：
+
+- Java 编译编码（UTF-8）
+- 默认的 `source` 和 `target` 版本（根据 Spring Boot 版本来定，一般是 Java 17+）
+- 测试、打包等相关插件配置
+
+### 3.4.继承机制
+
+当你的 `pom.xml` 使用：
+
+```xml
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.3.4</version>
+    <relativePath/> <!-- lookup parent from the repository -->
+</parent>
+```
+
+你的项目就会继承 `spring-boot-starter-parent` 的所有配置。这就是为什么在 Spring Boot 项目里，只写最简洁的依赖声明，构建就能跑起来。
+
+### 3.5.可选替代方式
+
+如果你的项目已经有一个自己的 `parent POM`，不能直接继承 `spring-boot-starter-parent`，Spring Boot 提供了一个替代方式：
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <version>3.3.4</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+
+这样可以使用 Spring Boot 的版本管理，而不强制继承它的构建配置。
+
+## 四、Maven 版本锁定
 
 在项目开发中，有一部分依赖，并不是各个模块都共有的。比如：
 
@@ -195,7 +271,7 @@ demo-project/javaweb-parent/pom.xml
 如果项目要升级，要使用 jwt 最新版本 `0.9.2` 中的一个新功能，需要将依赖的版本升级，应怎么做呢？
 
 1. 找到项目中哪些模块用到了 jwt 的依赖。
-2. 依次将它们的版本 `<version>` 标签中的值更换为`0.9.2`。
+2. 依次将它们的版本 `<version>` 标签中的值更换为 `0.9.2`。
 
 如果项目拆分的模块比较多，以上操作非常繁琐。并且容易出现遗漏。
 
@@ -239,7 +315,7 @@ demo-project/javaweb-practise/pom.xml
 
 ## 四、Maven 版本锁定案例理解
 
-javaweb-utils 模块中，配置的依赖，将其版本统一交给 javaweb-parent 进行统一管理，使用 `<dependencyManagement>` 标签。
+`javaweb-utils` 模块中，配置的依赖，将其版本统一交给 `javaweb-parent` 进行统一管理，使用 `<dependencyManagement>` 标签。
 
 demo-project/javaweb-parent/pom.xml
 
@@ -282,11 +358,11 @@ demo-project/javaweb-parent/pom.xml
 
 很多时候，在 Spring Boot 项目中，引入依赖坐标，不需要指定依赖的版本 `<version>` ；
 
-就是因为在父工程 spring-boot-starter-parent 中，已经通过 `<dependencyManagement>` 标签，对依赖的版本进行了统一的管理维护。
+就是因为在父工程 `spring-boot-starter-parent` 中，已经通过 `<dependencyManagement>` 标签，对依赖的版本进行了统一的管理维护。
 
 ### 1.pom.xml 属性配置
 
-可以通过在 `<>properties?` 标签中，声明自定义属性，以及属性引用的形式，在父工程中，将依赖的版本号进行集中管理维护。 具体语法为：
+可以通过在 `<properties>` 标签中，声明自定义属性，以及在 `<dependency>` 标签中，通过属性引用的形式，在父工程中，将依赖的版本号进行集中版本管理。 具体语法为：
 
 demo-project/javaweb-parent/pom.xml
 

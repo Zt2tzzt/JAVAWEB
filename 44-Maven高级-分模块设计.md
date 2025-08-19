@@ -92,9 +92,9 @@ Maven 高级功能包括:
 
 4. 点击 Create 创建项目，
 
-将原项目 pojo 包，拷贝 javaweb-pojo 模块 com.kkcf 包下，与原项目路径保持一致；
+将原项目 pojo 包，拷贝 `javaweb-pojo` 模块 com.kkcf 包下，与原项目路径保持一致；
 
-pojo 实体类中，使用了 Lombok 依赖，在 pom.xml 中，引入该依赖消除报错。
+pojo 实体类中，使用了 Lombok 依赖，在 `javaweb-pojo` 模块的 pom.xml 中，引入该依赖消除报错。
 
 demo-project/javaweb-pojo/pom.xml
 
@@ -106,7 +106,7 @@ demo-project/javaweb-pojo/pom.xml
 </dependency>
 ```
 
-删除原项目 pojo 包，在原项目 pom.xml 中，引入 javaweb-pojo 依赖
+删除原项目 pojo 包，在原项目 pom.xml 中，引入 `javaweb-pojo` 依赖
 
 demo-project/javaweb-practise/pom.xml
 
@@ -121,7 +121,7 @@ demo-project/javaweb-practise/pom.xml
 
 ### 2.javaweb-utils 模块
 
-在 IDEA 中，创建 Maven 模块 javaweb-utils，用于存放实体类
+在 IDEA 中，创建 Maven 模块 `javaweb-utils`，用于存放实体类
 
 1. Project Structure -> Moudule -> + 号 -> New Module -> Java
 2. 右侧 Build system 选择 Maven。
@@ -133,9 +133,9 @@ demo-project/javaweb-practise/pom.xml
 
 4. 点击 Create 创建项目，
 
-将原项目 utils 包，拷贝到 javaweb-utils 模块的 com.kkcf 包下，与原项目路径保持一致。
+将原项目 utils 包，拷贝到 `javaweb-utils` 模块的 com.kkcf 包下，与原项目路径保持一致。
 
-消除 utils 包下的报错，在 pom.xml 中，引入依赖：
+为消除 utils 包下的报错，在 `javaweb-utils` 模块的 pom.xml 中，引入依赖：
 
 demo-project/javaweb-utils/pom.xml
 

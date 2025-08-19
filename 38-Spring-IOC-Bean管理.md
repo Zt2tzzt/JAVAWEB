@@ -330,7 +330,7 @@ com.kkcf.controller.DeptController@63eea8c4
 
 在实际开发当中，绝大部分的 Bean 对象是单例的，不需要配置作用域。
 
-## 四、第三方 Bean 对象管理
+## 四、第三方依赖的 Bean 对象管理
 
 前面配置的 Bean 对象，都是项目中自定义的类。要声明这些 Bean，非常简单：
 
@@ -354,7 +354,7 @@ demo-project/javaweb-practise/pom.xml
 </dependency>
 ```
 
-#### 4.1.2.在启动累里使用 @Bean 注解
+#### 4.1.2.在启动类使用 @Bean 注解
 
 **解决方案一**：在**启动类**（引导类）里，定义 `@Bean` 注解标注的方法，用于 Spring 项目在启动时创建 Bean 对象，并交给 IOC 容器管理。
 
@@ -385,7 +385,7 @@ public class JavawebPractiseApplication {
 
 为保证启动类的纯粹性，不推荐这种做法。
 
-#### 4.1.3.在 @Configuration 注解标注的配置累里使用 @Bean 注解
+#### 4.1.3.在 @Configuration 标注的配置类使用 @Bean 注解
 
 **解决方案二**：在 `@Configuration` 注解标注的**配置类**中，定义 `@Bean` 注解标注的方法。
 
